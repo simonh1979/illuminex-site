@@ -1,41 +1,33 @@
 export default function Home() {
   return (
     <>
-      {/* HERO SECTION */}
+      {/* HERO */}
       <section className="hero">
         <div className="container">
-          <h1>Strategic Talent Solutions Built on Integrity.</h1>
+          <h1>Strategic Talent. Structured Delivery. Lasting Impact.</h1>
           <p>
             Illuminex Consultancy partners with organisations and professionals
             across Construction, Education and Healthcare — delivering
-            structured, transparent and accountable recruitment solutions.
+            accountable, relationship-led recruitment solutions.
           </p>
           <div className="hero-buttons">
             <a href="/contact" className="btn-primary">
-              For Clients
+              Partner With Us
             </a>
             <a href="/contact" className="btn-secondary">
-              For Candidates
+              Explore Opportunities
             </a>
           </div>
         </div>
       </section>
 
-      {/* SECTORS PREVIEW */}
-      <section style={{ padding: "100px 0", background: "#ffffff" }}>
+      {/* OUR SECTORS */}
+      <section className="section section-light">
         <div className="container">
-          <h2 style={{ textAlign: "center", marginBottom: "60px" }}>
-            Our Sectors
-          </h2>
+          <h2>Our Sectors</h2>
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-              gap: "40px",
-            }}
-          >
-            <div>
+          <div className="card-grid">
+            <div className="card">
               <h3>Construction & Building Materials</h3>
               <p>
                 Supporting leadership, commercial and operational growth across
@@ -43,7 +35,7 @@ export default function Home() {
               </p>
             </div>
 
-            <div>
+            <div className="card">
               <h3>Education</h3>
               <p>
                 Delivering trusted recruitment solutions with safeguarding and
@@ -51,7 +43,7 @@ export default function Home() {
               </p>
             </div>
 
-            <div>
+            <div className="card">
               <h3>Healthcare</h3>
               <p>
                 Partnering with healthcare providers to secure clinical and
@@ -63,35 +55,16 @@ export default function Home() {
       </section>
 
       {/* RECRUITMENT SOLUTIONS */}
-      <section
-        style={{
-          padding: "100px 0",
-          background: "var(--light-bg)",
-        }}
-      >
+      <section className="section section-soft">
         <div className="container">
-          <h2 style={{ textAlign: "center", marginBottom: "20px" }}>
-            Executive Search & Recruitment Solutions
-          </h2>
+          <h2>Executive Search & Recruitment Solutions</h2>
 
-          <p
-            style={{
-              textAlign: "center",
-              marginBottom: "60px",
-              fontWeight: "500",
-            }}
-          >
+          <p className="section-intro">
             Structured. Transparent. Accountable.
           </p>
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-              gap: "40px",
-            }}
-          >
-            <div>
+          <div className="card-grid">
+            <div className="card">
               <h3>Retained Executive Search</h3>
               <p>
                 Confidential, research-led assignments focused on senior and
@@ -99,14 +72,14 @@ export default function Home() {
               </p>
             </div>
 
-            <div>
+            <div className="card">
               <h3>Permanent Recruitment</h3>
               <p>
                 Targeted sourcing for long-term organisational growth.
               </p>
             </div>
 
-            <div>
+            <div className="card">
               <h3>Fixed-Term & Contract Solutions</h3>
               <p>
                 Flexible workforce support for transitional and project-based
@@ -114,7 +87,7 @@ export default function Home() {
               </p>
             </div>
 
-            <div>
+            <div className="card">
               <h3>Workforce Strategy & Advisory</h3>
               <p>
                 Insight-led guidance on talent structure, succession planning
@@ -126,40 +99,37 @@ export default function Home() {
       </section>
 
       {/* BEYOND RECRUITMENT */}
-      <section
-        style={{
-          padding: "100px 0",
-          background: "#ffffff",
-        }}
-      >
+      <section className="section section-light">
         <div className="container">
-          <h2 style={{ textAlign: "center", marginBottom: "40px" }}>
-            Beyond Recruitment
-          </h2>
+          <h2>Beyond Recruitment</h2>
 
-          <p style={{ textAlign: "center", marginBottom: "60px" }}>
+          <p className="section-intro">
             Through strategic partnerships, we provide access to:
           </p>
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-              gap: "30px",
-              textAlign: "center",
-            }}
-          >
-            <div>HR Advisory</div>
-            <div>Payroll Solutions</div>
-            <div>Health & Safety Consultancy</div>
-            <div>Workforce Planning Support</div>
+          <div className="card-grid">
+            <div className="card">
+              <h3>HR Advisory</h3>
+            </div>
+
+            <div className="card">
+              <h3>Payroll Solutions</h3>
+            </div>
+
+            <div className="card">
+              <h3>Health & Safety Consultancy</h3>
+            </div>
+
+            <div className="card">
+              <h3>Workforce Planning Support</h3>
+            </div>
           </div>
 
           <p
             style={{
               textAlign: "center",
               marginTop: "60px",
-              fontWeight: "500",
+              fontWeight: 500,
             }}
           >
             Supporting sustainable growth beyond the hire.

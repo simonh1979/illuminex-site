@@ -1,161 +1,171 @@
 export default function Home() {
   return (
-    <main style={{ fontFamily: "system-ui, sans-serif", margin: 0 }}>
-
+    <>
       {/* HERO SECTION */}
-      <section style={{
-        padding: "120px 20px",
-        textAlign: "center",
-        background: "linear-gradient(135deg, #0f2f3a 0%, #123f4f 100%)",
-        color: "white"
-      }}>
-        <h1 style={{
-          fontSize: "48px",
-          fontWeight: 600,
-          marginBottom: "20px"
-        }}>
-          Illuminex Executive Search & Consultancy
-        </h1>
-
-        <p style={{
-          fontSize: "20px",
-          maxWidth: "800px",
-          margin: "0 auto 30px auto",
-          lineHeight: 1.6,
-          opacity: 0.9
-        }}>
-          Executive recruitment and strategic consultancy built on integrity,
-          discretion and long-term partnership.
-        </p>
-
-        <button style={{
-          padding: "14px 28px",
-          fontSize: "16px",
-          backgroundColor: "#f28c28",
-          border: "none",
-          borderRadius: "4px",
-          cursor: "pointer",
-          fontWeight: 600
-        }}>
-          Partner With Us
-        </button>
+      <section className="hero">
+        <div className="container">
+          <h1>Strategic Talent Solutions Built on Integrity.</h1>
+          <p>
+            Illuminex Consultancy partners with organisations and professionals
+            across Construction, Education and Healthcare — delivering
+            structured, transparent and accountable recruitment solutions.
+          </p>
+          <div className="hero-buttons">
+            <a href="/contact" className="btn-primary">
+              For Clients
+            </a>
+            <a href="/contact" className="btn-secondary">
+              For Candidates
+            </a>
+          </div>
+        </div>
       </section>
 
-      {/* ABOUT SECTION */}
-      <section style={{
-        padding: "100px 20px",
-        maxWidth: "1100px",
-        margin: "0 auto",
-        textAlign: "center"
-      }}>
-        <h2 style={{ fontSize: "36px", marginBottom: "30px" }}>
-          Integrity at the Core
-        </h2>
-
-        <p style={{
-          fontSize: "18px",
-          lineHeight: 1.7,
-          maxWidth: "850px",
-          margin: "0 auto",
-          color: "#333"
-        }}>
-          Illuminex was founded on a simple principle: recruitment should elevate,
-          not exploit. We work across Construction & Building Materials,
-          Education, and Healthcare, partnering with organisations that value
-          trust, clarity and long-term growth.
-        </p>
-      </section>
-
-      {/* SERVICES SECTION */}
-      <section style={{
-        padding: "100px 20px",
-        backgroundColor: "#f4f6f8"
-      }}>
-        <div style={{
-          maxWidth: "1100px",
-          margin: "0 auto"
-        }}>
-          <h2 style={{
-            textAlign: "center",
-            fontSize: "36px",
-            marginBottom: "60px"
-          }}>
-            Our Services
+      {/* SECTORS PREVIEW */}
+      <section style={{ padding: "100px 0", background: "#ffffff" }}>
+        <div className="container">
+          <h2 style={{ textAlign: "center", marginBottom: "60px" }}>
+            Our Sectors
           </h2>
 
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-            gap: "40px"
-          }}>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+              gap: "40px",
+            }}
+          >
             <div>
-              <h3 style={{ fontSize: "22px", marginBottom: "15px" }}>
-                Retained Executive Search
-              </h3>
-              <p style={{ lineHeight: 1.6 }}>
-                Strategic, discreet and relationship-led search for leadership
-                and critical hires.
+              <h3>Construction & Building Materials</h3>
+              <p>
+                Supporting leadership, commercial and operational growth across
+                the built environment.
               </p>
             </div>
 
             <div>
-              <h3 style={{ fontSize: "22px", marginBottom: "15px" }}>
-                Contingency Recruitment
-              </h3>
-              <p style={{ lineHeight: 1.6 }}>
-                Permanent and fixed-term recruitment delivered with precision,
-                transparency and commitment.
+              <h3>Education</h3>
+              <p>
+                Delivering trusted recruitment solutions with safeguarding and
+                compliance at the forefront.
               </p>
             </div>
 
             <div>
-              <h3 style={{ fontSize: "22px", marginBottom: "15px" }}>
-                Business Consultancy
-              </h3>
-              <p style={{ lineHeight: 1.6 }}>
-                HR, payroll, and health & safety partnerships designed to
-                strengthen your operational framework.
+              <h3>Healthcare</h3>
+              <p>
+                Partnering with healthcare providers to secure clinical and
+                operational leadership talent.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* CTA SECTION */}
-      <section style={{
-        padding: "100px 20px",
-        textAlign: "center",
-        background: "linear-gradient(135deg, #123f4f 0%, #0f2f3a 100%)",
-        color: "white"
-      }}>
-        <h2 style={{ fontSize: "32px", marginBottom: "20px" }}>
-          Built to Grow With Integrity
-        </h2>
+      {/* RECRUITMENT SOLUTIONS */}
+      <section
+        style={{
+          padding: "100px 0",
+          background: "var(--light-bg)",
+        }}
+      >
+        <div className="container">
+          <h2 style={{ textAlign: "center", marginBottom: "20px" }}>
+            Executive Search & Recruitment Solutions
+          </h2>
 
-        <p style={{
-          fontSize: "18px",
-          maxWidth: "700px",
-          margin: "0 auto 30px auto",
-          lineHeight: 1.6,
-          opacity: 0.9
-        }}>
-          We are selective in partnership, deliberate in action,
-          and committed to delivering measurable results.
-        </p>
+          <p
+            style={{
+              textAlign: "center",
+              marginBottom: "60px",
+              fontWeight: "500",
+            }}
+          >
+            Structured. Transparent. Accountable.
+          </p>
 
-        <button style={{
-          padding: "14px 28px",
-          fontSize: "16px",
-          backgroundColor: "#f28c28",
-          border: "none",
-          borderRadius: "4px",
-          cursor: "pointer",
-          fontWeight: 600
-        }}>
-          Start a Conversation
-        </button>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+              gap: "40px",
+            }}
+          >
+            <div>
+              <h3>Retained Executive Search</h3>
+              <p>
+                Confidential, research-led assignments focused on senior and
+                strategic appointments.
+              </p>
+            </div>
+
+            <div>
+              <h3>Permanent Recruitment</h3>
+              <p>
+                Targeted sourcing for long-term organisational growth.
+              </p>
+            </div>
+
+            <div>
+              <h3>Fixed-Term & Contract Solutions</h3>
+              <p>
+                Flexible workforce support for transitional and project-based
+                needs.
+              </p>
+            </div>
+
+            <div>
+              <h3>Workforce Strategy & Advisory</h3>
+              <p>
+                Insight-led guidance on talent structure, succession planning
+                and organisational design.
+              </p>
+            </div>
+          </div>
+        </div>
       </section>
 
-    </main>
+      {/* BEYOND RECRUITMENT */}
+      <section
+        style={{
+          padding: "100px 0",
+          background: "#ffffff",
+        }}
+      >
+        <div className="container">
+          <h2 style={{ textAlign: "center", marginBottom: "40px" }}>
+            Beyond Recruitment
+          </h2>
+
+          <p style={{ textAlign: "center", marginBottom: "60px" }}>
+            Through strategic partnerships, we provide access to:
+          </p>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+              gap: "30px",
+              textAlign: "center",
+            }}
+          >
+            <div>HR Advisory</div>
+            <div>Payroll Solutions</div>
+            <div>Health & Safety Consultancy</div>
+            <div>Workforce Planning Support</div>
+          </div>
+
+          <p
+            style={{
+              textAlign: "center",
+              marginTop: "60px",
+              fontWeight: "500",
+            }}
+          >
+            Supporting sustainable growth beyond the hire.
+          </p>
+        </div>
+      </section>
+    </>
   );
 }

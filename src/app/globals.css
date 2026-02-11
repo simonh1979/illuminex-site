@@ -1,26 +1,153 @@
-@import "tailwindcss";
+/* --------------------------
+   BRAND COLOUR VARIABLES
+--------------------------- */
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --primary-blue: #035BA3;
+  --deep-blue: #022E57;
+  --gold: #D4AF37;
+  --gold-light: #F4C430;
+  --charcoal: #111111;
+  --light-bg: #F5F7FA;
+  --white: #ffffff;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* --------------------------
+   GLOBAL RESET
+--------------------------- */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
+html, body {
   font-family: Arial, Helvetica, sans-serif;
+  color: var(--charcoal);
+  background-color: var(--white);
+  scroll-behavior: smooth;
+}
+
+/* --------------------------
+   LAYOUT STRUCTURE
+--------------------------- */
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+main {
+  min-height: 80vh;
+}
+
+/* --------------------------
+   HEADER
+--------------------------- */
+
+.site-header {
+  background: linear-gradient(135deg, var(--deep-blue), var(--primary-blue));
+  padding: 20px 0;
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo a {
+  color: var(--white);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.3rem;
+  letter-spacing: 0.5px;
+}
+
+.nav-links a {
+  color: var(--white);
+  text-decoration: none;
+  margin-left: 25px;
+  font-size: 0.95rem;
+  transition: 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: var(--gold-light);
+}
+
+.nav-cta {
+  padding: 8px 16px;
+  border: 1px solid var(--gold);
+  border-radius: 4px;
+}
+
+.nav-cta:hover {
+  background: var(--gold);
+  color: var(--deep-blue);
+}
+
+/* --------------------------
+   FOOTER
+--------------------------- */
+
+.site-footer {
+  background: var(--deep-blue);
+  color: var(--white);
+  padding: 30px 0;
+  text-align: center;
+  font-size: 0.85rem;
+}
+
+/* --------------------------
+   HERO (we'll build next)
+--------------------------- */
+
+.hero {
+  background: linear-gradient(135deg, var(--deep-blue), var(--primary-blue));
+  color: var(--white);
+  padding: 120px 0;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 2.8rem;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.hero p {
+  font-size: 1.1rem;
+  max-width: 700px;
+  margin: 0 auto 30px auto;
+}
+
+.hero-buttons a {
+  margin: 0 10px;
+  padding: 12px 28px;
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: 500;
+  transition: 0.3s ease;
+}
+
+.btn-primary {
+  background: var(--gold);
+  color: var(--deep-blue);
+}
+
+.btn-primary:hover {
+  background: var(--gold-light);
+}
+
+.btn-secondary {
+  border: 1px solid var(--white);
+  color: var(--white);
+}
+
+.btn-secondary:hover {
+  background: var(--white);
+  color: var(--deep-blue);
 }

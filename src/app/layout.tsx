@@ -1,3 +1,17 @@
+import { Playfair_Display, Inter } from "next/font/google";
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  variable: "--font-heading",
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
+  variable: "--font-body",
+});
+
 import "./globals.css";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -15,7 +29,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
+  <body className={`${playfair.variable} ${inter.variable}`}>
         <header className="site-header">
           <div className="container nav-container">
             <div className="logo">

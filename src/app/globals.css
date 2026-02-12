@@ -236,7 +236,7 @@ main {
   margin-bottom: 20px;
 }
 
-..hero-text p {
+.hero-text p {
   font-size: 1.2rem;
   line-height: 1.75;
   max-width: 540px;
@@ -296,7 +296,7 @@ main {
   outline: none;
 }
 
-..search-cta {
+.search-cta {
   width: 100%;
   padding: 16px;
   background: #035BA3;

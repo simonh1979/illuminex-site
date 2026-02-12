@@ -7,8 +7,8 @@ export default function Home() {
 
           <div className="hero-text">
             <h1>
-              Strategic Talent. Delivered with Precision.
-              Partner with the leaders shaping tomorrow.
+              Strategic talent. Delivered with clarity and precision.
+              Partner with the people shaping tomorrow.
             </h1>
 
             <p>

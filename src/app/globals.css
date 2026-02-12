@@ -228,3 +228,69 @@ main {
 .card:hover {
   transform: translateY(-6px);
 }
+/* --------------------------
+   PREMIUM HERO REDESIGN
+--------------------------- */
+
+.hero {
+  position: relative;
+  padding: 180px 0 140px 0;
+  background: linear-gradient(120deg, #021c36 0%, #035BA3 100%);
+  overflow: hidden;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(212,175,55,0.15) 0%, transparent 70%);
+  top: -200px;
+  right: -150px;
+}
+
+.hero h1 {
+  font-size: 3.8rem;
+  max-width: 900px;
+  margin: 0 auto 30px auto;
+  font-weight: 600;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  max-width: 720px;
+  margin: 0 auto 50px auto;
+  line-height: 1.7;
+  opacity: 0.9;
+}
+
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.btn-primary {
+  background: var(--gold);
+  color: #021c36;
+  padding: 14px 34px;
+  border-radius: 6px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.btn-primary:hover {
+  background: var(--gold-light);
+}
+
+.btn-secondary {
+  border: 1px solid rgba(255,255,255,0.7);
+  padding: 14px 34px;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.btn-secondary:hover {
+  background: white;
+  color: #021c36;
+}

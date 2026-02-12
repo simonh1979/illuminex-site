@@ -1,20 +1,28 @@
 <section className="hero">
-  <div className="container">
-    <h1>
-      Talent Strategy for Organisations That Refuse to Be Average.
-    </h1>
-    <p>
-      Illuminex Consultancy partners with ambitious organisations across Construction,
-      Education and Healthcare to secure leadership and specialist talent that
-      strengthens performance, culture and long-term capability.
-    </p>
-    <div className="hero-buttons">
-      <a href="/contact" className="btn-primary">
-        Speak With Us
-      </a>
-      <a href="/contact" className="btn-secondary">
-        View Opportunities
-      </a>
+  <div className="container hero-inner">
+    <div className="hero-content">
+      <h1>
+        Partner with the leaders shaping tomorrow.
+      </h1>
+
+      <p>
+        Illuminex Consultancy works with ambitious organisations across
+        Construction, Education and Healthcare to secure exceptional
+        leadership and specialist talent aligned to long-term growth.
+      </p>
+
+      <div className="hero-buttons">
+        <a href="/contact" className="btn-primary">
+          Start a Strategic Conversation
+        </a>
+        <a href="/contact" className="btn-secondary">
+          Explore Opportunities
+        </a>
+      </div>
+    </div>
+
+    <div className="hero-image">
+      <img src="/hero.jpg" alt="Illuminex Consultancy" />
     </div>
   </div>
 </section>

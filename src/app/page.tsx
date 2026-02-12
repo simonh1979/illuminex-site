@@ -1,8 +1,8 @@
 export default function Home() {
   return (
     <>
-      <section className="hero">
-        <div className="container hero-inner">
+    <section className="hero">
+  <div className="hero-inner">
           <div className="hero-content">
             <h1>
               Partner with the leaders shaping tomorrow.

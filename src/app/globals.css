@@ -192,4 +192,38 @@ main {
     rgba(3, 91, 163, 0.55) 100%
   );
 }
+/* ==========================
+   BUTTON SYSTEM
+========================== */
+
+.btn-primary {
+  display: inline-block;
+  padding: 14px 32px;
+  background: #d4af37;
+  color: #021c36;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: #c19b2e;
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  display: inline-block;
+  padding: 14px 32px;
+  border: 1px solid white;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background: white;
+  color: #021c36;
+}
 

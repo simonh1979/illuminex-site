@@ -9,10 +9,9 @@ export default function Home() {
             </h1>
 
             <p>
-              Illuminex Consultancy works with ambitious organisations across
-              Construction, Education and Healthcare to secure exceptional
-              leadership and specialist talent aligned to long-term growth.
-            </p>
+              Illuminex Consultancy works with ambitious and visionary organisations 
+              to secure exceptional leadership and specialist talent across Construction, Education and Healthcare.
+           </p>
 
             <div className="hero-buttons">
               <a href="/contact" className="btn-primary">

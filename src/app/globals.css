@@ -1,25 +1,39 @@
-/* --------------------------
-   BRAND COLOUR VARIABLES
---------------------------- */
+/* ==========================
+   BRAND SYSTEM
+========================== */
 
 :root {
   --primary-blue: #0c3c60;
   --accent-blue: #125c93;
   --kingfisher-orange: #ff7a00;
   --soft-white: #f8f9fb;
+  --charcoal: #1a1a1a;
+  --white: #ffffff;
 }
 
-body {
+/* ==========================
+   GLOBAL RESET
+========================== */
+
+* {
   margin: 0;
-  font-family: var(--font-body);
-  background: white;
-  color: #1a1a1a;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* ===== HEADER ===== */
+html, body {
+  font-family: var(--font-body), sans-serif;
+  color: var(--charcoal);
+  background-color: var(--white);
+  scroll-behavior: smooth;
+}
+
+/* ==========================
+   HEADER
+========================== */
 
 .site-header {
-  background: var(--primary-blue);
+  background: linear-gradient(90deg, var(--primary-blue), var(--accent-blue));
   padding: 24px 60px;
 }
 
@@ -38,7 +52,7 @@ body {
 }
 
 .main-nav a {
-  color: white;
+  color: var(--white);
   text-decoration: none;
   font-weight: 500;
   letter-spacing: 0.5px;
@@ -46,7 +60,7 @@ body {
 }
 
 .main-nav a:hover {
-  opacity: 0.7;
+  opacity: 0.75;
 }
 
 .nav-cta {
@@ -54,138 +68,15 @@ body {
   padding: 10px 22px;
   border-radius: 6px;
   font-weight: 600;
-}
-
-/* ===== FOOTER ===== */
-
-.site-footer {
-  background: #0a2e4a;
-  color: white;
-  padding: 40px 60px;
-}
-
-.footer-inner {
-  max-width: 1300px;
-  margin: auto;
-  text-align: center;
-  opacity: 0.8;
-}
-
-/* --------------------------
-   GLOBAL RESET
---------------------------- */
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html, body {
-  font-family: var(--font-body), sans-serif;
-  color: var(--charcoal);
-  background-color: var(--white);
-  scroll-behavior: smooth;
-}
-
-h1, h2, h3 {
-  font-family: var(--font-heading), serif;
-  letter-spacing: -0.5px;
-}
-
-h1 {
-  font-size: 3.2rem;
-  line-height: 1.1;
-}
-
-h2 {
-  font-size: 2.2rem;
-  margin-bottom: 20px;
-}
-
-h3 {
-  font-size: 1.2rem;
-  margin-bottom: 10px;
-}
-
-/* --------------------------
-   LAYOUT STRUCTURE
---------------------------- */
-
-.container {
-  width: 90%;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-main {
-  min-height: 80vh;
-}
-
-/* --------------------------
-   HEADER
---------------------------- */
-
-header {
-  background: linear-gradient(90deg, #0c3c60, #0f4f80);
-  padding: 22px 60px;
-}
-
-.logo img {
-  height: auto;
-  width: 200px;
-}
-
-.nav-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.logo a {
-  color: var(--white);
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 1.3rem;
-  letter-spacing: 0.5px;
-}
-
-.nav-links a {
-  color: var(--white);
-  text-decoration: none;
-  margin-left: 25px;
-  font-size: 0.95rem;
-  transition: 0.3s ease;
-}
-
-.nav-links a:hover {
-  color: #FF7A00;
-}
-
-.nav-cta {
-  padding: 8px 16px;
-  border: 1px solid var(--gold);
-  border-radius: 4px;
+  transition: transform 0.3s ease;
 }
 
 .nav-cta:hover {
-  background: var(--gold);
-  color: var(--deep-blue);
+  transform: translateY(-2px);
 }
 
-/* --------------------------
-   FOOTER
---------------------------- */
-
-.site-footer {
-  background: var(--deep-blue);
-  color: var(--white);
-  padding: 30px 0;
-  text-align: center;
-  font-size: 0.85rem;
-}
 /* ==========================
-   ILLUMINEX HERO SYSTEM
+   HERO
 ========================== */
 
 .hero {
@@ -220,11 +111,11 @@ header {
 
 .hero-left {
   max-width: 650px;
-  color: white;
+  color: var(--white);
 }
 
 .hero-left h1 {
-  font-size: 4.8rem;
+  font-size: 4.2rem;
   line-height: 1.05;
   font-weight: 600;
   letter-spacing: -1.5px;
@@ -238,105 +129,24 @@ header {
   margin-bottom: 50px;
 }
 
-.hero-buttons {
-  display: flex;
-  gap: 18px;
-}
-
-.hero-image {
-  position: relative;
-  height: 85vh;
-  width: 100%;
-  overflow: hidden;
-}
-
-.hero-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: grayscale(40%) contrast(1.05) brightness(0.85);
-  transform: scale(1.06);
-  transition: transform 6s ease;
-}
-
-.hero:hover .hero-image img {
-  transform: scale(1.1);
-}
-
-.hero-image::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to right,
-    rgba(2, 28, 54, 0.98) 0%,
-    rgba(3, 91, 163, 0.75) 45%,
-    rgba(3, 91, 163, 0.55) 100%
-  );
-}
 /* ==========================
-   BUTTON SYSTEM
+   SEARCH CARD
 ========================== */
-
-.search-card button {
-  background: var(--primary-blue);
-  color: white;
-  padding: 16px;
-  border-radius: 8px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  transition: all 0.3s ease;
-}
-
-.search-card button:hover {
-  background: var(--accent-blue);
-  transform: translateY(-2px);
-}
-
-/* ==========================
-   EXECUTIVE SEARCH CARD
-========================== */
-
-.hero-text h1 {
-  font-size: 3.6rem;
-  line-height: 1.05;
-  margin-bottom: 20px;
-}
-
-.hero-text p {
-  font-size: 1.2rem;
-  line-height: 1.75;
-  max-width: 540px;
-  opacity: 0.85;
-  margin-bottom: 60px;
-}
 
 .search-card {
-  background: white;
+  background: var(--white);
   padding: 60px 50px;
   border-radius: 16px;
   width: 460px;
-  box-shadow:
-    0 40px 100px rgba(0, 0, 0, 0.25);
-  border-top: 6px solid var(--kingfisher-orange);
-}
-
-.search-card:hover {
-  transform: translateY(-6px);
-  box-shadow:
-    0 80px 140px rgba(3, 91, 163, 0.35),
-    0 0 0 1px rgba(255, 122, 0, 0.3) inset;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.25);
+  border-top: 4px solid var(--kingfisher-orange);
 }
 
 .search-card h3 {
   font-size: 1.4rem;
   margin-bottom: 25px;
   font-weight: 600;
-  color: #FF7A00
-}
-
-.search-card h3 span {
-  color: #d4af37;
+  color: var(--primary-blue);
 }
 
 .search-fields {
@@ -349,17 +159,16 @@ header {
 .search-fields select,
 .search-fields input {
   padding: 12px 14px;
-  border-radius: 5px;
+  border-radius: 6px;
   border: 1px solid #ddd;
   font-size: 0.95rem;
-  outline: none;
 }
 
 .search-cta {
   width: 100%;
   padding: 16px;
-  background: #035BA3;
-  color: white;
+  background: var(--primary-blue);
+  color: var(--white);
   border: none;
   border-radius: 8px;
   font-weight: 600;
@@ -369,34 +178,39 @@ header {
 }
 
 .search-cta:hover {
-  background: #024a87;
+  background: var(--accent-blue);
   transform: translateY(-2px);
-  box-shadow: 0 15px 30px rgba(3, 91, 163, 0.3);
 }
+
 /* ==========================
-   RESPONSIVE ADJUSTMENTS
+   FOOTER
+========================== */
+
+.site-footer {
+  background: var(--primary-blue);
+  color: var(--white);
+  padding: 40px 60px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+/* ==========================
+   RESPONSIVE
 ========================== */
 
 @media (max-width: 900px) {
 
   .hero-inner {
-    grid-template-columns: 1fr;
+    flex-direction: column;
     gap: 50px;
-  }
-
-  .hero-image {
-    height: 50vh;
   }
 
   .search-card {
     width: 100%;
-    margin-top: 30px;
   }
 
-  .hero-text h1 {
+  .hero-left h1 {
     font-size: 2.6rem;
     line-height: 1.15;
-    letter-spacing: -0.5px;
   }
-
 }

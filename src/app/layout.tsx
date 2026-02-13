@@ -1,6 +1,8 @@
-import { Playfair_Display, Inter } from "next/font/google";
+import Image from "next/image";
 
-const playfair = Playfair_Display({
+import { Inter, Manrope } from "next/font/google";
+
+const headingFont = Manrope({
   subsets: ["latin"],
   weight: ["500", "600", "700"],
   variable: "--font-heading",
@@ -29,11 +31,19 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-  <body className={`${playfair.variable} ${inter.variable}`}>
+  <body className={`${headingFont.variable} ${inter.variable}`}>
         <header className="site-header">
           <div className="container nav-container">
             <div className="logo">
-              <Link href="/">Illuminex Consultancy</Link>
+            <Link href="/">
+  <Image 
+    src="/illuminexlogo.png" 
+    alt="Illuminex Consultancy"
+    width={180}
+    height={40}
+    priority
+  />
+</Link>
             </div>
 
             <nav className="nav-links">

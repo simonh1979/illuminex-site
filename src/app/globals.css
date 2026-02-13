@@ -5,8 +5,7 @@
 :root {
   --primary-blue: #035BA3;
   --deep-blue: #022E57;
-  --gold: #D4AF37;
-  --gold-light: #F4C430;
+
   --charcoal: #111111;
   --light-bg: #F5F7FA;
   --white: #ffffff;
@@ -95,7 +94,7 @@ main {
 }
 
 .nav-links a:hover {
-  color: var(--gold-light);
+  color: #FF7A00;
 }
 
 .nav-cta {
@@ -149,16 +148,19 @@ main {
 }
 
 .hero-content h1 {
-  font-size: 3.8rem;
+  font-size: 4.6rem;
   line-height: 1.05;
   margin-bottom: 28px;
+  font-weight: 600;
+  letter-spacing: -1.5px;
 }
 
 .hero-content p {
-  font-size: 1.15rem;
-  line-height: 1.7;
-  margin-bottom: 42px;
+  font-size: 1.2rem;
+  line-height: 1.8;
+  max-width: 520px;
   opacity: 0.9;
+  margin-bottom: 50px;
 }
 
 .hero-buttons {
@@ -177,8 +179,13 @@ main {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: grayscale(100%) contrast(1.1);
-  transform: scale(1.05);
+  filter: grayscale(40%) contrast(1.05) brightness(0.85);
+  transform: scale(1.06);
+  transition: transform 6s ease;
+}
+
+.hero:hover .hero-image img {
+  transform: scale(1.1);
 }
 
 .hero-image::after {
@@ -245,35 +252,29 @@ main {
 }
 
 .search-card {
-  background: rgba(255, 255, 255, 0.95);
-  padding: 40px;
-  border-radius: 10px;
-  width: 420px;
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35);
-  position: relative;
-}
-
-.search-card {
-  background: rgba(255, 255, 255, 0.96);
-  padding: 48px;
-  border-radius: 16px;
-  width: 440px;
-  box-shadow: 
-    0 40px 80px rgba(0, 0, 0, 0.25),
-    0 0 0 1px rgba(255, 255, 255, 0.4) inset;
-  backdrop-filter: blur(6px);
-  transition: transform 0.4s ease;
+  background: rgba(255, 255, 255, 0.98);
+  padding: 50px;
+  border-radius: 20px;
+  width: 460px;
+  box-shadow:
+    0 60px 120px rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+  backdrop-filter: blur(10px);
+  transition: all 0.4s ease;
 }
 
 .search-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-6px);
+  box-shadow:
+    0 80px 140px rgba(3, 91, 163, 0.35),
+    0 0 0 1px rgba(255, 122, 0, 0.3) inset;
 }
 
 .search-card h3 {
   font-size: 1.4rem;
   margin-bottom: 25px;
   font-weight: 600;
-  color: #021c36;
+  color: #FF7A00
 }
 
 .search-card h3 span {
@@ -314,11 +315,6 @@ main {
   transform: translateY(-2px);
   box-shadow: 0 15px 30px rgba(3, 91, 163, 0.3);
 }
-
-.search-cta:hover {
-  background: #c19b2e;
-  transform: translateY(-2px);
-}
 /* ==========================
    RESPONSIVE ADJUSTMENTS
 ========================== */
@@ -327,7 +323,7 @@ main {
 
   .hero-inner {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 50px;
   }
 
   .hero-image {
@@ -340,15 +336,13 @@ main {
   }
 
   .hero-text h1 {
-    .hero-text h1 {
-  font-size: 4.2rem;
-  line-height: 1.08;
-  margin-bottom: 28px;
-  font-weight: 600;
-  letter-spacing: -1px;
-}
-
+    font-size: 2.6rem;
+    line-height: 1.15;
+    letter-spacing: -0.5px;
   }
 
 }
+
+
+
 

@@ -1,4 +1,15 @@
 import Image from "next/image";
+import Link from "next/link";
+
+<Link href="/" className="logo">
+  <Image
+    src="/logo.png"
+    alt="Illuminex Consultancy"
+    width={220}
+    height={70}
+    priority
+  />
+</Link>
 
 import { Inter, Manrope } from "next/font/google";
 
@@ -16,13 +27,45 @@ const inter = Inter({
 
 import "./globals.css";
 import type { Metadata } from "next";
-import Link from "next/link";
 
-export const metadata: Metadata = {
-  title: "Illuminex Consultancy",
-  description:
-    "Strategic Talent Solutions across Construction, Education and Healthcare.",
-};
+export default function Home() {
+  return (
+    <>
+      {/* HERO SECTION */}
+      <section className="hero">
+        <div className="hero-overlay"></div>
+
+        <div className="hero-inner">
+          <div className="hero-left">
+            <h1>
+              Strategic talent, delivered with clarity and precision.  <br />
+              Partner with the people shaping tomorrow.
+            </h1>
+
+            <p>
+              Illuminex Consultancy provides premium executive search 
+              and specialist recruitment across Construction, Education and Healthcare.
+              Delivering reliable mid-to-senior talent through trusted, flexible search solutions.
+            </p>
+          </div>
+
+          <div className="hero-right">
+            {/* YOUR SEARCH BOX COMPONENT HERE */}
+          </div>
+        </div>
+      </section>
+
+      {/* 🔥 PHASE 7 TRUST STRIP — PASTE IT HERE */}
+      <section className="trust-strip">
+        <div className="trust-inner">
+          <span>Trusted by leading organisations</span>
+        </div>
+      </section>
+
+    </>
+  );
+}
+
 
 export default function RootLayout({
   children,
@@ -35,15 +78,6 @@ export default function RootLayout({
         <header className="site-header">
           <div className="container nav-container">
             <div className="logo">
-            <Link href="/">
-  <Image 
-    src="/illuminexlogo.png" 
-    alt="Illuminex Consultancy"
-    width={180}
-    height={40}
-    priority
-  />
-</Link>
             </div>
 
             <nav className="nav-links">

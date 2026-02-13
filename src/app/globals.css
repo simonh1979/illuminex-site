@@ -3,12 +3,10 @@
 --------------------------- */
 
 :root {
-  --primary-blue: #035BA3;
-  --deep-blue: #022E57;
-
-  --charcoal: #111111;
-  --light-bg: #F5F7FA;
-  --white: #ffffff;
+  --primary-blue: #0c3c60;
+  --accent-blue: #125c93;
+  --kingfisher-orange: #ff7a00;
+  --soft-white: #f8f9fb;
 }
 
 /* --------------------------
@@ -66,9 +64,14 @@ main {
    HEADER
 --------------------------- */
 
-.site-header {
-  background: linear-gradient(135deg, var(--deep-blue), var(--primary-blue));
-  padding: 20px 0;
+header {
+  background: linear-gradient(90deg, #0c3c60, #0f4f80);
+  padding: 22px 60px;
+}
+
+.logo img {
+  height: auto;
+  width: 200px;
 }
 
 .nav-container {
@@ -125,40 +128,50 @@ main {
 
 .hero {
   position: relative;
-  min-height: 92vh;
+  height: 90vh;
+  background: url("/hero.jpg") center/cover no-repeat;
   display: flex;
   align-items: center;
-  background: #021c36;
-  color: white;
-  overflow: hidden;
-  padding: 0 8%;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(5, 30, 50, 0.95) 0%,
+    rgba(5, 30, 50, 0.85) 40%,
+    rgba(5, 30, 50, 0.4) 100%
+  );
 }
 
 .hero-inner {
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
-  gap: 80px;
-}
-
-.hero-content {
-  max-width: 620px;
+  position: relative;
   z-index: 2;
+  max-width: 1300px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 80px;
+  padding: 0 60px;
 }
 
-.hero-content h1 {
-  font-size: 4.6rem;
+.hero-left {
+  max-width: 650px;
+  color: white;
+}
+
+.hero-left h1 {
+  font-size: 4.8rem;
   line-height: 1.05;
-  margin-bottom: 28px;
   font-weight: 600;
   letter-spacing: -1.5px;
+  margin-bottom: 30px;
 }
 
-.hero-content p {
+.hero-left p {
   font-size: 1.2rem;
   line-height: 1.8;
-  max-width: 520px;
   opacity: 0.9;
   margin-bottom: 50px;
 }

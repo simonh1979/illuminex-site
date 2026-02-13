@@ -9,6 +9,68 @@
   --soft-white: #f8f9fb;
 }
 
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background: white;
+  color: #1a1a1a;
+}
+
+/* ===== HEADER ===== */
+
+.site-header {
+  background: var(--primary-blue);
+  padding: 24px 60px;
+}
+
+.nav-container {
+  max-width: 1300px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.main-nav {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+}
+
+.main-nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  transition: opacity 0.3s ease;
+}
+
+.main-nav a:hover {
+  opacity: 0.7;
+}
+
+.nav-cta {
+  background: var(--kingfisher-orange);
+  padding: 10px 22px;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+/* ===== FOOTER ===== */
+
+.site-footer {
+  background: #0a2e4a;
+  color: white;
+  padding: 40px 60px;
+}
+
+.footer-inner {
+  max-width: 1300px;
+  margin: auto;
+  text-align: center;
+  opacity: 0.8;
+}
+
 /* --------------------------
    GLOBAL RESET
 --------------------------- */
@@ -216,36 +278,21 @@ header {
    BUTTON SYSTEM
 ========================== */
 
-.btn-primary {
-  display: inline-block;
-  padding: 14px 32px;
-  background: #d4af37;
-  color: #021c36;
+.search-card button {
+  background: var(--primary-blue);
+  color: white;
+  padding: 16px;
+  border-radius: 8px;
   font-weight: 600;
-  text-decoration: none;
-  border-radius: 4px;
+  letter-spacing: 0.5px;
   transition: all 0.3s ease;
 }
 
-.btn-primary:hover {
-  background: #c19b2e;
+.search-card button:hover {
+  background: var(--accent-blue);
   transform: translateY(-2px);
 }
 
-.btn-secondary {
-  display: inline-block;
-  padding: 14px 32px;
-  border: 1px solid white;
-  color: white;
-  text-decoration: none;
-  border-radius: 4px;
-  transition: all 0.3s ease;
-}
-
-.btn-secondary:hover {
-  background: white;
-  color: #021c36;
-}
 /* ==========================
    EXECUTIVE SEARCH CARD
 ========================== */
@@ -265,15 +312,13 @@ header {
 }
 
 .search-card {
-  background: rgba(255, 255, 255, 0.98);
-  padding: 50px;
-  border-radius: 20px;
+  background: white;
+  padding: 60px 50px;
+  border-radius: 16px;
   width: 460px;
   box-shadow:
-    0 60px 120px rgba(0, 0, 0, 0.25),
-    0 0 0 1px rgba(255, 255, 255, 0.6) inset;
-  backdrop-filter: blur(10px);
-  transition: all 0.4s ease;
+    0 40px 100px rgba(0, 0, 0, 0.25);
+  border-top: 6px solid var(--kingfisher-orange);
 }
 
 .search-card:hover {
@@ -355,7 +400,3 @@ header {
   }
 
 }
-
-
-
-

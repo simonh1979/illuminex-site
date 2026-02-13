@@ -1,50 +1,55 @@
 export default function Home() {
   return (
-    <section className="hero">
-      <div className="hero-inner">
+    <main>
 
-        <div className="hero-content">
+      <section className="hero">
+        <div className="hero-overlay" />
 
-          <div className="hero-text">
+        <div className="hero-inner">
+          <div className="hero-left">
             <h1>
-              Strategic talent. Delivered with clarity and precision.
-              Partner with the people shaping tomorrow.
+              Executive Search.<br />
+              Strategic Recruitment.<br />
+              Market Leadership.
             </h1>
 
             <p>
-              Illuminex Consultancy provides premium executive search and specialist recruitment across Construction, Education and Healthcare.
-              Delivering reliable mid-to-senior talent through trusted, flexible search solutions
-                  </p>
+              Illuminex Consultancy provides premium executive search 
+              and specialist recruitment across professional and technical sectors.
+              Delivering exceptional mid-to-senior talent through trusted, flexible search solutions.
+            </p>
           </div>
 
-          <div className="search-card">
-            <h3>
-              Find your next <span>Opportunity</span>
-            </h3>
+          <div className="hero-right">
+            <div className="search-card">
+              <h3>Search Opportunities</h3>
 
-            <div className="search-fields">
-              <select>
-                <option>Select your sector</option>
-                <option>Construction & Building Materials</option>
-                <option>Education</option>
-                <option>Healthcare</option>
-              </select>
+              <div className="search-fields">
+                <select>
+                  <option>Sector</option>
+                  <option>Construction</option>
+                  <option>Engineering</option>
+                  <option>Manufacturing</option>
+                </select>
 
-              <input type="text" placeholder="Location" />
+                <select>
+                  <option>Location</option>
+                  <option>London</option>
+                  <option>Manchester</option>
+                  <option>Birmingham</option>
+                </select>
+
+                <input type="text" placeholder="Keyword or Job Title" />
+              </div>
+
+              <button className="search-cta">
+                Explore Roles
+              </button>
             </div>
-
-            <button className="search-cta">
-              Search Opportunities
-            </button>
           </div>
-
         </div>
+      </section>
 
-        <div className="hero-image">
-          <img src="/hero.jpg" alt="Illuminex Consultancy" />
-        </div>
-
-      </div>
-    </section>
-  );
+    </main>
+  )
 }

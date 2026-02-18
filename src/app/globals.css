@@ -50,12 +50,12 @@ main {
 
 .hero {
   position: relative;
-  min-height: calc(80vh - 74px);
+  min-height: calc(80vh - 120px);
   max-height: 760px;
   display: flex;
   align-items: center;
   padding-top: 90px;
-  padding: 120px 0 80px; /* space under fixed header + premium breathing room */
+  padding: 160px 0 90px; /* space under fixed header + premium breathing room */
   overflow: hidden;
 }
 
@@ -112,10 +112,10 @@ main {
 .hero-inner {
   position: relative;
   z-index: 3;
-  max-width: 1680px;
+  max-width: 1440px;
   width: 100%;
   margin: 0 auto;
-  padding: 0 60px;
+  padding: 0 32px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -155,9 +155,9 @@ main {
 .sectors-inner {
   position: relative;
   z-index: 2;
-  max-width: 1680px;
+  max-width: 1440px;
   margin: 0 auto;
-  padding: 0 60px;
+  padding: 0 32px;
 }
 
 /* ==========================
@@ -274,15 +274,16 @@ main {
 @media (max-width: 992px) {
   .hero-inner {
     flex-direction: column;
-    margin: 0 40px;
     gap: 50px;
+    padding: 0 20px;
   }
+}
 
   .search-card {
     width: 100%;
     max-width: 420px;
   }
-}
+
 
 @media (max-width: 600px) {
   .hero-left h1 {
@@ -330,10 +331,10 @@ main {
 
 .header-inner {
   width: 100%;
-  max-width: 1680px;
+  max-width: 1440px;
   /* match hero */
   margin: 0 auto;
-  padding: 0 55px;
+  padding: 0 32px;
   /* match hero left spacing */
   height: 120px;
   display: flex;
@@ -357,13 +358,19 @@ main {
   height: 100%;
 }
 
-.logo-wrap img {
+.logo-wrap img,
+.site-logo {
   height: 118px;
-  /* flagship scale */
   width: auto;
-  object-fit: contain;
   display: block;
+  object-fit: contain;
+
+  /* sharpen raster logos */
   image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+
+  /* stop any accidental opacity from parent layers */
+  opacity: 1;
 }
 
 /* Ultra wide screens */
@@ -647,9 +654,9 @@ main {
 
 /* Footer layout */
 .footer-inner {
-  max-width: 1680px;
+  max-width: 1440px;
   margin: 0 auto;
-  padding: 0 60px;
+  padding: 0 32px;
 
   display: grid;
   grid-template-columns: 1fr auto 1fr;
@@ -705,15 +712,23 @@ main {
 }
 
 @media (max-width: 600px) {
-  .footer-emblem {
-    display: none;
+  .footer-inner {
+    grid-template-columns: auto 1fr auto;
+    column-gap: 10px;
+    align-items: center;
+    padding: 10px 12px 12px;
+    min-height: 74px;
   }
 
-  .footer-inner {
-    grid-template-columns: 1fr;
-    row-gap: 8px;
-    min-height: unset;
-    padding: 6px 16px 8px;
+  .footer-emblem {
+    display: block;
+    height: 44px;
+    opacity: 0.92;
+  }
+
+  .footer-text {
+    font-size: 0.86rem;
+    white-space: normal;
   }
 }
 
@@ -939,9 +954,9 @@ main {
 }
 
 .page-inner {
-  max-width: 1680px;
+  max-width: 1440px;
   margin: 0 auto;
-  padding: 0 60px;
+  padding: 0 32px;
 }
 
 .page-kicker {
@@ -1428,3 +1443,186 @@ main {
   }
 }
 
+/* ==========================
+   HEADER: MOBILE DRAWER NAV
+   - Desktop: pills visible, "Menu" hidden
+   - Mobile/Tablet: pills hidden, "Menu" visible, drawer slides in
+========================== */
+
+/* Hide mobile toggle on desktop */
+.nav-toggle {
+  display: none;
+  border: 0;
+  background: transparent;
+  color: var(--white);
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  padding: 10px 12px;
+  border-radius: 12px;
+
+  /* subtle button feel without looking "cheap" */
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.14);
+}
+
+.nav-toggle:hover {
+  filter: brightness(1.06);
+}
+
+/* Hamburger lines */
+.nav-toggle-lines {
+  position: relative;
+  display: inline-block;
+  width: 22px;
+  height: 2px;
+  background: rgba(255,255,255,0.92);
+  border-radius: 999px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.nav-toggle-lines::before,
+.nav-toggle-lines::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 22px;
+  height: 2px;
+  background: rgba(255,255,255,0.92);
+  border-radius: 999px;
+}
+
+.nav-toggle-lines::before { top: -7px; }
+.nav-toggle-lines::after { top: 7px; }
+
+.nav-toggle-text {
+  font-size: 0.82rem;
+  vertical-align: middle;
+}
+
+/* Overlay */
+.nav-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 999; /* below header (1000), above page */
+}
+
+.nav-overlay.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Drawer */
+.nav-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: min(86vw, 380px);
+  background: linear-gradient(135deg, #0c3c60 0%, #035BA3 100%);
+  transform: translateX(100%);
+  transition: transform 0.22s ease;
+  z-index: 1001; /* above header */
+  padding: 18px 16px 16px;
+
+  box-shadow: -30px 0 80px rgba(0,0,0,0.35);
+}
+
+.nav-drawer.is-open {
+  transform: translateX(0);
+}
+
+.nav-drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+}
+
+.nav-drawer-brand {
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.95;
+}
+
+.nav-drawer-close {
+  border: 0;
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.95);
+  font-weight: 900;
+  border-radius: 12px;
+  padding: 10px 12px;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.14);
+}
+
+.nav-drawer-links {
+  display: grid;
+  gap: 10px;
+  padding: 14px 0 10px;
+}
+
+.nav-drawer-links a {
+  /* removes the default “blue underlined” look */
+  color: rgba(255,255,255,0.96);
+  text-decoration: none;
+  font-weight: 850;
+  letter-spacing: 0.04em;
+
+  padding: 12px 12px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.14);
+}
+
+.nav-drawer-links a:hover {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+}
+
+.nav-drawer-foot {
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255,255,255,0.12);
+}
+
+.nav-drawer-note {
+  opacity: 0.9;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+}
+
+/* Tablet + Mobile behaviour */
+@media (max-width: 900px) {
+  /* Hide the desktop pill nav so it can't wrap and break layout */
+  .main-nav.nav-desktop {
+    display: none;
+  }
+
+  /* Show the Menu button */
+  .nav-toggle {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* Reduce header height so hero/search doesn't collide */
+  .header-inner {
+    height: 96px;
+    padding: 0 16px;
+  }
+
+  .logo-wrap img {
+    height: 72px;
+  }
+
+  /* Give hero room under fixed header on small screens */
+  .hero {
+    padding-top: 140px;
+  }
+}

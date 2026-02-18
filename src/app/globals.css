@@ -1689,6 +1689,52 @@ body {
   overflow-x: hidden;
 }
 
+.apply-success-card {
+  margin-top: 14px;
+  padding: 14px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.apply-success-row {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 12px;
+  padding: 10px 10px;
+  border-radius: 14px;
+}
+
+.apply-success-row + .apply-success-row {
+  border-top: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 0;
+}
+
+.apply-success-row span {
+  opacity: 0.82;
+  letter-spacing: 0.06em;
+  font-weight: 850;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+}
+
+.apply-success-row strong {
+  font-weight: 900;
+}
+
+.apply-success-actions {
+  margin-top: 14px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Hide "Your details" + intro line once success is shown */
+.apply-main:has(.apply-state.is-submitted) > h3,
+.apply-main:has(.apply-state.is-submitted) > .apply-intro {
+  display: none;
+}
+
 /* ==========================
    APPLY MOBILE FIX
 ========================== */

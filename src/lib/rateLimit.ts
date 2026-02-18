@@ -24,3 +24,11 @@ export function rateLimit(ip: string) {
   record.count++;
   return true;
 }
+import { Ratelimit } from "@upstash/ratelimit";
+import { redis } from "./redis";
+
+export const applyRateLimit = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(5, "1 m"), // 5 submits per minute per IP
+  analytics: true,
+});

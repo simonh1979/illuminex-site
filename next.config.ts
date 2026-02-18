@@ -17,7 +17,7 @@ const csp = isProd
       "upgrade-insecure-requests",
     ].join("; ")
   : [
-      // DEV: allow Next/Turbopack/HMR to work
+      // DEV: allow Next/Turbopack/HMR
       "default-src 'self'",
       "base-uri 'self'",
       "object-src 'none'",
@@ -25,18 +25,15 @@ const csp = isProd
       "img-src 'self' data: blob: https:",
       "font-src 'self' data: https:",
       "style-src 'self' 'unsafe-inline'",
-      // Key difference:
       "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
-      // HMR uses ws:
       "connect-src 'self' http: https: ws: wss:",
       "form-action 'self'",
     ].join("; ");
 
 const securityHeaders = [
-  {
-    key: "Strict-Transport-Security",
-    value: "max-age=63072000; includeSubDomains; preload",
-  },
+  ...(isProd
+    ? [{ key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" }]
+    : []),
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "X-Frame-Options", value: "DENY" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
@@ -45,6 +42,9 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // IMPORTANT: hostnames/IPs only (no http/https)
+  allowedDevOrigins: ["localhost", "127.0.0.1", "192.168.1.165"],
+
   async headers() {
     return [{ source: "/(.*)", headers: securityHeaders }];
   },

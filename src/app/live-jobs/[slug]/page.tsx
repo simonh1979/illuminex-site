@@ -18,11 +18,19 @@ type Job = {
 };
 
 function getJobIdFromSlug(slug: string) {
-  // expected ending: "...-ILX-001"
   if (!slug) return null;
-  const match = slug.match(/(ILX-\d+)$/i);
-  return match ? match[1].toUpperCase() : null;
+
+  // 1) Preferred: ILX-001 at end
+  const endMatch = slug.match(/(ILX-\d+)$/i);
+  if (endMatch) return endMatch[1].toUpperCase();
+
+  // 2) Fallback: ILX-001 anywhere in the slug
+  const anyMatch = slug.match(/(ILX-\d+)/i);
+  if (anyMatch) return anyMatch[1].toUpperCase();
+
+  return null;
 }
+
 
 function formatDate(iso: string) {
   try {
@@ -200,9 +208,9 @@ export default function LiveJobDetailPage() {
                 {job.salary ?? "Salary: DOE"}
               </div>
 
-              <a className="sector-cta" href="/contact">
-                Apply / Enquire
-              </a>
+              <a className="sector-cta" href={`/live-jobs/${encodeURIComponent(slug)}/apply`}>
+  Apply / Enquire
+</a>
 
               <p className="jobs-muted" style={{ marginTop: 14 }}>
                 Next step will include CV upload + acceptance of T&amp;Cs.

@@ -1236,3 +1236,296 @@ main {
     margin: 0 auto;
   }
 }
+
+/* ==========================
+   APPLY PAGE (PREMIUM)
+========================== */
+
+.apply-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 380px;
+  gap: 18px;
+  align-items: start;
+}
+
+.apply-main {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 22px;
+  padding: 26px;
+}
+
+.apply-aside {
+  position: sticky;
+  top: 150px; /* clears fixed header */
+}
+
+.apply-panel {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 22px;
+  padding: 18px;
+}
+
+.apply-panel-row {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 10px;
+  padding: 10px 8px;
+  border-radius: 14px;
+}
+
+.apply-panel-row span {
+  opacity: 0.85;
+  letter-spacing: 0.05em;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+}
+
+.apply-panel-row strong {
+  font-weight: 900;
+  letter-spacing: 0.01em;
+}
+
+.apply-panel-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.14);
+  margin: 14px 0;
+}
+
+@media (max-width: 1100px) {
+  .apply-grid {
+    grid-template-columns: 1fr;
+  }
+  .apply-aside {
+    position: static;
+    top: auto;
+  }
+}
+
+/* ==========================
+   APPLY FORM (PREMIUM)
+========================== */
+
+.apply-form {
+  margin-top: 6px;
+}
+
+.apply-form-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 14px;
+}
+
+.apply-field {
+  grid-column: span 6;
+  display: grid;
+  gap: 8px;
+}
+
+.apply-field--wide {
+  grid-column: span 12;
+}
+
+.apply-field label {
+  font-weight: 850;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: 0.74rem;
+  opacity: 0.95;
+}
+
+.apply-req {
+  color: rgba(255, 179, 71, 0.95);
+  font-weight: 950;
+}
+
+.apply-hint {
+  opacity: 0.75;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+
+.apply-field input,
+.apply-field textarea {
+  width: 100%;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.96);
+  padding: 12px 14px;
+  outline: none;
+}
+
+.apply-field input {
+  height: 46px;
+}
+
+.apply-field textarea {
+  resize: vertical;
+  min-height: 120px;
+  line-height: 1.6;
+}
+
+.apply-field input::placeholder,
+.apply-field textarea::placeholder {
+  color: rgba(255, 255, 255, 0.60);
+}
+
+.apply-field input:focus,
+.apply-field textarea:focus {
+  border-color: rgba(255, 179, 71, 0.55);
+  box-shadow: 0 0 0 4px rgba(255, 179, 71, 0.18);
+}
+
+/* Premium file input */
+.apply-file {
+  position: relative;
+}
+
+.apply-file input[type="file"] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.apply-file-ui {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 46px;
+  padding: 0 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.apply-file-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  white-space: nowrap;
+}
+
+.apply-file-name {
+  opacity: 0.9;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Footer / submit row */
+.apply-foot {
+  margin-top: 16px;
+  display: grid;
+  gap: 14px;
+}
+
+.apply-check {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  line-height: 1.5;
+  opacity: 0.95;
+}
+
+.apply-check input {
+  margin-top: 4px;
+  transform: scale(1.05);
+}
+
+.apply-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.apply-error {
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(255, 122, 0, 0.14);
+  border: 1px solid rgba(255, 122, 0, 0.28);
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+
+.apply-submit {
+  border: 0;
+  cursor: pointer;
+
+  padding: 14px 18px;
+  border-radius: 999px;
+  font-weight: 950;
+  letter-spacing: 0.05em;
+
+  color: #062033;
+  background:
+    linear-gradient(135deg, #ff7a00, #ff8c00, #ffb347);
+  box-shadow:
+    0 14px 30px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.14);
+  transition: transform 0.18s ease, filter 0.18s ease;
+}
+
+.apply-submit:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.03);
+}
+
+.apply-submit:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Success state */
+.apply-success-card {
+  margin-top: 14px;
+  padding: 16px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.apply-success-row {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 10px;
+  padding: 10px 8px;
+  border-radius: 14px;
+}
+
+.apply-success-row span {
+  opacity: 0.85;
+  letter-spacing: 0.05em;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+}
+
+.apply-success-row strong {
+  font-weight: 900;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .apply-field {
+    grid-column: span 12;
+  }
+
+  .apply-actions {
+    justify-content: flex-start;
+  }
+}

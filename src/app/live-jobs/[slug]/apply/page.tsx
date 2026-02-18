@@ -14,18 +14,39 @@ type Job = {
   summary: string;
 };
 
-function getJobIdFromSlug(slug: string) {
+function getJobIdFromSlug(slugParam: unknown) {
+  // slugParam should normally be a string, but let's handle anything safely.
+  const slug =
+    typeof slugParam === "string"
+      ? slugParam
+      : Array.isArray(slugParam)
+      ? slugParam.join("/")
+      : "";
+
   if (!slug) return null;
-  const match = slug.match(/(ILX-\d+)$/i);
-  return match ? match[1].toUpperCase() : null;
+
+  // 1) Preferred: ILX-001 at end
+  const endMatch = slug.match(/(ILX-\d+)$/i);
+  if (endMatch) return endMatch[1].toUpperCase();
+
+  // 2) Fallback: ILX-001 anywhere in the slug
+  const anyMatch = slug.match(/(ILX-\d+)/i);
+  if (anyMatch) return anyMatch[1].toUpperCase();
+
+  return null;
 }
 
 async function getBaseUrl() {
   const h = await headers();
   const host = h.get("host") ?? "localhost:3000";
-  const isLocal =
-    host.includes("127.0.0.1") || host.includes("localhost");
-  const proto = isLocal ? "http" : "https";
+
+  // In dev (including viewing from phone/tablet on your network), always use http
+  if (process.env.NODE_ENV === "development") {
+    return `http://${host}`;
+  }
+
+  // In production, respect proxy headers if present
+  const proto = h.get("x-forwarded-proto") ?? "https";
   return `${proto}://${host}`;
 }
 
@@ -34,10 +55,11 @@ export const dynamic = "force-dynamic";
 export default async function ApplyPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: { slug: string };
 }) {
-  const { slug } = await params;
-  const jobId = getJobIdFromSlug(slug);
+
+ const { slug } = await params;
+const jobId = getJobIdFromSlug(slug);
 
   if (!jobId) {
     return (
@@ -93,7 +115,7 @@ export default async function ApplyPage({
       <section className="page-hero">
         <div className="page-hero-inner">
           <div className="jobs-shell" style={{ paddingBottom: 40 }}>
-            <div className="sector-card" style={{ gridColumn: "span 12" }}>
+           <div className="sector-card apply-card" style={{ gridColumn: "span 12" }}>
               <div style={{ display: "flex", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
                 <div>
                   <h3 style={{ marginBottom: 8 }}>Apply — {job.title}</h3>
@@ -125,9 +147,9 @@ export default async function ApplyPage({
   {/* LEFT: Form */}
   <div className="apply-main">
     <h3 style={{ marginBottom: 10 }}>Your details</h3>
-    <p className="jobs-muted" style={{ marginBottom: 16 }}>
-      Please complete the form below. You can upload your CV and confirm acceptance of our Terms &amp; Conditions.
-    </p>
+<p className="jobs-muted apply-intro" style={{ marginBottom: 16 }}>
+  Please complete the form below. You can upload your CV and confirm acceptance of our Terms & Conditions.
+</p>
 
     <ApplyFormClient jobId={job.id} jobTitle={job.title} />
   </div>

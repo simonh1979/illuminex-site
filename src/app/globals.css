@@ -724,7 +724,7 @@ main {
 .page-hero {
   position: relative;
   overflow: hidden;
-  padding: 120px 0 80px;
+  padding: 140px 0 80px;
   background: transparent;
 }
 
@@ -1315,7 +1315,7 @@ main {
 .apply-form-grid {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  gap: 14px;
+  gap: 12px; /* slightly tighter */
 }
 
 .apply-field {
@@ -1353,7 +1353,7 @@ main {
   width: 100%;
   border-radius: 14px;
   border: 1px solid rgba(255, 255, 255, 0.18);
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.14);
   color: rgba(255, 255, 255, 0.96);
   padding: 12px 14px;
   outline: none;
@@ -1365,13 +1365,13 @@ main {
 
 .apply-field textarea {
   resize: vertical;
-  min-height: 120px;
+  min-height: 90px;   /* shorter by default */
   line-height: 1.6;
 }
 
 .apply-field input::placeholder,
 .apply-field textarea::placeholder {
-  color: rgba(255, 255, 255, 0.60);
+  color: rgba(255, 255, 255, 0.72);
 }
 
 .apply-field input:focus,
@@ -1395,13 +1395,17 @@ main {
 .apply-file-ui {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   height: 46px;
-  padding: 0 14px;
+  padding: 0 12px;
   border-radius: 14px;
   border: 1px solid rgba(255, 255, 255, 0.18);
   background: rgba(255, 255, 255, 0.08);
+
+  width: 100%;
+  overflow: hidden;
 }
+
 
 .apply-file-btn {
   display: inline-flex;
@@ -1417,6 +1421,8 @@ main {
 }
 
 .apply-file-name {
+  flex: 1;
+  min-width: 0;              /* CRITICAL: fixes flexbox cropping */
   opacity: 0.9;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1527,5 +1533,218 @@ main {
 
   .apply-actions {
     justify-content: flex-start;
+  }
+}
+/* Apply page: keep intro sentence on one line (desktop) */
+@media (min-width: 1100px) {
+  .apply-intro {
+    white-space: nowrap;
+  }
+}
+
+/* Apply page: reduce internal vertical padding so Submit is higher */
+.apply-shell {
+  padding-top: 18px;
+  padding-bottom: 18px;
+}
+
+.apply-panel {
+  padding-top: 22px;
+  padding-bottom: 22px;
+}
+
+/* ==========================
+   APPLY PAGE POLISH
+========================== */
+
+.apply-card {
+  margin-top: 24px;             /* space from orange header line */
+  padding: 28px 34px 30px;      /* tighter internal spacing */
+}
+
+/* ==========================
+   APPLY PAGE — MOBILE FIX (NO CROPPING)
+   - prevents inputs shifting/cropping to the right
+========================== */
+
+/* Critical: stop any grid/flex child from forcing overflow */
+.apply-form,
+.apply-form-grid,
+.apply-field,
+.apply-card,
+.sector-card,
+.page-hero-inner,
+.jobs-shell {
+  min-width: 0;
+}
+
+/* Critical: stop horizontal scrolling on mobile */
+html, body {
+  overflow-x: hidden;
+}
+
+/* Make sure form controls never exceed container width */
+.apply-field input,
+.apply-field textarea {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Mobile: reduce side padding so the form has room */
+@media (max-width: 700px) {
+  .page-hero .page-hero-inner {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .jobs-shell {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .apply-card {
+    padding: 22px 18px 22px;
+  }
+}
+
+/* ==========================
+   APPLY PAGE LAYOUT (GRID + MOBILE SAFE)
+========================== */
+
+.apply-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px; /* left fluid, right fixed */
+  gap: 18px;
+  align-items: start;
+  margin-top: 18px;
+}
+
+.apply-main {
+  min-width: 0; /* critical: prevents cropping in grids */
+}
+
+.apply-aside {
+  min-width: 0;
+  position: sticky;
+  top: 150px; /* clears fixed header */
+  height: fit-content;
+}
+
+.apply-panel {
+  margin-top: 12px;
+  padding: 16px 16px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.apply-panel-row {
+  display: grid;
+  grid-template-columns: 110px minmax(0, 1fr);
+  gap: 10px;
+  padding: 10px 6px;
+  border-radius: 14px;
+}
+
+.apply-panel-row span {
+  opacity: 0.85;
+  letter-spacing: 0.05em;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+}
+
+.apply-panel-row strong {
+  font-weight: 900;
+}
+
+.apply-panel-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.14);
+  margin: 12px 0;
+}
+
+/* Mobile + tablet: stack (prevents right panel pushing form off screen) */
+@media (max-width: 1100px) {
+  .apply-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .apply-aside {
+    position: static;
+    top: auto;
+  }
+}
+
+/* Extra safe: smaller padding inside apply card on mobile */
+@media (max-width: 700px) {
+  .apply-card {
+    padding: 20px 16px 22px;
+  }
+}
+
+/* Prevent horizontal overflow on mobile (Apply page safeguard) */
+html,
+body {
+  overflow-x: hidden;
+}
+
+/* ==========================
+   APPLY MOBILE FIX
+========================== */
+
+@media (max-width: 900px) {
+
+  .apply-card {
+    width: 100%;
+    max-width: 100%;
+    padding: 22px 18px;   /* tighter mobile padding */
+  }
+
+  .jobs-shell {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+}
+@media (max-width: 900px) {
+
+  .apply-grid {
+    display: block;
+  }
+
+  .apply-main,
+  .apply-aside {
+    width: 100%;
+  }
+
+}
+
+/* ==========================
+   FIX: CV upload row cropping (mobile)
+========================== */
+@media (max-width: 600px) {
+  .apply-file-ui {
+    width: 100%;
+    max-width: 100%;
+    flex-wrap: wrap;        /* allow wrap */
+    height: auto;           /* no fixed height */
+    padding: 10px 12px;
+    gap: 10px;
+    box-sizing: border-box;
+  }
+
+  .apply-file-btn {
+    width: 100%;            /* button goes full width */
+    justify-content: center;
+  }
+
+  .apply-file-name {
+    width: 100%;            /* filename goes on its own line */
+    max-width: 100%;
+    white-space: normal;    /* allow wrapping */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.2;
   }
 }

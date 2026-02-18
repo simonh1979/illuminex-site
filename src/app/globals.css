@@ -398,16 +398,26 @@ main {
   }
 }
 
-/* Mobile */
 @media (max-width: 600px) {
-  .header-inner {
-    height: 92px;
+  .hero {
+    padding-top: 280px;     /* more space below fixed header */
+    padding-bottom: 110px;
+
+    min-height: auto;       /* let content dictate height */
+    max-height: none;       /* remove the cap that causes clipping */
+    overflow: visible;      /* stops text getting cut off */
   }
+
+  .hero-inner {
+    padding: 0 18px;
+    gap: 28px;
+  }
+}
 
   .logo-wrap img {
     height: 76px;
   }
-}
+
 
 /* pills container */
 .main-nav {

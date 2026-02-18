@@ -2,27 +2,8 @@ import type { NextConfig } from "next";
 
 const isProd = process.env.NODE_ENV === "production";
 
-const securityHeaders = [
-  // HSTS: ONLY in production (prevents localhost HTTPS issues)
-  ...(isProd
-    ? [
-        {
-          key: "Strict-Transport-Security",
-          value: "max-age=63072000; includeSubDomains; preload",
-        },
-      ]
-    : []),
-
-  { key: "X-Content-Type-Options", value: "nosniff" },
-  { key: "X-Frame-Options", value: "DENY" },
-  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-  { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
-
-  // Strong CSP baseline.
-  // If later you add analytics/chat/maps, we’ll allow only required domains.
-  {
-    key: "Content-Security-Policy",
-    value: [
+const csp = isProd
+  ? [
       "default-src 'self'",
       "base-uri 'self'",
       "object-src 'none'",
@@ -34,18 +15,38 @@ const securityHeaders = [
       "connect-src 'self' https:",
       "form-action 'self'",
       "upgrade-insecure-requests",
-    ].join("; "),
+    ].join("; ")
+  : [
+      // DEV: allow Next/Turbopack/HMR to work
+      "default-src 'self'",
+      "base-uri 'self'",
+      "object-src 'none'",
+      "frame-ancestors 'none'",
+      "img-src 'self' data: blob: https:",
+      "font-src 'self' data: https:",
+      "style-src 'self' 'unsafe-inline'",
+      // Key difference:
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+      // HMR uses ws:
+      "connect-src 'self' http: https: ws: wss:",
+      "form-action 'self'",
+    ].join("; ");
+
+const securityHeaders = [
+  {
+    key: "Strict-Transport-Security",
+    value: "max-age=63072000; includeSubDomains; preload",
   },
+  { key: "X-Content-Type-Options", value: "nosniff" },
+  { key: "X-Frame-Options", value: "DENY" },
+  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+  { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+  { key: "Content-Security-Policy", value: csp },
 ];
 
 const nextConfig: NextConfig = {
   async headers() {
-    return [
-      {
-        source: "/(.*)",
-        headers: securityHeaders,
-      },
-    ];
+    return [{ source: "/(.*)", headers: securityHeaders }];
   },
 };
 

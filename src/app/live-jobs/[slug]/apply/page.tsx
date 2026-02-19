@@ -4,6 +4,7 @@ import ApplyFormClient from "@/components/ApplyFormClient";
 
 type Job = {
   id: string;
+  jobAdId?: number;
   title: string;
   location: string;
   sector: string;
@@ -151,7 +152,8 @@ const jobId = getJobIdFromSlug(slug);
   Please complete the form below. You can upload your CV and confirm acceptance of our Terms & Conditions.
 </p>
 
-    <ApplyFormClient jobId={job.id} jobTitle={job.title} />
+    <ApplyFormClient jobId={job.id} jobTitle={job.title} jobAdId={job.jobAdId} />
+
   </div>
 
   {/* RIGHT: Summary panel */}

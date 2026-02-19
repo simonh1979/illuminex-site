@@ -1,19 +1,9 @@
 import { jobadderFetch } from "@/lib/jobadderClient";
 import { getJobAdderBoardId } from "@/lib/jobadderBoard";
 
-/**
- * IMPORTANT:
- * JobAdder has "Core API" endpoints and "Job Board API" endpoints.
- * Your OpenAPI doc includes Job Board API: Job Applications.
- *
- * This file is written so it can be activated later with:
- * - OAuth connection (tokens saved)
- * - boardId resolved (env or auto-detected)
- * - real JobAdder JobAd id mapping (we’ll do that in the next step)
- */
-
 export type SubmitApplicationInput = {
-  jobId: string; // your website job ID (ILX-001 now; later this will map to JobAdder jobAdId)
+  jobId: string;         // your site ID (ILX-001 etc)
+  jobAdId?: number;      // JobAdder job ad ID
   fullName: string;
   email: string;
   phone: string;
@@ -29,27 +19,21 @@ function splitName(fullName: string) {
   return { firstName, lastName };
 }
 
-/**
- * Submits an application to JobAdder Job Board API.
- * NOTE: The exact payload fields depend on JobAdder's endpoint schema.
- * This function is structured for easy adjustment once you have real credentials + a sample response.
- */
-export async function submitJobAdderApplication(input: SubmitApplicationInput) {
-  // 1) Need a boardId (env JOBADDER_BOARD_ID, or auto-resolve from /jobboards)
+export async function submitJobAdderApplication(
+  input: SubmitApplicationInput
+) {
+  // 🔒 SAFETY: must have a JobAdder jobAdId to submit
+  if (typeof input.jobAdId !== "number") {
+    throw new Error(
+      "Missing jobAdId (JobAdder Job Ad ID) — cannot submit to JobAdder."
+    );
+  }
+
   const boardId = await getJobAdderBoardId();
-
-  // 2) TODO NEXT STEP: map your input.jobId -> JobAdder jobAdId
-  // For now we throw, because we don’t have JobAdder IDs yet.
-  // Once live, we’ll store jobAdId on each job coming from JobAdder.
-  throw new Error("JobAdder jobAdId mapping not configured yet");
-
-  // Example code for later (DO NOT REMOVE, we’ll enable it when ready):
-  /*
   const { firstName, lastName } = splitName(input.fullName);
 
   const payload: any = {
-    boardId,
-    // jobAdId: <real JobAdder job ad id>,
+    jobAdId: input.jobAdId,
     applicant: {
       firstName,
       lastName,
@@ -71,5 +55,4 @@ export async function submitJobAdderApplication(input: SubmitApplicationInput) {
   }
 
   return res.json();
-  */
 }

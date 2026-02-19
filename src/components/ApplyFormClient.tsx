@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 type Props = {
   jobId: string;
   jobTitle: string;
+  jobAdId?: number; // ✅ JobAdder JobAd ID (when available)
 };
 
 type FormState = {
@@ -19,7 +20,7 @@ type FormState = {
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/i;
 
-export default function ApplyFormClient({ jobId, jobTitle }: Props) {
+export default function ApplyFormClient({ jobId, jobTitle, jobAdId }: Props) {
   const [form, setForm] = useState<FormState>({
     fullName: "",
     email: "",
@@ -76,30 +77,17 @@ export default function ApplyFormClient({ jobId, jobTitle }: Props) {
       fd.append("terms", String(form.terms));
       if (form.cvFile) fd.append("cv", form.cvFile);
 
-      console.log("APPLY: submitting", { jobId, jobTitle, email: form.email });
+      // ✅ only include if we actually have it
+      if (typeof jobAdId === "number") {
+        fd.append("jobAdId", String(jobAdId));
+      }
 
-      const res = await fetch("/api/apply", {
-        method: "POST",
-        body: fd,
-      });
+      const res = await fetch("/api/apply", { method: "POST", body: fd });
 
-if (!res.ok) {
-  const ct = res.headers.get("content-type") || "";
-
-  // Prefer JSON error
-  if (ct.includes("application/json")) {
-    const j = (await res.json().catch(() => null)) as any;
-    throw new Error(j?.error || `Request failed (${res.status})`);
-  }
-
-  // If server ever sends HTML, don't dump it into the UI
-  const text = await res.text().catch(() => "");
-  if (text.includes("<!DOCTYPE html") || ct.includes("text/html")) {
-    throw new Error(`Request failed (${res.status}). Please try again.`);
-  }
-
-  throw new Error(text || `Request failed (${res.status})`);
-}
+      if (!res.ok) {
+        const text = await res.text().catch(() => "");
+        throw new Error(text || `Request failed (${res.status})`);
+      }
 
       setSubmitted(true);
     } catch (error: any) {
@@ -111,45 +99,35 @@ if (!res.ok) {
 
   if (submitted) {
     return (
-      <div className="apply-state is-submitted">
-        <div className="apply-success">
-          <h3 style={{ marginBottom: 10 }}>Application received</h3>
+      <div className="apply-success">
+        <h3 style={{ marginBottom: 10 }}>Application received</h3>
+        <p className="jobs-muted" style={{ marginBottom: 14 }}>
+          Thank you — we’ve received your application and will respond quickly and discreetly.
+        </p>
 
-          <p className="jobs-muted" style={{ marginBottom: 14 }}>
-            Thank you — we’ve received your application and will respond quickly and discreetly.
-          </p>
-
-          <div className="apply-success-card">
-            <div className="apply-success-row">
-              <span>Role</span>
-              <strong>{jobTitle}</strong>
-            </div>
-
-            <div className="apply-success-row">
-              <span>Candidate</span>
-              <strong>{form.fullName}</strong>
-            </div>
-
-            <div className="apply-success-row">
-              <span>Email</span>
-              <strong>{form.email}</strong>
-            </div>
+        <div className="apply-success-card">
+          <div className="apply-success-row">
+            <span>Role</span>
+            <strong>{jobTitle}</strong>
           </div>
-
-          <div className="apply-success-actions" style={{ marginTop: 14, display: "flex", gap: 10, flexWrap: "wrap" }}>
-            <a className="jobs-clear" href="/live-jobs">
-              View all roles
-            </a>
-
-            <a className="jobs-clear" href={`/live-jobs/${encodeURIComponent(jobId)}`}>
-              Back to role
-            </a>
+          <div className="apply-success-row">
+            <span>Candidate</span>
+            <strong>{form.fullName}</strong>
           </div>
+          <div className="apply-success-row">
+            <span>Email</span>
+            <strong>{form.email}</strong>
+          </div>
+        </div>
+
+        <div className="apply-success-actions" style={{ marginTop: 14, display: "flex", gap: 10, flexWrap: "wrap" }}>
+          <a className="jobs-clear" href="/live-jobs">View all roles</a>
+          <a className="jobs-clear" href="javascript:history.back()">Back to role</a>
         </div>
       </div>
     );
   }
-      
+
   return (
     <form className="apply-form" onSubmit={onSubmit}>
       <div className="apply-form-grid">

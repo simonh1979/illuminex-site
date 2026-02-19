@@ -1,8 +1,6 @@
 export type Job = {
-  id: string;
-  /** Optional: JobAdder jobAdId (safe to add now – placeholders until JobAdder is live) */
-  jobAdId?: number;
-
+  id: string;                 // Your public website ID (ILX-001)
+  jobAdId?: number;           // JobAdder JobAd ID (when live)
   title: string;
   company: string;
   location: string;

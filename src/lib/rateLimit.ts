@@ -1,34 +1,59 @@
-const requests = new Map<string, { count: number; lastReset: number }>();
-
-const WINDOW_SIZE = 60 * 1000; // 1 minute
-const MAX_REQUESTS = 20;
-
-export function rateLimit(ip: string) {
-  const now = Date.now();
-  const record = requests.get(ip);
-
-  if (!record) {
-    requests.set(ip, { count: 1, lastReset: now });
-    return true;
-  }
-
-  if (now - record.lastReset > WINDOW_SIZE) {
-    requests.set(ip, { count: 1, lastReset: now });
-    return true;
-  }
-
-  if (record.count >= MAX_REQUESTS) {
-    return false;
-  }
-
-  record.count++;
-  return true;
-}
 import { Ratelimit } from "@upstash/ratelimit";
 import { redis } from "./redis";
 
-export const applyRateLimit = new Ratelimit({
-  redis,
-  limiter: Ratelimit.slidingWindow(5, "1 m"), // 5 submits per minute per IP
-  analytics: true,
-});
+type LimitResult = {
+  success: boolean;
+  limit: number;
+  remaining: number;
+  reset: number; // ms timestamp
+};
+
+/**
+ * In-memory fallback limiter (dev-safe)
+ * NOTE: This resets when the server restarts and is per-instance only.
+ */
+function createInMemorySlidingWindow(limit: number, windowMs: number) {
+  const store = new Map<string, number[]>(); // key -> timestamps
+
+  return {
+    async limit(key: string): Promise<LimitResult> {
+      const now = Date.now();
+      const windowStart = now - windowMs;
+
+      const hits = store.get(key) ?? [];
+      const fresh = hits.filter((t) => t > windowStart);
+
+      if (fresh.length >= limit) {
+        // reset is when the oldest hit drops out of the window
+        const oldest = fresh[0];
+        const reset = oldest + windowMs;
+        store.set(key, fresh);
+        return { success: false, limit, remaining: 0, reset };
+      }
+
+      fresh.push(now);
+      store.set(key, fresh);
+
+      const remaining = Math.max(0, limit - fresh.length);
+      // reset is when the oldest hit drops out; if only 1 hit, same logic
+      const reset = fresh[0] + windowMs;
+
+      return { success: true, limit, remaining, reset };
+    },
+  };
+}
+
+/**
+ * APPLY rate limit
+ * - Production: Upstash (distributed + persistent)
+ * - Dev without env: In-memory fallback (no crashes)
+ */
+export const applyRateLimit =
+  redis
+    ? new Ratelimit({
+        redis,
+        limiter: Ratelimit.slidingWindow(5, "1 m"), // 5 submits per minute per IP
+        analytics: true,
+        prefix: "ratelimit:apply",
+      })
+    : createInMemorySlidingWindow(5, 60_000);

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { applyRateLimit } from "@/lib/rateLimit";
+import { submitJobAdderApplication } from "@/lib/jobadderApplications";
 
 export const runtime = "nodejs";
 
@@ -48,18 +49,35 @@ export async function POST(req: Request) {
       console.log("No CV uploaded");
     }
 
-    console.log("APPLY:", {
-      jobId,
-      jobTitle,
-      fullName,
-      email,
-      phone,
-      linkedin,
-      message,
-      terms,
-    });
+    // 5) Try JobAdder submit (only works when connected later)
+    try {
+      await submitJobAdderApplication({
+        jobId,
+        fullName,
+        email,
+        phone,
+        linkedin,
+        message,
+      });
 
-    return NextResponse.json({ ok: true });
+      console.log("APPLY → JobAdder OK", { jobId, email });
+
+      return NextResponse.json({ ok: true, destination: "jobadder" });
+    } catch {
+      // Not connected yet → fall back to current behaviour
+      console.log("APPLY (fallback/local):", {
+        jobId,
+        jobTitle,
+        fullName,
+        email,
+        phone,
+        linkedin,
+        message,
+        terms,
+      });
+
+      return NextResponse.json({ ok: true, destination: "local" });
+    }
   } catch (err) {
     console.error("Apply error:", err);
     return NextResponse.json(

@@ -1,10 +1,26 @@
-import { getJobAdderTokens } from "@/lib/jobadderTokens";
+import { mockJobs } from "@/lib/mockJobs";
+import { jobAdderGetJob, jobAdderListJobs } from "@/lib/jobadderBoard";
 
-/**
- * Returns true if we have JobAdder tokens stored (OAuth completed).
- * This is the ONLY condition for switching the site to JobAdder.
- */
-export async function isJobAdderConnected(): Promise<boolean> {
-  const tokens = await getJobAdderTokens();
-  return !!tokens?.access_token;
+export type JobsSource = "jobadder" | "mock";
+
+export async function getJobsList() {
+  try {
+    const { jobs, total } = await jobAdderListJobs();
+    return { jobs, total, source: "jobadder" as JobsSource };
+  } catch {
+    // Not connected (or API fails) → fallback
+    return { jobs: mockJobs, total: mockJobs.length, source: "mock" as JobsSource };
+  }
+}
+
+export async function getJobById(id: string) {
+  try {
+    const job = await jobAdderGetJob(id);
+    if (job) return { job, source: "jobadder" as JobsSource };
+  } catch {
+    // ignore and fall back
+  }
+
+  const fallback = mockJobs.find((j) => j.id === id) ?? null;
+  return { job: fallback, source: "mock" as JobsSource };
 }

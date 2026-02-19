@@ -1,5 +1,8 @@
 export type Job = {
   id: string;
+  /** Optional: JobAdder jobAdId (safe to add now – placeholders until JobAdder is live) */
+  jobAdId?: number;
+
   title: string;
   company: string;
   location: string;
@@ -15,6 +18,7 @@ export type Job = {
 export const mockJobs: Job[] = [
   {
     id: "ILX-001",
+    jobAdId: 100001,
     title: "Sales Director — Building Materials (National)",
     company: "Confidential Client",
     location: "UK Wide",
@@ -44,6 +48,7 @@ export const mockJobs: Job[] = [
   },
   {
     id: "ILX-002",
+    jobAdId: 100002,
     title: "Commercial Director — Construction Products",
     company: "Confidential Client",
     location: "London & South East",
@@ -67,6 +72,7 @@ export const mockJobs: Job[] = [
   },
   {
     id: "ILX-003",
+    jobAdId: 100003,
     title: "National Account Manager — KBB Retail & Trade",
     company: "Confidential Client",
     location: "Midlands",
@@ -84,6 +90,7 @@ export const mockJobs: Job[] = [
   },
   {
     id: "ILX-004",
+    jobAdId: 100004,
     title: "Specification Sales Manager — Bathrooms",
     company: "Confidential Client",
     location: "North West",
@@ -101,6 +108,7 @@ export const mockJobs: Job[] = [
   },
   {
     id: "ILX-005",
+    jobAdId: 100005,
     title: "Regional Sales Manager — Technical Sales (HVAC/MEP)",
     company: "Confidential Client",
     location: "Remote",
@@ -114,6 +122,7 @@ export const mockJobs: Job[] = [
   },
   {
     id: "ILX-006",
+    jobAdId: 100006,
     title: "Business Development Manager — Education (Frameworks)",
     company: "Confidential Client",
     location: "UK Wide",
@@ -127,6 +136,7 @@ export const mockJobs: Job[] = [
   },
   {
     id: "ILX-007",
+    jobAdId: 100007,
     title: "Operations Manager — Healthcare Services",
     company: "Confidential Client",
     location: "London & South East",
@@ -140,6 +150,7 @@ export const mockJobs: Job[] = [
   },
   {
     id: "ILX-008",
+    jobAdId: 100008,
     title: "Senior Sales Manager — Construction Distribution",
     company: "Confidential Client",
     location: "North West",

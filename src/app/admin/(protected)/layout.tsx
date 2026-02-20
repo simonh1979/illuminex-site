@@ -38,20 +38,26 @@ export default async function ProtectedAdminLayout({
                   </p>
                 </div>
 
-                <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-                  <Link className="jobs-clear" href="/admin">
-                    Dashboard
-                  </Link>
-                  <Link className="jobs-clear" href="/jobadder-status">
-                    JobAdder status
-                  </Link>
-                  <Link className="jobs-clear" href="/live-jobs">
-                    Live Jobs
-                  </Link>
-                  <a className="jobs-clear" href="/api/admin/logout">
-                    Logout
-                  </a>
-                </div>
+<div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+  <Link className="jobs-clear" href="/admin">
+    Dashboard
+  </Link>
+  <Link className="jobs-clear" href="/jobadder-status">
+    JobAdder status
+  </Link>
+  <Link className="jobs-clear" href="/live-jobs">
+    Live Jobs
+  </Link>
+
+  {/* 👇 ADD THIS RIGHT HERE */}
+  <Link className="jobs-clear" href="/admin/audit">
+    Audit log
+  </Link>
+
+  <a className="jobs-clear" href="/api/admin/logout">
+    Logout
+  </a>
+</div>
               </div>
 
               {children}

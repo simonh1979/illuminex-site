@@ -1,8 +1,6 @@
 // src/lib/admin2fa.ts
-import * as otplib from "otplib";
+import speakeasy from "speakeasy";
 import { redis } from "@/lib/redis";
-
-const authenticator = (otplib as any).authenticator ?? (otplib as any).default?.authenticator;
 
 const KEY_ACTIVE = (email: string) => `admin2fa:active:${email.toLowerCase()}`;
 const KEY_PENDING = (email: string) => `admin2fa:pending:${email.toLowerCase()}`;
@@ -15,16 +13,32 @@ export type TwoFASetup = {
   otpauthUrl: string;
 };
 
+/**
+ * Returns true if 2FA is enabled for this user (active secret exists).
+ */
 export async function is2FAEnabled(email: string): Promise<boolean> {
-  const v = await redis.get<string>(KEY_ACTIVE(email));
+  const e = (email || "").toLowerCase().trim();
+  if (!e) return false;
+
+  const v = await redis.get<string>(KEY_ACTIVE(e));
   return typeof v === "string" && v.length > 0;
 }
 
+/**
+ * Start 2FA enrollment: generate a secret, store as PENDING (not active yet).
+ * The user must confirm with a valid 6-digit code to activate.
+ */
 export async function begin2FAEnrollment(email: string): Promise<TwoFASetup> {
-  const e = email.toLowerCase().trim();
+  const e = (email || "").toLowerCase().trim();
+  if (!e) throw new Error("Missing email");
 
-  const secretBase32 = authenticator.generateSecret();
-  const otpauthUrl = authenticator.keyuri(e, "Illuminex Admin", secretBase32);
+  const secret = speakeasy.generateSecret({
+    name: `Illuminex Admin (${e})`,
+    length: 20,
+  });
+
+  const secretBase32 = secret.base32;
+  const otpauthUrl = secret.otpauth_url || "";
 
   if (!secretBase32 || !otpauthUrl) {
     throw new Error("Failed to generate 2FA secret.");
@@ -35,33 +49,57 @@ export async function begin2FAEnrollment(email: string): Promise<TwoFASetup> {
   return { email: e, secretBase32, otpauthUrl };
 }
 
+/**
+ * Confirm enrollment by verifying code against PENDING secret.
+ * If valid, move PENDING → ACTIVE.
+ */
 export async function confirm2FAEnrollment(email: string, code: string): Promise<boolean> {
-  const e = email.toLowerCase().trim();
+  const e = (email || "").toLowerCase().trim();
+  if (!e) return false;
+
   const pending = await redis.get<string>(KEY_PENDING(e));
   if (!pending) return false;
 
-  // allow small clock drift
-  authenticator.options = { window: 1 };
+  const ok = speakeasy.totp.verify({
+    secret: pending,
+    encoding: "base32",
+    token: String(code || "").trim(),
+    window: 1, // allow small clock drift
+  });
 
-  const ok = authenticator.check(String(code || "").trim(), pending);
   if (!ok) return false;
 
   await redis.set(KEY_ACTIVE(e), pending);
   await redis.del(KEY_PENDING(e));
+
   return true;
 }
 
+/**
+ * Verify a 2FA code for an already-enabled user (ACTIVE secret).
+ */
 export async function verify2FACode(email: string, code: string): Promise<boolean> {
-  const e = email.toLowerCase().trim();
+  const e = (email || "").toLowerCase().trim();
+  if (!e) return false;
+
   const active = await redis.get<string>(KEY_ACTIVE(e));
   if (!active) return false;
 
-  authenticator.options = { window: 1 };
-  return authenticator.check(String(code || "").trim(), active);
+  return speakeasy.totp.verify({
+    secret: active,
+    encoding: "base32",
+    token: String(code || "").trim(),
+    window: 1,
+  });
 }
 
+/**
+ * Disable 2FA (remove ACTIVE + PENDING secrets).
+ */
 export async function disable2FA(email: string) {
-  const e = email.toLowerCase().trim();
+  const e = (email || "").toLowerCase().trim();
+  if (!e) return;
+
   await redis.del(KEY_ACTIVE(e));
   await redis.del(KEY_PENDING(e));
 }

@@ -2,7 +2,7 @@ import HeroSearch from "../components/HeroSearch";
 
 export default function Home() {
   return (
-    <main>
+    <main className="page-home">
 
       {/* ================= HERO ================= */}
       <section className="hero">

@@ -2,7 +2,8 @@ import LiveJobsClient from "@/components/LiveJobsClient";
 
 export default function LiveJobsPage() {
   return (
-    <main>
+    <main className="page page-jobs">
+      {/* HERO (only the top banner content) */}
       <section className="page-hero">
         <div className="page-hero-inner">
           <h1
@@ -29,10 +30,13 @@ export default function LiveJobsPage() {
             JobAdder-ready — we’ll replace the mock feed with JobAdder Open API
             once you’re set up.
           </p>
+        </div>
+      </section>
 
-          <div style={{ marginTop: 28 }}>
-            <LiveJobsClient />
-          </div>
+      {/* PAGE BODY (filters + results go here, NOT inside page-hero) */}
+      <section className="page-body">
+        <div className="jobs-shell">
+          <LiveJobsClient />
         </div>
       </section>
     </main>

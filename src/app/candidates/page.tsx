@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function CandidatesPage() {
   return (
-    <main>
+    <main className="page page-candidates">
       <section className="page-hero">
         <div className="page-hero-inner">
           <h1 style={{ fontSize: "clamp(2.2rem, 2.8vw, 3.1rem)", fontWeight: 900, letterSpacing: "-0.02em", lineHeight: 1.12 }}>

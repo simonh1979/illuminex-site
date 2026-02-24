@@ -1,6 +1,6 @@
 export default function ServicesPage() {
   return (
-    <main>
+    <main className="page page-services">
       <section className="page-hero">
         <div className="page-hero-inner">
           <h1 style={{ fontSize: "clamp(2.2rem, 2.8vw, 3.1rem)", fontWeight: 900, letterSpacing: "-0.02em", lineHeight: 1.12 }}>
@@ -27,7 +27,7 @@ export default function ServicesPage() {
 
             <div className="sector-card" style={{ gridColumn: "span 4" }}>
               <h3>Partner services</h3>
-              <p>HR / Payroll / H&S support via specialist partners — introduced only when it adds real value.</p>
+              <p>HR / Payroll / H&amp;S support via specialist partners — introduced only when it adds real value.</p>
               <div className="sector-tag">Future</div>
             </div>
           </div>

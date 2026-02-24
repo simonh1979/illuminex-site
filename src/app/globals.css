@@ -69,7 +69,7 @@ main.page-home::after {
   content: "";
   position: fixed;
   inset: 0;
-  background: rgba(3, 91, 163, 0.38);  /* light Kingfisher tint */
+  background: rgba(3, 91, 163, 0.42);  /* light Kingfisher tint */
   z-index: -1;
   pointer-events: none;
 }
@@ -78,7 +78,7 @@ main.page-home::before {
   content: "";
   position: fixed;
   inset: 0;
-  background: url("/hero-bg-home.jpg") 50% 5% / cover no-repeat;
+  background: url("/hero-bg-home1.jpg") 50% 15% / cover no-repeat;
   transform: scale(1);
   filter: none;
   z-index: -2;
@@ -164,13 +164,14 @@ main.page-home::before {
 }
 
 /* Subtle contrast layer behind text (does NOT affect layout) */
+/* GLASS BOX around the entire Hero Heading block */
 .hero-left::before {
   content: "";
   position: absolute;
   inset: -20px -30px -20px -30px;
   border-radius: 20px;
 
-  background: rgba(6, 32, 51, 0.38);
+  background: rgba(6, 32, 51, 0.50);
 
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
@@ -238,7 +239,7 @@ main.page-home::before {
   border-radius: 26px;
 
   /* the tinted glass effect */
-  background: rgba(6, 32, 51, 0.38);
+  background: rgba(6, 32, 51, 0.50);
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
   /* subtle edge */
@@ -889,6 +890,53 @@ main.page-home::before {
   .page-inner { padding: 0 24px; }
   .page-hero { padding: 110px 0 70px; }
   .page-hero .page-hero-inner { padding: 0 24px; }
+}
+
+/* ==========================
+   SUBPAGES: FULL-LENGTH BACKGROUND (FIXED)
+   Ensures background image shows behind entire scroll, not just the hero section
+========================== */
+
+main.page {
+  position: relative;
+  isolation: isolate;
+}
+
+/* Background image for all subpages (full scroll) */
+main.page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("/hero-bg-sub1.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50% 22%; /* <-- move DOWN (increase % to move further down) */
+  opacity: 0.50;
+  filter: grayscale(100%) contrast(1.08) brightness(1.05);
+  transform: scale(1);
+  z-index: -2;
+  pointer-events: none;
+}
+
+/* Blue overlay for all subpages (full scroll) */
+main.page::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(12, 60, 96, 0.78) 0%,
+    rgba(3, 91, 163, 0.42) 55%,
+    rgba(12, 60, 96, 0.78) 100%
+  );
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Prevent double background (since main.page now owns the bg) */
+main.page .page-hero::before,
+main.page .page-hero::after {
+  display: none !important;
 }
 
 /* ==========================
@@ -1783,7 +1831,7 @@ main.page-home .page-hero::after {
 
 /* Ensure homepage hero only has ONE image */
 main.page-home .hero::before {
-  background: url("/hero-bg-home.jpg") 50% 20% / cover no-repeat !important;
+  background: url("/hero-bg-home1.jpg") 50% 20% / cover no-repeat !important;
 }
 
 /* ==========================
@@ -1801,8 +1849,9 @@ main.page-home .hero::before {
   content: "";
   position: fixed;
   inset: 0;
-  background: url("/hero-bg-sub1.jpg") center / cover no-repeat;
+  background: url("/hero-bg-home.jpg") center / cover no-repeat;
   opacity: 0.50;
+  background-position: 50% 10% !important; /* move DOWN more (increase %) */
   filter: grayscale(100%) contrast(1.08) brightness(1.05);
   transform: scale(1.02);
   z-index: -2;
@@ -1828,4 +1877,61 @@ main.page-home .hero::before {
 .page.page-jobs .page-hero::before,
 .page.page-jobs .page-hero::after {
   display: none !important;
+}
+
+/* ==================================================
+   PAGE-SPECIFIC BACKGROUND IMAGES
+================================================== */
+
+/* Candidates */
+main.page.page-candidates::before {
+  background-image: url("/hero-bg-candidates.jpg");
+  background-position: 50% 15% !important; /* move DOWN more (increase %) */
+  transform: scale(1) !important;       /* “zoom out” slightly vs 1.02 */
+  opacity: 0.85 !important;
+}
+
+/* Services */
+main.page.page-services::before {
+  background-image: url("/hero-bg-services.jpg");
+  background-position: 50% 15% !important; /* move DOWN more (increase %) */
+  transform: scale(1) !important;       /* “zoom out” slightly vs 1.02 */
+  opacity: 0.85 !important;
+}
+
+/* Contact */
+main.page.page-contact::before {
+  background-image: url("/hero-bg-contact.jpg");
+  background-position: 50% 15% !important; /* move DOWN more (increase %) */
+  transform: scale(1) !important;       /* “zoom out” slightly vs 1.02 */
+  opacity: 0.85 !important;
+}
+
+/* Clients (Clients page main tag isn't getting page/page-clients classes, so target hero) */
+.page-hero.page-hero--clients::before {
+  background-image: url("/hero-bg-clients.jpg") !important;
+  
+}
+/* ==========================
+   CLIENTS: custom image + position + subtle blur
+   (Overrides main.page::before)
+========================== */
+
+main.page.page-clients::before {
+  background-image: url("/hero-bg-clients.jpg") !important;
+  background-position: 50% 15% !important; /* move DOWN more (increase %) */
+  transform: scale(1) !important;       /* “zoom out” slightly vs 1.02 */
+  opacity: 0.85 !important;
+
+  /* subtle blur only (faces less clear, but still detailed) */
+  filter: contrast(1.08) brightness(1.05) blur(1.5px) !important;
+}
+
+/* ==========================
+   CONTACT: zoom out slightly
+========================== */
+
+main.page.page-contact::before {
+  background-position: 50% 5% !important; /* keep your move-down */
+  transform: scale(1.00) !important;       /* removes extra zoom */
 }

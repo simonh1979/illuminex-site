@@ -771,6 +771,38 @@ main.page-home::before {
   transition: transform 0.18s ease, filter 0.18s ease;
 }
 
+/* Make clickable sector cards look like cards (not links) */
+.sector-card--link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Mini CTA pill inside sector cards */
+.sector-cta-mini {
+  display: inline-flex;
+  margin-top: 14px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  color: #062033;
+  background: linear-gradient(135deg, #ff7a00, #ff8c00, #ffb347);
+  border: 2px solid rgba(6, 32, 51, 0.18);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.28);
+  width: fit-content;
+}
+
+/* Subtle cue that the whole card is clickable */
+.sector-card--link:hover .sector-cta-mini {
+  transform: translateY(-1px);
+  filter: brightness(1.03);
+}
+
+main.page.page-sector .sector-card p {
+  max-width: none;
+}
+
 .sector-cta:hover { transform: translateY(-1px); filter: brightness(1.03); }
 
 @media (max-width: 1100px) {

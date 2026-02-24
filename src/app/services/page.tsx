@@ -1,3 +1,4 @@
+
 export default function ServicesPage() {
   return (
     <main className="page page-services">
@@ -11,6 +12,7 @@ export default function ServicesPage() {
             Illuminex is built to become a wider consultancy platform. In time, we’ll connect clients to trusted partner specialists across
             HR, Payroll and Health & Safety — through established relationships, not directories.
           </p>
+
 
           <div style={{ marginTop: 34, display: "grid", gridTemplateColumns: "repeat(12, 1fr)", gap: 18 }}>
             <div className="sector-card" style={{ gridColumn: "span 4" }}>

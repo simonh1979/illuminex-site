@@ -34,20 +34,30 @@ export default function SiteHeader() {
 />
         </a>
 
-        {/* Desktop nav */}
-        <nav className="main-nav nav-desktop" aria-label="Primary">
-          <Link href="/">Home</Link>
-          <Link href="/about">About</Link>
-          <Link href="/clients">Clients</Link>
-          <Link href="/candidates">Candidates</Link>
-          <Link href="/live-jobs">Live Jobs</Link>
-          <Link href="/services" className="services-pill">
-            Services
-          </Link>
-          <Link href="/contact" className="contact-pill">
-            Contact
-          </Link>
-        </nav>
+{/* Desktop nav */}
+<nav className="main-nav nav-desktop" aria-label="Primary">
+  <Link href="/" aria-current={pathname === "/" ? "page" : undefined}>Home</Link>
+  <Link href="/about" aria-current={pathname === "/about" ? "page" : undefined}>About</Link>
+  <Link href="/clients" aria-current={pathname === "/clients" ? "page" : undefined}>Clients</Link>
+  <Link href="/candidates" aria-current={pathname === "/candidates" ? "page" : undefined}>Candidates</Link>
+  <Link href="/live-jobs" aria-current={pathname === "/live-jobs" ? "page" : undefined}>Live Jobs</Link>
+
+  <Link
+    href="/services"
+    className="services-pill"
+    aria-current={pathname === "/services" ? "page" : undefined}
+  >
+    Services
+  </Link>
+
+  <Link
+    href="/contact"
+    className="contact-pill"
+    aria-current={pathname === "/contact" ? "page" : undefined}
+  >
+    Contact
+  </Link>
+</nav>
 
         {/* Mobile menu button */}
         <button
@@ -85,14 +95,14 @@ export default function SiteHeader() {
         </div>
 
         <div className="nav-drawer-links">
-          <Link href="/">Home</Link>
-          <Link href="/about">About</Link>
-          <Link href="/clients">Clients</Link>
-          <Link href="/candidates">Candidates</Link>
-          <Link href="/live-jobs">Live Jobs</Link>
-          <Link href="/services">Services</Link>
-          <Link href="/contact">Contact</Link>
-        </div>
+  <Link href="/" aria-current={pathname === "/" ? "page" : undefined}>Home</Link>
+  <Link href="/about" aria-current={pathname === "/about" ? "page" : undefined}>About</Link>
+  <Link href="/clients" aria-current={pathname === "/clients" ? "page" : undefined}>Clients</Link>
+  <Link href="/candidates" aria-current={pathname === "/candidates" ? "page" : undefined}>Candidates</Link>
+  <Link href="/live-jobs" aria-current={pathname === "/live-jobs" ? "page" : undefined}>Live Jobs</Link>
+  <Link href="/services" aria-current={pathname === "/services" ? "page" : undefined}>Services</Link>
+  <Link href="/contact" aria-current={pathname === "/contact" ? "page" : undefined}>Contact</Link>
+</div>
 
         <div className="nav-drawer-foot">
           <div className="nav-drawer-note">

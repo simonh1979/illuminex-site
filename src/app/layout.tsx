@@ -32,27 +32,35 @@ export default function RootLayout({
         {/* ================= PAGE CONTENT ================= */}
         {children}
 
-        {/* ================= FOOTER ================= */}
-        <footer className="site-footer">
-          <div className="footer-inner">
-            <img
-              src="/illuminex-logo-emblem-transparent-background-high-res.png"
-              alt="Illuminex Emblem"
-              className="footer-emblem footer-emblem--left"
-            />
+{/* ================= FOOTER ================= */}
+<footer className="site-footer">
+  <div className="footer-inner">
+    <img
+      src="/illuminex-logo-emblem-transparent-background-high-res.png"
+      alt="Illuminex Emblem"
+      className="footer-emblem footer-emblem--left"
+    />
 
-            <p className="footer-text">
-              © {new Date().getFullYear()} Illuminex Consultancy. All rights
-              reserved.
-            </p>
+    <div className="footer-center">
+      <p className="footer-text">
+        © {new Date().getFullYear()} Illuminex Consultancy. All rights reserved.
+        Registered address and company number to be added pre-launch.
+      </p>
 
-            <img
-              src="/illuminex-logo-emblem-transparent-background-high-res.png"
-              alt="Illuminex Emblem"
-              className="footer-emblem footer-emblem--right"
-            />
-          </div>
-        </footer>
+      <p className="footer-links">
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+        <a href="/cookies">Cookies</a>
+      </p>
+    </div>
+
+    <img
+      src="/illuminex-logo-emblem-transparent-background-high-res.png"
+      alt="Illuminex Emblem"
+      className="footer-emblem footer-emblem--right"
+    />
+  </div>
+</footer>
       </body>
     </html>
   );

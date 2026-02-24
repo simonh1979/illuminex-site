@@ -1,93 +1,103 @@
 import { NextResponse } from "next/server";
-import { applyRateLimit } from "@/lib/rateLimit";
-import { submitJobAdderApplication } from "@/lib/jobadderApplications";
+import { getTransport, fromAddress } from "@/lib/mailer";
 
 export const runtime = "nodejs";
 
+const MAX_FILE_MB = 8;
+const ALLOWED_MIME = new Set([
+  "application/pdf",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+]);
+
+function isEmail(v: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+}
+
 export async function POST(req: Request) {
   try {
-    // 1) Rate limit
-    const ip =
-      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-      req.headers.get("x-real-ip") ||
-      "unknown";
+    const form = await req.formData();
 
-    const rl = await applyRateLimit.limit(`apply:${ip}`);
-
-    if (!rl.success) {
-      return NextResponse.json(
-        { ok: false, error: "Too many requests. Please try again shortly." },
-        { status: 429 }
-      );
+    // Honeypot field (keep empty)
+    const website = String(form.get("website") || "");
+    if (website.trim().length > 0) {
+      return NextResponse.json({ ok: true });
     }
 
-    // 2) Parse form
-    const fd = await req.formData();
+    const name = String(form.get("name") || "").trim();
+    const email = String(form.get("email") || "").trim();
+    const phone = String(form.get("phone") || "").trim();
+    const notes = String(form.get("notes") || "").trim();
 
-    const jobId = String(fd.get("jobId") ?? "");
-    const jobTitle = String(fd.get("jobTitle") ?? "");
-    const jobAdIdRaw = fd.get("jobAdId");
-    const jobAdId =
-      typeof jobAdIdRaw === "string" && /^\d+$/.test(jobAdIdRaw)
-        ? Number(jobAdIdRaw)
-        : undefined;
+    if (name.length < 2) {
+      return NextResponse.json({ ok: false, error: "Name is too short." }, { status: 400 });
+    }
+    if (!isEmail(email)) {
+      return NextResponse.json({ ok: false, error: "Enter a valid email address." }, { status: 400 });
+    }
 
-    const fullName = String(fd.get("fullName") ?? "");
-    const email = String(fd.get("email") ?? "");
-    const phone = String(fd.get("phone") ?? "");
-    const linkedin = String(fd.get("linkedin") ?? "");
-    const message = String(fd.get("message") ?? "");
-    const terms = String(fd.get("terms") ?? "");
-    const cv = fd.get("cv");
+    const file = form.get("cv");
+    if (!(file instanceof File)) {
+      return NextResponse.json({ ok: false, error: "Please attach your CV." }, { status: 400 });
+    }
 
-    // 3) Required checks
-    if (!jobId || !fullName || !email || !phone || terms !== "true") {
+    if (!ALLOWED_MIME.has(file.type)) {
       return NextResponse.json(
-        { ok: false, error: "Missing required fields." },
+        { ok: false, error: "CV must be PDF or Word (.doc/.docx)." },
         { status: 400 }
       );
     }
 
-    // 4) Log CV (still local for now)
-    if (cv && cv instanceof File) {
-      console.log("CV upload:", cv.name, cv.type, cv.size);
+    const sizeMb = file.size / (1024 * 1024);
+    if (sizeMb > MAX_FILE_MB) {
+      return NextResponse.json(
+        { ok: false, error: `CV too large. Max ${MAX_FILE_MB}MB.` },
+        { status: 400 }
+      );
     }
 
-    // 5) Attempt JobAdder submit (if jobAdId exists later)
-    try {
-      await submitJobAdderApplication({
-        jobId,
-        jobAdId,
-        fullName,
-        email,
-        phone,
-        linkedin,
-        message,
-      });
-
-      console.log("APPLY → JobAdder OK", { jobId, jobAdId, email });
-
-      return NextResponse.json({ ok: true, destination: "jobadder" });
-    } catch {
-      // Fallback until fully live
-      console.log("APPLY (fallback/local):", {
-        jobId,
-        jobTitle,
-        jobAdId,
-        fullName,
-        email,
-        phone,
-        linkedin,
-        message,
-        terms,
-      });
-
-      return NextResponse.json({ ok: true, destination: "local" });
+    const to = process.env.APPLY_TO;
+    if (!to) {
+      return NextResponse.json(
+        { ok: false, error: "APPLY_TO not set on server." },
+        { status: 500 }
+      );
     }
-  } catch (err) {
-    console.error("Apply error:", err);
+
+    const bytes = Buffer.from(await file.arrayBuffer());
+
+    const transport = getTransport();
+
+    await transport.sendMail({
+      from: fromAddress(),
+      to,
+      replyTo: email,
+      subject: `New candidate application — ${name}`,
+      text:
+`New candidate application:
+
+Name: ${name}
+Email: ${email}
+Phone: ${phone || "-"}
+
+Notes:
+${notes || "-"}
+
+Attached: ${file.name} (${file.type}, ${Math.round(sizeMb * 10) / 10}MB)
+`,
+      attachments: [
+        {
+          filename: file.name || "cv",
+          content: bytes,
+          contentType: file.type,
+        },
+      ],
+    });
+
+    return NextResponse.json({ ok: true });
+  } catch (err: any) {
     return NextResponse.json(
-      { ok: false, error: "Server error. Please try again." },
+      { ok: false, error: err?.message || "Server error." },
       { status: 500 }
     );
   }

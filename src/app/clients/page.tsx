@@ -13,7 +13,7 @@ export default function ClientsPage() {
               lineHeight: 1.12,
             }}
           >
-            Appointments that strengthen leadership — not just headcount.
+            Appointments that strengthen leadership, not just headcount.
           </h1>
 
           <p
@@ -27,7 +27,7 @@ export default function ClientsPage() {
           >
             From Sales Director and Commercial leadership to MD/CEO/CFO appointments,
             we run search with pace and discipline. Expect a clear process,
-            transparent updates, and shortlists built on evidence — not volume.
+            transparent updates, and shortlists built on evidence, not volume.
           </p>
 
           <div
@@ -51,7 +51,7 @@ export default function ClientsPage() {
               <h3>Contingency recruitment</h3>
               <p>
                 For mid-senior hires where speed matters. We still search
-                properly — and we still protect your brand.
+                properly and we still protect your brand.
               </p>
               <div className="sector-tag">Mid-Senior</div>
             </div>
@@ -60,8 +60,7 @@ export default function ClientsPage() {
               <h3>Shortlists you can trust</h3>
               <p>
                 We screen for sector credibility, commercial outcomes and
-                leadership behaviours — then present succinct, decision-ready
-                profiles.
+                leadership behaviours. Then present succinct, decision-ready profiles.
               </p>
               <div className="sector-tag">Evidence-Led</div>
             </div>
@@ -73,9 +72,9 @@ export default function ClientsPage() {
               <h3>Talk through your hire</h3>
               <p>
                 If you’re hiring across building materials, construction,
-                technical sales, bathrooms, kitchens, education or healthcare,
-                we’ll advise on market conditions, competition and realistic
-                timelines — before you commit.
+                technical sales, bathrooms, kitchens, education or healthcare.
+                We will advise on market conditions, competition and realistic
+                timelines, before you commit.
               </p>
               <Link className="sector-cta" href="/contact">
                 Start a confidential brief

@@ -1,3 +1,5 @@
+import ContactForm from "@/components/ContactForm";
+
 export default function ContactPage() {
   return (
     <main className="page page-contact">
@@ -30,10 +32,8 @@ export default function ContactPage() {
             </div>
 
             <div className="sector-card sector-card--cta" style={{ gridColumn: "span 12" }}>
-              <h3>Email</h3>
-              <p style={{ marginBottom: 0 }}>
-                Add your contact email address here (we can wire up a secure form next, with validation + CSRF already in place).
-              </p>
+              <h3>Send a message</h3>
+              <ContactForm />
             </div>
           </div>
         </div>

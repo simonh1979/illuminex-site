@@ -11,8 +11,9 @@ const csp = isProd
       "img-src 'self' data: blob: https:",
       "font-src 'self' data: https:",
       "style-src 'self' 'unsafe-inline'",
-      "script-src 'self'",
-      "connect-src 'self' https:",
+      "script-src 'self' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/",
+      "connect-src 'self' https: https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/",
+      "frame-src 'self' https://www.google.com/recaptcha/ https://recaptcha.google.com/recaptcha/",
       "form-action 'self'",
       "upgrade-insecure-requests",
     ].join("; ")
@@ -25,19 +26,25 @@ const csp = isProd
       "img-src 'self' data: blob: https:",
       "font-src 'self' data: https:",
       "style-src 'self' 'unsafe-inline'",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
-      "connect-src 'self' http: https: ws: wss:",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/",
+      "connect-src 'self' http: https: ws: wss: https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/",
+      "frame-src 'self' https://www.google.com/recaptcha/ https://recaptcha.google.com/recaptcha/",
       "form-action 'self'",
     ].join("; ");
 
 const securityHeaders = [
   ...(isProd
-    ? [{ key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" }]
+    ? [
+        {
+          key: "Strict-Transport-Security",
+          value: "max-age=63072000; includeSubDomains; preload",
+        },
+      ]
     : []),
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "X-Frame-Options", value: "DENY" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-  { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+  { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), payment=(), usb=()" },
   { key: "Content-Security-Policy", value: csp },
 ];
 

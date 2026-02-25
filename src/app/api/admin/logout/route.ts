@@ -32,7 +32,7 @@ export async function GET(req: Request) {
 
   await logAdminEvent({
     action: "admin.logout",
-    actorEmail: session?.email,
+    actorEmail: session?.email ?? null,
     ip,
     ua,
   });

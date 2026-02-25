@@ -17,16 +17,37 @@ export type AdminAuditEvent = {
 const KEY = "admin:audit:json";
 const MAX_EVENTS = 200;
 
+/**
+ * Read all stored audit events.
+ * If Redis is not configured, return empty safely.
+ */
 async function readAll(): Promise<AdminAuditEvent[]> {
   if (!redis) return [];
-  const existing = await redis.get<AdminAuditEvent[]>(KEY);
-  return Array.isArray(existing) ? existing : [];
+
+  try {
+    const existing = await redis.get(KEY);
+
+    if (!existing || !Array.isArray(existing)) {
+      return [];
+    }
+
+    return existing as AdminAuditEvent[];
+  } catch (err) {
+    console.warn("[adminAudit] read failed:", err);
+    return [];
+  }
 }
 
-export async function logAdminEvent(evt: Omit<AdminAuditEvent, "ts">) {
-  try {
-    if (!redis) return;
+/**
+ * Append an audit event (JSON array storage).
+ * Never throws — auth flows must not break.
+ */
+export async function logAdminEvent(
+  evt: Omit<AdminAuditEvent, "ts">
+): Promise<void> {
+  if (!redis) return;
 
+  try {
     const full: AdminAuditEvent = {
       ts: Date.now(),
       action: evt.action,
@@ -38,9 +59,13 @@ export async function logAdminEvent(evt: Omit<AdminAuditEvent, "ts">) {
     };
 
     const events = await readAll();
+
+    // newest first
     events.unshift(full);
 
-    if (events.length > MAX_EVENTS) events.length = MAX_EVENTS;
+    if (events.length > MAX_EVENTS) {
+      events.length = MAX_EVENTS;
+    }
 
     await redis.set(KEY, events);
   } catch (err) {
@@ -48,12 +73,17 @@ export async function logAdminEvent(evt: Omit<AdminAuditEvent, "ts">) {
   }
 }
 
-export async function getAuditEvents(limit = 50): Promise<AdminAuditEvent[]> {
+/**
+ * Retrieve recent audit events.
+ */
+export async function getAuditEvents(
+  limit = 50
+): Promise<AdminAuditEvent[]> {
   try {
     const events = await readAll();
     return events.slice(0, Math.max(0, limit));
   } catch (err) {
-    console.warn("[adminAudit] read failed:", err);
+    console.warn("[adminAudit] get failed:", err);
     return [];
   }
 }

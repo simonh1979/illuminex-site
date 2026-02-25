@@ -24,16 +24,29 @@ export default function ConstructionBuildingMaterialsPage() {
 
           <h1 className="page-title">Construction &amp; Building Materials</h1>
 
+<p style={{ marginTop: 10, opacity: 0.9 }}>
+  <Link href="/" style={{ color: "inherit", textDecoration: "none" }}>
+    ← Back to homepage sectors
+  </Link>
+</p>
           <p className="page-subtitle">
             UK-wide executive search and specialist recruitment across manufacturers, merchants, distribution and the wider built environment.
             We deliver leadership and commercial hires with discretion, pace and properly tested shortlists.
           </p>
 
-          <div style={{ marginTop: 22, display: "flex", gap: 12, flexWrap: "wrap" }}>
+          <div
+            style={{
+              marginTop: 22,
+              display: "flex",
+              gap: 12,
+              flexWrap: "wrap",
+              alignItems: "center",
+            }}
+          >
             <Link className="sector-cta" href="/live-jobs">
               View live roles
             </Link>
-            <Link className="jobs-clear" href="/contact">
+            <Link className="sector-cta-secondary" href="/contact">
               Speak confidentially
             </Link>
           </div>
@@ -98,51 +111,40 @@ export default function ConstructionBuildingMaterialsPage() {
             </div>
           </div>
 
-          {/* FAQ */}
-          <div style={{ marginTop: 18, display: "grid", gridTemplateColumns: "repeat(12, 1fr)", gap: 18 }}>
-            <div className="sector-card" style={{ gridColumn: "span 12" }}>
-              <h3>FAQ</h3>
+  {/* CTA */}
+<div
+  style={{
+    marginTop: 18,
+    display: "grid",
+    gridTemplateColumns: "repeat(12, 1fr)",
+    gap: 18,
+  }}
+>
+  <div
+    className="sector-card sector-card--cta"
+    style={{ gridColumn: "span 12" }}
+  >
+    <h3>Hiring in Construction &amp; Building Materials?</h3>
 
-              <p style={{ marginTop: 10, fontWeight: 900 }}>Do you work retained or contingency?</p>
-              <p style={{ opacity: 0.92 }}>
-                Both. Retained tends to suit senior or confidential hires; contingency can work well for mid-senior roles where momentum is key. Either way, the process stays structured and brand-safe.
-              </p>
+    <p>
+      Send a confidential brief and we’ll give you a straight view on the
+      market, the competition and realistic timelines before you commit.
+    </p>
 
-              <p style={{ marginTop: 14, fontWeight: 900 }}>Can candidates register without applying for a live job?</p>
-              <p style={{ opacity: 0.92 }}>
-                Yes — register your CV on the Candidates page. If there’s a sensible fit, we’ll come back to you discreetly.
-              </p>
+    <div className="sector-cta-row">
+      <Link className="sector-cta" href="/contact">
+        Speak with Illuminex
+      </Link>
 
-              <p style={{ marginTop: 14, fontWeight: 900 }}>Are you UK-wide?</p>
-              <p style={{ opacity: 0.92 }}>
-                Yes. We support UK national and regional hiring and can cover multi-site operations.
-              </p>
-
-              <div className="sector-tag" style={{ marginTop: 12 }}>Clear answers</div>
-            </div>
-          </div>
-
-          {/* CTA */}
-          <div style={{ marginTop: 18, display: "grid", gridTemplateColumns: "repeat(12, 1fr)", gap: 18 }}>
-            <div className="sector-card sector-card--cta" style={{ gridColumn: "span 12" }}>
-              <h3>Hiring in Construction &amp; Building Materials?</h3>
-              <p>
-                Send a confidential brief and we’ll give you a straight view on the market, the competition and realistic timelines — before you commit.
-              </p>
-
-              <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 12 }}>
-                <Link className="sector-cta" href="/contact">
-                  Start a confidential brief
-                </Link>
-                <Link className="jobs-clear" href="/clients">
-                  How we work with clients
-                </Link>
-              </div>
-            </div>
-          </div>
-
+      <Link className="sector-cta-secondary" href="/clients">
+        How we work with clients
+      </Link>
+    </div>
+  </div>
+</div>
         </div>
       </section>
     </main>
   );
 }
+  

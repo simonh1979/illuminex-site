@@ -3,7 +3,7 @@ import LiveJobsClient from "@/components/LiveJobsClient";
 export default function LiveJobsPage() {
   return (
     <main className="page page-jobs">
-      {/* HERO (only the top banner content) */}
+      {/* HERO (top banner content only) */}
       <section className="page-hero">
         <div className="page-hero-inner">
           <h1
@@ -14,7 +14,7 @@ export default function LiveJobsPage() {
               lineHeight: 1.12,
             }}
           >
-            Live Jobs
+            Live jobs
           </h1>
 
           <p
@@ -26,9 +26,8 @@ export default function LiveJobsPage() {
               opacity: 0.92,
             }}
           >
-            Search and filter live opportunities across the UK. This page is
-            JobAdder-ready — we’ll replace the mock feed with JobAdder Open API
-            once you’re set up.
+            Search current opportunities across the UK and filter by sector, location, job type and experience level.
+            Once your JobAdder connection is live, this page will pull roles directly via the JobAdder Open API.
           </p>
         </div>
       </section>

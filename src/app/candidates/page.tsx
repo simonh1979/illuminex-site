@@ -1,5 +1,22 @@
+// C:\Users\simon\Documents\illuminex-site\src\app\candidates\page.tsx
+
+import type { Metadata } from "next";
 import Link from "next/link";
 import CandidateRegisterFormClient from "@/components/CandidateRegisterFormClient";
+
+export const metadata: Metadata = {
+  title: "Candidates | Register Your CV | Illuminex Consultancy (UK)",
+  description:
+    "Register your CV with Illuminex Consultancy. Executive search and specialist recruitment across UK professional and technical sectors. Discreet, straight communication and roles that make sense.",
+  alternates: { canonical: "/candidates" },
+  openGraph: {
+    title: "Candidates | Register Your CV | Illuminex Consultancy (UK)",
+    description:
+      "Register your CV with Illuminex Consultancy. Discreet representation and roles aligned to your experience and direction.",
+    url: "/candidates",
+    type: "website",
+  },
+};
 
 export default function CandidatesPage() {
   return (
@@ -26,10 +43,8 @@ export default function CandidatesPage() {
               opacity: 0.92,
             }}
           >
-            We work with high-calibre candidates across professional and technical
-            sectors. From regional leadership through to executive appointments.
-            You’ll get straight communication, honest feedback and opportunities
-            that make sense for your trajectory.
+            We work with high-calibre candidates across professional and technical sectors, from regional leadership through to executive appointments.
+            You can expect clear communication, honest feedback and opportunities that match your experience and direction.
           </p>
 
           <div
@@ -43,48 +58,43 @@ export default function CandidatesPage() {
             <div className="sector-card" style={{ gridColumn: "span 6" }}>
               <h3>What you can expect</h3>
               <p>
-                Clear role context and a process that respects your time. If it’s
-                not right, we’ll tell you early.
+                Clear role context and a process that respects your time. If it is not right, we will tell you early and explain why.
               </p>
               <div className="sector-tag">Clarity</div>
             </div>
 
             <div className="sector-card" style={{ gridColumn: "span 6" }}>
-              <h3>Confidential search</h3>
+              <h3>Confidential representation</h3>
               <p>
-                For senior moves, discretion is essential. We handle approaches
-                carefully and never trade on names. Integrity for us will always
-                be our benchmark.
+                For senior moves, discretion matters. We handle approaches carefully and never trade on names. Your information stays confidential.
               </p>
               <div className="sector-tag">Discretion</div>
             </div>
 
-            {/* ✅ Candidate registration form (speculative) */}
-            <div
-              className="sector-card sector-card--cta"
-              style={{ gridColumn: "span 12" }}
-            >
-              <h3>Register your CV (confidential)</h3>
+            {/* Candidate registration form (speculative) */}
+            <div className="sector-card sector-card--cta" style={{ gridColumn: "span 12" }}>
+              <h3>Register your CV</h3>
               <p style={{ marginBottom: 14 }}>
-                Not applying for a live role? Register your CV and we’ll respond
-                discreetly when there’s a fit.
+                Not applying for a live role? Register your CV and we will respond discreetly when there is a sensible fit.
               </p>
 
               <CandidateRegisterFormClient />
             </div>
 
-            <div
-              className="sector-card sector-card--cta"
-              style={{ gridColumn: "span 12" }}
-            >
-              <h3>Ready to explore live roles?</h3>
+            <div className="sector-card sector-card--cta" style={{ gridColumn: "span 12" }}>
+              <h3>View live opportunities</h3>
               <p>
-                View current opportunities and filter by sector, location, job
-                type and experience level.
+                Browse current roles and filter by sector, location and experience level.
               </p>
-              <Link className="sector-cta" href="/live-jobs">
-                Search Live Jobs
-              </Link>
+
+              <div className="sector-cta-row">
+                <Link className="sector-cta" href="/live-jobs">
+                  Search live jobs
+                </Link>
+                <Link className="sector-cta-secondary" href="/contact">
+                  Speak confidentially
+                </Link>
+              </div>
             </div>
           </div>
         </div>

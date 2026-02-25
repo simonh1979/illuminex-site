@@ -5,20 +5,43 @@ export default function ContactPage() {
     <main className="page page-contact">
       <section className="page-hero">
         <div className="page-hero-inner">
-          <h1 style={{ fontSize: "clamp(2.2rem, 2.8vw, 3.1rem)", fontWeight: 900, letterSpacing: "-0.02em", lineHeight: 1.12 }}>
-            Let’s keep it simple — tell us what you need.
+          <h1
+            style={{
+              fontSize: "clamp(2.2rem, 2.8vw, 3.1rem)",
+              fontWeight: 900,
+              letterSpacing: "-0.02em",
+              lineHeight: 1.12,
+            }}
+          >
+            Tell us what you need and we’ll take it from there.
           </h1>
 
-          <p style={{ marginTop: 16, maxWidth: 980, fontSize: "clamp(1.05rem, 1.1vw, 1.2rem)", lineHeight: 1.75, opacity: 0.92 }}>
-            Hiring or exploring a move? Share the basics and we’ll respond quickly with the next sensible step.
-            Discretion and integrity are standard.
+          <p
+            style={{
+              marginTop: 16,
+              maxWidth: 980,
+              fontSize: "clamp(1.05rem, 1.1vw, 1.2rem)",
+              lineHeight: 1.75,
+              opacity: 0.92,
+            }}
+          >
+            Whether you are hiring or considering a move, share the essentials and we will come back to you promptly
+            with the most sensible next step. Discretion and integrity are standard.
           </p>
 
-          <div style={{ marginTop: 34, display: "grid", gridTemplateColumns: "repeat(12, 1fr)", gap: 18 }}>
+          <div
+            style={{
+              marginTop: 34,
+              display: "grid",
+              gridTemplateColumns: "repeat(12, 1fr)",
+              gap: 18,
+            }}
+          >
             <div className="sector-card" style={{ gridColumn: "span 6" }}>
               <h3>Clients</h3>
               <p>
-                Role scope, location (UK-wide), and timeline. If it’s retained or confidential, say so — we’ll handle it properly.
+                Share the role scope, location (UK-wide if relevant) and timeline. If the hire is retained or confidential,
+                simply flag it and we will handle it properly.
               </p>
               <div className="sector-tag">Hiring</div>
             </div>
@@ -26,7 +49,8 @@ export default function ContactPage() {
             <div className="sector-card" style={{ gridColumn: "span 6" }}>
               <h3>Candidates</h3>
               <p>
-                Tell us your sector, leadership level and geography. If you’re moving confidentially, we’ll keep it that way.
+                Tell us your sector, leadership level and preferred geography. If your search needs to remain confidential,
+                we will treat it that way from the outset.
               </p>
               <div className="sector-tag">Career</div>
             </div>

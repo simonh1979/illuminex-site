@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { rateLimit } from "@/lib/rateLimit";
+import { applyRateLimit } from "@/lib/rateLimit";
 import { generateCSRFToken, verifyCSRFToken } from "@/lib/csrf";
 
 const BodySchema = z.object({
@@ -15,8 +15,12 @@ export async function GET() {
 
 export async function POST(req: Request) {
   // Rate limit by IP (basic)
-  const ip = req.headers.get("x-forwarded-for") || "local";
-  if (!rateLimit(ip)) {
+  const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "local";
+
+  // Upstash Ratelimit (and your in-memory fallback) both support .limit(key)
+  const rl = await applyRateLimit.limit(ip);
+
+  if (!rl.success) {
     return NextResponse.json({ error: "Too many requests" }, { status: 429 });
   }
 
@@ -29,6 +33,7 @@ export async function POST(req: Request) {
   // Validation check
   const json = await req.json().catch(() => null);
   const parsed = BodySchema.safeParse(json);
+
   if (!parsed.success) {
     return NextResponse.json({ error: "Invalid input" }, { status: 400 });
   }

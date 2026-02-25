@@ -4,9 +4,17 @@ import { redis } from "@/lib/redis";
 export type AdminAuditEvent = {
   ts: number;
   action: string;
-  actor?: string; // email
-  ip?: string;
-  meta?: Record<string, any>;
+
+  // Optional identity fields (use whichever you have available)
+  actorEmail?: string | null;
+  actor?: string | null;
+
+  // Context
+  ip?: string | null;
+  ua?: string | null;
+
+  // Extra details if needed later
+  meta?: Record<string, unknown> | null;
 };
 
 const KEY = "admin:audit:json";
@@ -26,9 +34,14 @@ export async function logAdminEvent(evt: Omit<AdminAuditEvent, "ts">) {
     const full: AdminAuditEvent = {
       ts: Date.now(),
       action: evt.action,
-      actor: evt.actor,
-      ip: evt.ip,
-      meta: evt.meta,
+
+      actorEmail: evt.actorEmail ?? null,
+      actor: evt.actor ?? null,
+
+      ip: evt.ip ?? null,
+      ua: evt.ua ?? null,
+
+      meta: evt.meta ?? null,
     };
 
     const events = await readAll();

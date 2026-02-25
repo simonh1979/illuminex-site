@@ -41,7 +41,8 @@ body {
   text-rendering: optimizeLegibility;
   background: var(--primary-blue);
   color: var(--white);
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family: inherit;
+
 }
 
 main {
@@ -157,10 +158,10 @@ main.page-home::before {
 .hero-left {
   position: relative;
   z-index: 3;
-
   max-width: 1050px; /* was 920px - key change */
   flex: 1;           /* allow it to grow */
   min-width: 0;
+  margin-top: -85px; /* moves only the text block up */
 }
 
 /* Subtle contrast layer behind text (does NOT affect layout) */
@@ -171,7 +172,7 @@ main.page-home::before {
   inset: -20px -30px -20px -30px;
   border-radius: 20px;
 
-  background: rgba(6, 32, 51, 0.50);
+  background: #06203380;
 
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
@@ -184,10 +185,10 @@ main.page-home::before {
 
 /* ORIGINAL HERO TYPOGRAPHY (restored) */
 .hero-left h1 {
-  font-size: clamp(2.6rem, 3.1vw, 3.5rem);
-  line-height: 1.14;
-  font-weight: 750;
-  letter-spacing: -0.01em;
+  font-size: clamp(2.2rem, 2.5vw, 2.85rem);
+  line-height: 1.18;
+  font-weight: 800;
+  letter-spacing: -0.03em;
   margin-bottom: 22px;
 }
 
@@ -212,7 +213,7 @@ main.page-home::before {
 
 .sectors {
   position: relative;
-  padding: 50px 0 70px;
+  padding: 20px 0 70px;
   background: transparent;     /* no full-width tint */
   border: 0 !important;        /* kills the full-width line */
 }
@@ -253,6 +254,7 @@ main.page-home::before {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   gap: 18px;
+  margin-top: 30px;   /* increase breathing room */
 }
 
 /* ==========================
@@ -621,6 +623,25 @@ main.page-home::before {
    TYPO / KICKER
 ========================== */
 
+/* GLOBAL HEADING REFINEMENT – Premium spacing */
+h1 {
+  font-family: inherit;
+  font-weight: 800;
+  letter-spacing: 0.025em;
+}
+
+h2 {
+  font-family: inherit;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+h3 {
+  font-family: inherit;
+  font-weight: 800;
+  letter-spacing: 0.015em;
+}
+
 .kicker {
   display: inline-flex;
   align-items: center;
@@ -655,9 +676,17 @@ main.page-home::before {
 .sectors-head .sub {
   margin-top: 12px;
   font-size: clamp(1.05rem, 1.15vw, 1.18rem);
-  line-height: 1.6;
+  line-height: 1.8;
   color: rgba(255,255,255,0.88);
-  max-width: 860px;
+  max-width: 1100px;
+}
+
+/* Desktop: keep the sectors intro on one line */
+@media (min-width: 1200px) {
+  .sectors-head .sub {
+    max-width: 1500px;     /* gives it room */
+    white-space: nowrap;   /* forces one line on desktop */
+  }
 }
 
 /* ==========================
@@ -743,9 +772,9 @@ main.page-home::before {
 .sector-tag {
   display: inline-flex;
   margin-top: 12px;
-  font-size: 0.78rem;
-  font-weight: 800;
-  letter-spacing: 0.02em;
+  font-size: 0.98rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
   color: rgba(255,255,255,0.90);
   padding: 8px 12px;
   border-radius: 999px;
@@ -755,21 +784,6 @@ main.page-home::before {
 
 .sector-card--cta { grid-column: span 4; }
 
-.sector-cta {
-  display: inline-flex;
-  margin-top: 14px;
-  padding: 12px 16px;
-  border-radius: 999px;
-  text-decoration: none;
-  font-weight: 900;
-  color: #0a4d8c;
-  background: linear-gradient(135deg, #ff7a00, #ff8c00, #ffb347);
-  border: 2px solid rgba(6, 32, 51, 0.18);
-  box-shadow:
-    0 12px 24px rgba(0,0,0,0.18),
-    inset 0 1px 0 rgba(255,255,255,0.28);
-  transition: transform 0.18s ease, filter 0.18s ease;
-}
 
 /* Make clickable sector cards look like cards (not links) */
 .sector-card--link {
@@ -784,13 +798,32 @@ main.page-home::before {
   margin-top: 14px;
   padding: 10px 14px;
   border-radius: 999px;
-  font-weight: 900;
-  letter-spacing: 0.02em;
-  color: #062033;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  color: #083a63;
   background: linear-gradient(135deg, #ff7a00, #ff8c00, #ffb347);
   border: 2px solid rgba(6, 32, 51, 0.18);
   box-shadow: 0 10px 20px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.28);
   width: fit-content;
+}
+
+/* Homepage sector cards: keep tag + CTA pill on one clean row */
+.sector-card-actions{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  margin-top: 14px;
+}
+
+/* Remove the built-in top margins when inside the action row */
+.sector-card-actions .sector-tag{
+  margin-top: 0 !important;
+}
+
+.sector-card-actions .sector-cta-mini{
+  margin-top: 0 !important;
+  margin-left: auto; /* pushes the orange pill to the right */
 }
 
 /* Subtle cue that the whole card is clickable */
@@ -893,10 +926,10 @@ main.page.page-sector .sector-card p {
 }
 
 .page-title {
-  font-size: clamp(2.4rem, 3.2vw, 3.6rem);
-  line-height: 1.08;
-  letter-spacing: -0.01em;
-  font-weight: 900;
+  font-size: clamp(2.1rem, 2.6vw, 3rem);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  font-weight: 800;
 }
 
 .page-subtitle {
@@ -908,11 +941,51 @@ main.page.page-sector .sector-card p {
   letter-spacing: 0.01em;
 }
 
+/* ==========================
+   SECTOR PAGES: stop hero text breaking too early
+========================== */
+.page-sector .page-hero-inner {
+  max-width: 1680px; /* wider text container */
+}
+
+/* ==========================
+   SECTOR PAGES: stop hero text breaking too early (ALL sector pages)
+========================== */
+.page-sector .page-hero-inner {
+  max-width: 1680px;
+}
+
+/* keep the old subtitle behaviour if any page still uses it */
+.page-sector .page-subtitle {
+  max-width: 1100px;
+}
+
+/* sector hero paragraph: wider so sentences don't wrap too early */
+.page-sector .sector-hero-text {
+  margin-top: 14px;
+  max-width: 1320px;
+  font-size: clamp(1.12rem, 1.15vw, 1.28rem);
+  line-height: 1.75;
+  opacity: 0.92;
+}
+
+/* ==========================
+   SECTOR PAGES: hero paragraph (consistent)
+========================== */
+.page-sector .sector-hero-text{
+  margin-top: 16px;
+  max-width: 1180px; /* stops early wrapping */
+  font-size: clamp(1.12rem, 1.15vw, 1.28rem); /* keeps it premium, not small */
+  line-height: 1.75;
+  opacity: 0.92;
+}
+
 @media (max-width: 992px) {
   .page-inner { padding: 0 24px; }
   .page-hero { padding: 110px 0 70px; }
   .page-hero .page-hero-inner { padding: 0 24px; }
 }
+
 
 /* ==========================
    SUBPAGES: FULL-LENGTH BACKGROUND (FIXED)
@@ -987,18 +1060,48 @@ main.page .page-hero::after {
   letter-spacing: 0.01em;
 }
 
+/* ==========================
+   SECONDARY CTA PILL (used on sector pages + CTAs)
+   Replaces the old jobs-clear "utility button" look
+========================== */
+
 .jobs-clear {
-  border: 2px solid rgba(255,255,255,0.18);
-  background: rgba(255,255,255,0.06);
-  color: rgba(255,255,255,0.92);
-  padding: 10px 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Match orange pill proportions */
+  padding: 12px 16px;
   border-radius: 999px;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  cursor: pointer;
+
+  /* Premium typography */
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  text-decoration: none;
+
+  /* Glass outline look */
+  color: rgba(255,255,255,0.96);
+  background: rgba(255,255,255,0.08);
+  border: 2px solid rgba(255,255,255,0.22);
+
+  box-shadow:
+    0 12px 24px rgba(0,0,0,0.18),
+    inset 0 1px 0 rgba(255,255,255,0.20);
+
+  transition: transform 0.18s ease, filter 0.18s ease, background 0.18s ease, border-color 0.18s ease;
 }
 
-.jobs-clear:hover { filter: brightness(1.06); transform: translateY(-1px); }
+.jobs-clear:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.06);
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.30);
+}
+
+.jobs-clear:active {
+  transform: translateY(-1px);
+}
 
 .jobs-grid {
   display: grid;
@@ -2062,4 +2165,101 @@ main.page.page-contact .sector-card--cta input[type="submit"]{
 
 .footer-links a:hover{
   text-decoration: underline;
+}
+
+/* ==========================
+   SECTOR CTA PILLS (ORANGE + SECONDARY)
+   Fix: perfect alignment, premium fill, consistent height
+========================== */
+
+.sector-cta,
+.sector-cta-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 46px;           /* same height for both */
+  padding: 0 18px;        /* same internal spacing */
+  border-radius: 999px;
+  line-height: 1;
+  white-space: nowrap;
+
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+
+  transition: transform 0.18s ease, filter 0.18s ease, background-color 0.18s ease, border-color 0.18s ease;
+}
+
+/* ORANGE (primary) */
+.sector-cta {
+  color: #083a63;
+  background: linear-gradient(135deg, #ff7a00, #ff8c00, #ffb347);
+  border: 2px solid rgba(6, 32, 51, 0.18);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.28);
+}
+
+.sector-cta:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.03);
+}
+
+/* SECONDARY (blue) – stronger contrast + thicker Kingfisher border */
+.sector-cta-secondary{
+  color: var(--soft-white);
+
+  /* Stronger blue fill */
+  background:
+    linear-gradient(#0a4d8c, #0a4d8c) padding-box,
+    linear-gradient(135deg, #ff6a00, #ff8c00, #ffb347) border-box;
+
+  /* Thicker outer gradient border */
+  border: 3px solid transparent;
+
+  box-shadow:
+    0 14px 28px rgba(0,0,0,0.20),
+    inset 0 1px 0 rgba(255,255,255,0.12);
+}
+
+.sector-cta-secondary:hover{
+  transform: translateY(-2px);
+  filter: brightness(1.06);
+
+  background:
+    linear-gradient(#0d5aa3, #0d5aa3) padding-box,
+    linear-gradient(135deg, #ff6a00, #ff8c00, #ffb347) border-box;
+}
+
+/* ========================================
+   CTA alignment fixes (Homepage + Sector pages)
+   Safe: no nesting, no fancy syntax
+======================================== */
+
+/* Generic actions row (left aligned by default) */
+.sector-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: flex-start;
+  width: 100%;
+  margin-top: 14px;
+}
+
+/* Homepage CTA card: centre the single orange button */
+.sector-card--cta .sector-card-actions {
+  justify-content: center;
+}
+
+/* ========================================
+   Sector page bottom CTA row
+   Keep both pills LEFT with spacing
+======================================== */
+
+.sector-cta-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* force left alignment */
+  gap: 14px;                   /* breathing space between pills */
+  flex-wrap: wrap;
+  margin-top: 14px;
 }

@@ -1,21 +1,21 @@
 import "./globals.css";
 import SiteHeader from "../components/SiteHeader";
-import { Inter, Sora } from "next/font/google";
+import { Inter } from "next/font/google";
+import type { Metadata } from "next";
 
-export const metadata = {
-  title: "Illuminex Consultancy",
-  description: "Premium Executive Search & Specialist Recruitment",
+export const metadata: Metadata = {
+  metadataBase: new URL("https://www.illuminex.co.uk"),
+  title: {
+    default: "Illuminex Consultancy",
+    template: "%s | Illuminex Consultancy",
+  },
+  description:
+    "Illuminex Consultancy delivers executive search and specialist recruitment across defined UK markets, with a focused, professional approach.",
 };
 
 const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-});
-
-const sora = Sora({
-  subsets: ["latin"],
-  variable: "--font-sora",
+  weight: ["400", "500", "600", "700", "800", "900"],
   display: "swap",
 });
 
@@ -25,42 +25,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={`${inter.variable} ${sora.variable}`}>
+    <html lang="en" className={inter.className}>
+      <body>
         <SiteHeader />
-
-        {/* ================= PAGE CONTENT ================= */}
         {children}
-
-{/* ================= FOOTER ================= */}
-<footer className="site-footer">
-  <div className="footer-inner">
-    <img
-      src="/illuminex-logo-emblem-transparent-background-high-res.png"
-      alt="Illuminex Emblem"
-      className="footer-emblem footer-emblem--left"
-    />
-
-    <div className="footer-center">
-      <p className="footer-text">
-        © {new Date().getFullYear()} Illuminex Consultancy. All rights reserved.
-        Registered address and company number to be added pre-launch.
-      </p>
-
-      <p className="footer-links">
-        <a href="/privacy">Privacy</a>
-        <a href="/terms">Terms</a>
-        <a href="/cookies">Cookies</a>
-      </p>
-    </div>
-
-    <img
-      src="/illuminex-logo-emblem-transparent-background-high-res.png"
-      alt="Illuminex Emblem"
-      className="footer-emblem footer-emblem--right"
-    />
-  </div>
-</footer>
       </body>
     </html>
   );

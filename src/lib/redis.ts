@@ -1,14 +1,18 @@
+// src/lib/redis.ts
 import { Redis } from "@upstash/redis";
 
-if (!process.env.UPSTASH_REDIS_REST_URL) {
-  throw new Error("UPSTASH_REDIS_REST_URL is not set");
-}
+// IMPORTANT:
+// Do not throw if env vars are missing.
+// Vercel builds will import this file during compilation.
+// If Redis is not configured yet, we export `null` and the app uses fallbacks.
 
-if (!process.env.UPSTASH_REDIS_REST_TOKEN) {
-  throw new Error("UPSTASH_REDIS_REST_TOKEN is not set");
-}
+const url = process.env.UPSTASH_REDIS_REST_URL;
+const token = process.env.UPSTASH_REDIS_REST_TOKEN;
 
-export const redis = new Redis({
-  url: process.env.UPSTASH_REDIS_REST_URL,
-  token: process.env.UPSTASH_REDIS_REST_TOKEN,
-});
+export const redis: Redis | null =
+  url && token
+    ? new Redis({
+        url,
+        token,
+      })
+    : null;

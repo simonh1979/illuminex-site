@@ -1500,9 +1500,12 @@ main.page .page-hero::after {
   letter-spacing: 0.04em;
   padding: 12px 12px;
   border-radius: 14px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.12);
-  transition: transform 0.18s ease, filter 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+  display: block;
+}
+
+.nav-drawer-links a[aria-current="page"] {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.22);
 }
 
 .nav-drawer-links a:hover {

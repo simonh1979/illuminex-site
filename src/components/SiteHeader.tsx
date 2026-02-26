@@ -28,7 +28,7 @@ export default function SiteHeader() {
       <div className="header-inner">
         <a href="/" className="logo-wrap" aria-label="Illuminex Consultancy Home">
 <img
-  src="/illuminex-logo-flat-transparent-background.png"
+  src="/Illuminex-logo-flat-transparent-background.png"
   alt="Illuminex Consultancy"
   className="site-logo"
 />

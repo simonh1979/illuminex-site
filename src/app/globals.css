@@ -208,6 +208,35 @@ main.page-home::before {
 }
 
 /* ==========================
+   HERO: Mobile-safe heading position
+========================== */
+@media (max-width: 992px) {
+  .hero-left {
+    margin-top: 0;          /* stop the box being pulled up */
+    max-width: 100%;
+  }
+
+  .hero-left::before {
+    inset: -16px -16px -16px -16px; /* smaller glass panel so it fits */
+  }
+
+  .hero {
+    padding-top: 150px;     /* pushes content below fixed header */
+    padding-bottom: 70px;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero {
+    padding-top: 165px;     /* extra breathing room on small phones */
+  }
+
+  .hero-left::before {
+    inset: -14px -14px -14px -14px;
+  }
+}
+
+/* ==========================
    SECTORS (HOMEPAGE)
 ========================== */
 
@@ -609,37 +638,54 @@ main.page-home::before {
 
 @media (max-width: 600px) {
   .footer-inner {
-    grid-template-columns: auto 1fr auto;
-    column-gap: 10px;
+    grid-template-columns: 44px 1fr 44px; /* fixed slots prevents clipping */
+    column-gap: 12px;
     align-items: center;
-    padding: 10px 12px 12px;
+    padding: 12px 14px;                 /* more right padding */
     min-height: 74px;
+    overflow: visible;
   }
-  .footer-emblem { display: block; height: 44px; opacity: 0.92; }
-  .footer-text { font-size: 0.86rem; white-space: normal; }
+
+  .footer-emblem {
+    display: block;
+    height: 44px;
+    width: 44px;                        /* cap width so it can’t overflow */
+    max-width: 44px;
+    object-fit: contain;
+    opacity: 0.92;
+  }
+
+  .footer-text {
+    font-size: 0.86rem;
+    white-space: normal;
+  }
 }
 
 /* ==========================
    TYPO / KICKER
 ========================== */
 
-/* GLOBAL HEADING REFINEMENT – Premium spacing */
+/* ==========================
+   GLOBAL HEADING REFINEMENT
+   Improved readability + executive spacing
+========================== */
+
 h1 {
   font-family: inherit;
   font-weight: 800;
-  letter-spacing: 0.025em;
+  letter-spacing: 0.04em;   /* increased from 0.025 */
 }
 
 h2 {
   font-family: inherit;
   font-weight: 800;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.035em;  /* increased from 0.02 */
 }
 
 h3 {
   font-family: inherit;
   font-weight: 800;
-  letter-spacing: 0.015em;
+  letter-spacing: 0.03em;   /* increased from 0.015 */
 }
 
 .kicker {
@@ -681,11 +727,12 @@ h3 {
   max-width: 1100px;
 }
 
-/* Desktop: keep the sectors intro on one line */
+/* Desktop: keep the sectors intro reading as a single thought, without forcing nowrap */
 @media (min-width: 1200px) {
   .sectors-head .sub {
-    max-width: 1500px;     /* gives it room */
-    white-space: nowrap;   /* forces one line on desktop */
+    max-width: 1180px;      /* match your global text width */
+    white-space: normal;     /* IMPORTANT: allow wrapping naturally */
+    text-wrap: balance;      /* modern browsers: better line breaks */
   }
 }
 
@@ -895,6 +942,17 @@ main.page.page-sector .sector-card p {
   padding: 0 60px;
 }
 
+/* Subpage hero copy: prevent early wrapping (override inline maxWidth) */
+.page-hero .page-hero-inner p {
+  max-width: 1300px !important;
+}
+
+/* Subpage hero copy width */
+.page-hero .page-hero-inner {
+  max-width: 1680px;
+}
+
+
 .page-body { padding: 24px 0 90px; background: transparent; }
 
 .page-inner {
@@ -934,11 +992,22 @@ main.page.page-sector .sector-card p {
 
 .page-subtitle {
   margin-top: 14px;
-  max-width: 86ch;
+  max-width: 110ch; /* wider so it doesn’t break too early */
   font-size: clamp(1.05rem, 1.2vw, 1.25rem);
   line-height: 1.75;
   color: rgba(255,255,255,0.90);
   letter-spacing: 0.01em;
+}
+
+.page-subtitle,
+.hero-left p {
+  letter-spacing: 0.015em;
+}
+
+@media (min-width: 1200px) {
+  .page-hero .page-hero-inner p {
+    max-width: 1300px;
+  }
 }
 
 /* ==========================
@@ -1431,10 +1500,19 @@ main.page .page-hero::after {
   letter-spacing: 0.04em;
   padding: 12px 12px;
   border-radius: 14px;
- .nav-drawer-links a[aria-current="page"] {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  transition: transform 0.18s ease, filter 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+}
+
+.nav-drawer-links a:hover {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+}
+
+.nav-drawer-links a[aria-current="page"] {
   background: rgba(255, 255, 255, 0.14);
   border-color: rgba(255, 255, 255, 0.22);
-}
 }
 
 .nav-drawer-links a:hover { filter: brightness(1.06); transform: translateY(-1px); }
@@ -1481,6 +1559,20 @@ main.page .page-hero::after {
     width: 100%;
     max-width: 420px;
     margin: 0 auto;
+  }
+}
+
+@media (max-width: 900px) {
+  .hero {
+    padding-top: 140px;   /* pushes the hero content down under the fixed header */
+    padding-bottom: 70px;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero {
+    padding-top: 150px;   /* slightly more space on small phones */
+    padding-bottom: 60px;
   }
 }
 
@@ -2263,3 +2355,11 @@ main.page.page-contact .sector-card--cta input[type="submit"]{
   flex-wrap: wrap;
   margin-top: 14px;
 }
+
+/* ==========================
+   GLOBAL HEADING SPACING – Balanced
+========================== */
+
+h1 { letter-spacing: 0.020em !important; }
+h2 { letter-spacing: 0.017em !important; }
+h3 { letter-spacing: 0.035em !important; }

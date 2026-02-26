@@ -94,7 +94,7 @@ export default function ApplyPage() {
             className="apply-intro"
             style={{
               marginTop: 16,
-              maxWidth: 980,
+              maxWidth: 1180,
               fontSize: "clamp(1.05rem, 1.1vw, 1.2rem)",
               lineHeight: 1.75,
               opacity: 0.92,
@@ -103,7 +103,7 @@ export default function ApplyPage() {
             Send your details and CV. We’ll confirm receipt and come back with next steps.
           </p>
 
-          <div style={{ marginTop: 34, maxWidth: 980 }}>
+          <div style={{ marginTop: 34, maxWidth: 1180 }}>
             {submitted ? (
               <div className="apply-state is-submitted">
                 <h3 style={{ marginBottom: 10 }}>Application received</h3>

@@ -17,16 +17,16 @@ export default function ServicesPage() {
           <p
             style={{
               marginTop: 16,
-              maxWidth: 980,
+              maxWidth: 1180,
               fontSize: "clamp(1.05rem, 1.1vw, 1.2rem)",
               lineHeight: 1.75,
               opacity: 0.92,
             }}
           >
-            Illuminex is established as an executive search and specialist recruitment consultancy.
-            Over time, the platform will extend to include carefully selected partner services across HR,
-            Payroll and Health & Safety. Introductions will be relationship-led and value-driven,
-            not directory listings.
+            Illuminex is established as an executive search and specialist recruitment consultancy. Over time, the platform will extend to
+            include carefully selected partner services across HR, Payroll and Health &amp; Safety. Introductions will be relationship-led and
+            value-driven,{" "}
+            <span style={{ whiteSpace: "nowrap" }}> not directory listings.</span>
           </p>
 
           <div
@@ -40,8 +40,8 @@ export default function ServicesPage() {
             <div className="sector-card" style={{ gridColumn: "span 4" }}>
               <h3>Executive search</h3>
               <p>
-                Senior and board-level appointments where discretion, structure and disciplined
-                assessment are essential. Retained mandates managed with clarity and pace.
+                Senior and board-level appointments where discretion, structure and disciplined assessment are essential. Retained mandates
+                managed with clarity and pace.
               </p>
               <div className="sector-tag">Retained search</div>
             </div>
@@ -49,8 +49,8 @@ export default function ServicesPage() {
             <div className="sector-card" style={{ gridColumn: "span 4" }}>
               <h3>Specialist recruitment</h3>
               <p>
-                Mid-senior commercial and technical hires across defined sectors.
-                Focused delivery with proper market mapping and brand protection.
+                Mid-senior commercial and technical hires across defined sectors. Focused delivery with proper market mapping and brand
+                protection.
               </p>
               <div className="sector-tag">Specialist</div>
             </div>
@@ -58,20 +58,17 @@ export default function ServicesPage() {
             <div className="sector-card" style={{ gridColumn: "span 4" }}>
               <h3>Partner services</h3>
               <p>
-                HR, Payroll and Health & Safety support via trusted specialist partners.
-                Formal relationships will be introduced selectively where it strengthens client outcomes.
+                HR, Payroll and Health &amp; Safety support via trusted specialist partners. Formal relationships will be introduced selectively
+                where it strengthens client outcomes.
               </p>
               <div className="sector-tag">Consultancy network</div>
             </div>
 
-            <div
-              className="sector-card sector-card--cta"
-              style={{ gridColumn: "span 12" }}
-            >
+            <div className="sector-card sector-card--cta" style={{ gridColumn: "span 12" }}>
               <h3>Discuss your requirements</h3>
               <p>
-                Whether you are hiring now or planning wider organisational support,
-                we will advise on the appropriate structure and introduce the right expertise where required.
+                Whether you are hiring now or planning wider organisational support, we will advise on the appropriate structure and introduce
+                the right expertise where required.
               </p>
               <div className="sector-cta-row">
                 <a className="sector-cta" href="/contact">

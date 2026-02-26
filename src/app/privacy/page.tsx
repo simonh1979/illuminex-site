@@ -7,7 +7,7 @@ export default function PrivacyPage() {
             Privacy Policy
           </h1>
 
-          <p style={{ marginTop: 16, maxWidth: 980, fontSize: "clamp(1.05rem, 1.1vw, 1.2rem)", lineHeight: 1.75, opacity: 0.92 }}>
+          <p style={{ marginTop: 16, maxWidth: 1180, fontSize: "clamp(1.05rem, 1.1vw, 1.2rem)", lineHeight: 1.75, opacity: 0.92 }}>
             This page will be finalised before launch with your registered company details and contact information.
           </p>
 

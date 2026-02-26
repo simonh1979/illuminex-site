@@ -37,7 +37,7 @@ export default function CandidatesPage() {
           <p
             style={{
               marginTop: 16,
-              maxWidth: 980,
+              maxWidth: 1180,
               fontSize: "clamp(1.05rem, 1.1vw, 1.2rem)",
               lineHeight: 1.75,
               opacity: 0.92,

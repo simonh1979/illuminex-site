@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 type Job = {
@@ -46,7 +46,7 @@ function slugify(input: string) {
     .slice(0, 80);
 }
 
-export default function LiveJobsClient() {
+function LiveJobsClientInner() {
   const router = useRouter();
   const pathname = usePathname();
   const sp = useSearchParams();
@@ -80,7 +80,8 @@ export default function LiveJobsClient() {
     if (sector.trim()) qs.set("sector", sector.trim());
     if (location.trim()) qs.set("location", location.trim());
     if (jobType.trim()) qs.set("jobType", jobType.trim());
-    if (experienceLevel.trim()) qs.set("experienceLevel", experienceLevel.trim());
+    if (experienceLevel.trim())
+      qs.set("experienceLevel", experienceLevel.trim());
     return qs.toString();
   }, [keyword, sector, location, jobType, experienceLevel]);
 
@@ -94,10 +95,8 @@ export default function LiveJobsClient() {
 
       try {
         const res = await fetch(`/api/jobs?${queryString}`, {
-
-
           method: "GET",
-          headers: { "Accept": "application/json" },
+          headers: { Accept: "application/json" },
           cache: "no-store",
         });
 
@@ -260,7 +259,8 @@ export default function LiveJobsClient() {
           <div className="jobs-empty sector-card">
             <h3>No matches</h3>
             <p className="jobs-muted">
-              Try removing a filter, using a broader location, or clearing keyword.
+              Try removing a filter, using a broader location, or clearing
+              keyword.
             </p>
           </div>
         ) : (
@@ -294,12 +294,11 @@ export default function LiveJobsClient() {
 
                   {/* Later: this becomes /live-jobs/[slug] and a JobAdder apply link */}
                   <a
-                className="sector-cta"
-                href={`/live-jobs/${slugify(job.title)}-${job.id}`}
-              >
-                View role
-              </a>
-      
+                    className="sector-cta"
+                    href={`/live-jobs/${slugify(job.title)}-${job.id}`}
+                  >
+                    View role
+                  </a>
                 </div>
               </article>
             ))}
@@ -307,5 +306,13 @@ export default function LiveJobsClient() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function LiveJobsClient() {
+  return (
+    <Suspense fallback={null}>
+      <LiveJobsClientInner />
+    </Suspense>
   );
 }

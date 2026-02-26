@@ -1,25 +1,32 @@
+// src/lib/jobadderTokens.ts
 import { redis } from "@/lib/redis";
 
 export type JobAdderTokenSet = {
   access_token: string;
   refresh_token?: string;
-  token_type: string; // "Bearer"
-  expires_in: number; // seconds
-  api: string; // e.g. https://api.jobadder.com/v2
-  created_at: number; // unix ms timestamp
+  token_type: string;
+  expires_in: number;
+  api?: string;          // <-- allow api (used by callback/test/client)
+  created_at: number;    // <-- required so jobadderClient can compute expiry
 };
 
 const KEY = "jobadder:tokens";
 
+/**
+ * Save tokens to Redis.
+ * Safe on Vercel builds: if Redis isn't configured, we simply no-op.
+ */
 export async function saveJobAdderTokens(tokens: JobAdderTokenSet) {
+  if (!redis) return;
   await redis.set(KEY, tokens);
 }
 
+/**
+ * Read tokens from Redis.
+ * Safe on Vercel builds: if Redis isn't configured, return null.
+ */
 export async function getJobAdderTokens(): Promise<JobAdderTokenSet | null> {
-  const t = await redis.get<JobAdderTokenSet>(KEY);
-  return t ?? null;
-}
-
-export async function clearJobAdderTokens() {
-  await redis.del(KEY);
+  if (!redis) return null;
+  const v = await redis.get<JobAdderTokenSet>(KEY);
+  return v ?? null;
 }

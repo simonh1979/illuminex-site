@@ -33,8 +33,12 @@ export async function getJobAdderBoardId(): Promise<number> {
     return Number(env);
   }
 
-  const cached = await redis.get<number>(CACHE_KEY);
-  if (typeof cached === "number") return cached;
+  // Redis is optional (e.g. Vercel build environments).
+  // If it's not configured, we simply skip caching.
+  if (redis) {
+    const cached = await redis.get<number>(CACHE_KEY);
+    if (typeof cached === "number") return cached;
+  }
 
   const res = await jobadderFetch(`/jobboards`, { method: "GET" });
 
@@ -47,12 +51,12 @@ export async function getJobAdderBoardId(): Promise<number> {
 
   const items = Array.isArray(json)
     ? json
-    : Array.isArray(json?.items)
-      ? json.items
+    : Array.isArray((json as any)?.items)
+      ? (json as any).items
       : [];
 
   const first = items?.[0];
-  const boardId = first?.boardId ?? first?.id;
+  const boardId = (first as any)?.boardId ?? (first as any)?.id;
 
   if (!boardId || !Number.isFinite(Number(boardId))) {
     throw new Error("No job boards found.");
@@ -60,7 +64,9 @@ export async function getJobAdderBoardId(): Promise<number> {
 
   const resolved = Number(boardId);
 
-  await redis.set(CACHE_KEY, resolved, { ex: CACHE_TTL_SECONDS });
+  if (redis) {
+    await redis.set(CACHE_KEY, resolved, { ex: CACHE_TTL_SECONDS });
+  }
 
   return resolved;
 }
@@ -76,43 +82,27 @@ function mapAdToSiteJob(ad: any): SiteJob {
     Array.isArray(ad?.portal?.fields) ? ad.portal.fields : [];
 
   const getField = (name: string) =>
-    fields.find(
-      (f) => (f.fieldName || "").toLowerCase() === name.toLowerCase()
-    )?.value ?? "";
+    fields.find((f) => (f.fieldName || "").toLowerCase() === name.toLowerCase())
+      ?.value ?? "";
 
-  const jobTypeRaw =
-    String(getField("jobType")) ||
-    String(getField("workType")) ||
-    "Permanent";
+  const jobTypeRaw = String(getField("jobType")) || String(getField("workType")) || "Permanent";
 
-  const expRaw =
-    String(getField("experienceLevel")) ||
-    String(getField("level")) ||
-    "Mid";
+  const expRaw = String(getField("experienceLevel")) || String(getField("level")) || "Mid";
 
   return {
     id,
     title: String(ad?.title ?? ""),
     company: String(getField("company")) || undefined,
-    location:
-      String(getField("location")) ||
-      String(getField("city")) ||
-      "—",
-    sector:
-      String(getField("sector")) ||
-      String(getField("classification")) ||
-      "—",
-    jobType: jobTypeRaw.toLowerCase().includes("contract")
-      ? "Contract"
-      : "Permanent",
+    location: String(getField("location")) || String(getField("city")) || "—",
+    sector: String(getField("sector")) || String(getField("classification")) || "—",
+    jobType: jobTypeRaw.toLowerCase().includes("contract") ? "Contract" : "Permanent",
     experienceLevel: expRaw.toLowerCase().includes("exec")
       ? "Executive"
       : expRaw.toLowerCase().includes("senior")
         ? "Senior"
         : "Mid",
     salary: String(getField("salary")) || undefined,
-    postedAt:
-      String(ad?.postedAt ?? ad?.datePosted ?? new Date().toISOString()),
+    postedAt: String(ad?.postedAt ?? ad?.datePosted ?? new Date().toISOString()),
     summary: String(ad?.summary ?? ad?.teaser ?? ""),
     description: String(ad?.description ?? ad?.body ?? ""),
   };
@@ -128,10 +118,7 @@ export async function jobAdderListJobs(): Promise<{
 }> {
   const boardId = await getJobAdderBoardId();
 
-  const res = await jobadderFetch(
-    `/jobboards/${boardId}/ads`,
-    { method: "GET" }
-  );
+  const res = await jobadderFetch(`/jobboards/${boardId}/ads`, { method: "GET" });
 
   if (!res.ok) {
     const text = await res.text().catch(() => "");
@@ -140,11 +127,11 @@ export async function jobAdderListJobs(): Promise<{
 
   const json = await res.json();
 
-  const items = Array.isArray(json?.items) ? json.items : [];
+  const items = Array.isArray((json as any)?.items) ? (json as any).items : [];
 
   return {
     jobs: items.map(mapAdToSiteJob),
-    total: Number(json?.total ?? items.length ?? 0),
+    total: Number((json as any)?.total ?? items.length ?? 0),
   };
 }
 

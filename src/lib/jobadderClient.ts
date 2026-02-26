@@ -5,7 +5,7 @@ type TokenResponse = {
   refresh_token?: string;
   token_type: string;
   expires_in: number;
-  api: string;
+  api?: string;
 };
 
 async function refreshAccessToken(refreshToken: string): Promise<TokenResponse> {
@@ -46,11 +46,22 @@ export async function getValidAccessToken(): Promise<{
   }
 
   const now = Date.now();
-  const expiresAt = tokens.created_at + tokens.expires_in * 1000;
+
+  // created_at may be undefined (older tokens or strict TS)
+  const createdAt =
+    typeof tokens.created_at === "number" ? tokens.created_at : 0;
+
+  const expiresIn =
+    typeof tokens.expires_in === "number" ? tokens.expires_in : 0;
+
+  const expiresAt = createdAt + expiresIn * 1000;
 
   // If token is still valid (with 30s buffer)
   if (now < expiresAt - 30_000) {
-    return { token: tokens.access_token, apiBase: tokens.api };
+    return {
+      token: tokens.access_token,
+      apiBase: process.env.JOBADDER_API_BASE || "",
+    };
   }
 
   // Otherwise refresh it
@@ -67,7 +78,10 @@ export async function getValidAccessToken(): Promise<{
 
   await saveJobAdderTokens(updated);
 
-  return { token: updated.access_token, apiBase: updated.api };
+  return {
+    token: updated.access_token,
+    apiBase: process.env.JOBADDER_API_BASE || "",
+  };
 }
 
 /**
@@ -86,7 +100,6 @@ export async function jobadderFetch(
   headers.set("Authorization", `Bearer ${token}`);
   headers.set("Accept", "application/json");
 
-  // Only set JSON content-type if body exists AND is not FormData
   const isFormData =
     typeof FormData !== "undefined" && options.body instanceof FormData;
 

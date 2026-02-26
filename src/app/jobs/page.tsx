@@ -1,9 +1,9 @@
 "use client";
 
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
 
-export default function JobsPage() {
+function JobsPageInner() {
   const searchParams = useSearchParams();
   const [jobs, setJobs] = useState<any[]>([]);
 
@@ -31,5 +31,13 @@ export default function JobsPage() {
         </div>
       ))}
     </div>
+  );
+}
+
+export default function JobsPage() {
+  return (
+    <Suspense fallback={<div style={{ padding: "60px 40px" }} />}>
+      <JobsPageInner />
+    </Suspense>
   );
 }

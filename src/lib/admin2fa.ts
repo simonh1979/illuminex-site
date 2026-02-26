@@ -15,10 +15,12 @@ export type TwoFASetup = {
 
 /**
  * Returns true if 2FA is enabled for this user (active secret exists).
+ * If Redis is not configured, 2FA is treated as disabled.
  */
 export async function is2FAEnabled(email: string): Promise<boolean> {
   const e = (email || "").toLowerCase().trim();
   if (!e) return false;
+  if (!redis) return false;
 
   const v = await redis.get<string>(KEY_ACTIVE(e));
   return typeof v === "string" && v.length > 0;
@@ -31,6 +33,7 @@ export async function is2FAEnabled(email: string): Promise<boolean> {
 export async function begin2FAEnrollment(email: string): Promise<TwoFASetup> {
   const e = (email || "").toLowerCase().trim();
   if (!e) throw new Error("Missing email");
+  if (!redis) throw new Error("2FA is unavailable (Redis not configured).");
 
   const secret = speakeasy.generateSecret({
     name: `Illuminex Admin (${e})`,
@@ -56,6 +59,7 @@ export async function begin2FAEnrollment(email: string): Promise<TwoFASetup> {
 export async function confirm2FAEnrollment(email: string, code: string): Promise<boolean> {
   const e = (email || "").toLowerCase().trim();
   if (!e) return false;
+  if (!redis) return false;
 
   const pending = await redis.get<string>(KEY_PENDING(e));
   if (!pending) return false;
@@ -81,6 +85,7 @@ export async function confirm2FAEnrollment(email: string, code: string): Promise
 export async function verify2FACode(email: string, code: string): Promise<boolean> {
   const e = (email || "").toLowerCase().trim();
   if (!e) return false;
+  if (!redis) return false;
 
   const active = await redis.get<string>(KEY_ACTIVE(e));
   if (!active) return false;
@@ -99,6 +104,7 @@ export async function verify2FACode(email: string, code: string): Promise<boolea
 export async function disable2FA(email: string) {
   const e = (email || "").toLowerCase().trim();
   if (!e) return;
+  if (!redis) return;
 
   await redis.del(KEY_ACTIVE(e));
   await redis.del(KEY_PENDING(e));

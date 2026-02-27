@@ -123,10 +123,8 @@ export default function ClientsPage() {
             <div className="sector-card" style={{ gridColumn: "span 12" }}>
               <h3>Market mapping and targeted approach</h3>
               <p style={{ marginBottom: 0 }}>
-                Strong candidates are rarely active applicants.
-                They respond to credibility, clarity and trust.
-                We handle approaches with care, communicate honestly and ensure feedback is measured and constructive.
-                How you treat people during hiring reflects your leadership.
+                We identify the relevant competitor and adjacent markets, then approach candidates selectively with the right context.
+                This protects your reputation and keeps the search focused on quality, not noise.
               </p>
               <div className="sector-tag" style={{ marginTop: 12 }}>Defined approach</div>
             </div>
@@ -145,9 +143,10 @@ export default function ClientsPage() {
             <div className="sector-card" style={{ gridColumn: "span 12" }}>
               <h3>Candidate respect and brand protection</h3>
               <p style={{ marginBottom: 0 }}>
-                Strong candidates are rarely active applicants. They respond to credibility, clarity and trust.
-                We handle approaches with care, communicate honestly and keep the process respectful.
-                It improves outcomes and reflects well on your leadership.
+                Strong candidates are rarely active applicants.
+                They respond to credibility, clarity and trust.
+                We handle approaches with care, communicate honestly and ensure feedback is respectful, measured and constructive.
+                How you treat people during hiring reflects your leadership.
               </p>
               <div className="sector-tag" style={{ marginTop: 12 }}>Integrity first</div>
             </div>

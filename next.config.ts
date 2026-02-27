@@ -11,14 +11,14 @@ const csp = isProd
       "img-src 'self' data: blob: https:",
       "font-src 'self' data: https:",
       "style-src 'self' 'unsafe-inline'",
-      "script-src 'self' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/",
+      // ✅ Allow Next.js hydration scripts
+      "script-src 'self' 'unsafe-inline' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/",
       "connect-src 'self' https: https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/",
       "frame-src 'self' https://www.google.com/recaptcha/ https://recaptcha.google.com/recaptcha/",
       "form-action 'self'",
       "upgrade-insecure-requests",
     ].join("; ")
   : [
-      // DEV: allow Next/Turbopack/HMR
       "default-src 'self'",
       "base-uri 'self'",
       "object-src 'none'",
@@ -44,12 +44,14 @@ const securityHeaders = [
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "X-Frame-Options", value: "DENY" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-  { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), payment=(), usb=()" },
-  
+  {
+    key: "Permissions-Policy",
+    value: "camera=(), microphone=(), geolocation=(), payment=(), usb=()",
+  },
+  { key: "Content-Security-Policy", value: csp },
 ];
 
 const nextConfig: NextConfig = {
-  // IMPORTANT: hostnames/IPs only (no http/https)
   allowedDevOrigins: ["localhost", "127.0.0.1", "192.168.1.165"],
 
   async headers() {

@@ -34,7 +34,10 @@ export default function SiteHeader() {
 />
         </a>
 
+{/* TEMP BUILD STAMP */}
+<div style={{ fontSize: 10, opacity: 0.6 }}>build: {process.env.NEXT_PUBLIC_BUILD_ID}</div>
 {/* Desktop nav */}
+
 <nav className="main-nav nav-desktop" aria-label="Primary">
   <Link href="/" aria-current={pathname === "/" ? "page" : undefined}>Home</Link>
   <Link href="/about" aria-current={pathname === "/about" ? "page" : undefined}>About</Link>
@@ -59,40 +62,43 @@ export default function SiteHeader() {
   </Link>
 </nav>
 
-        {/* Mobile menu button */}
-        <button
-          type="button"
-          className="nav-toggle"
-          aria-label={open ? "Close menu" : "Open menu"}
-          aria-expanded={open}
-          onClick={() => setOpen((v) => !v)}
-        >
-          <span className="nav-toggle-lines" aria-hidden="true" />
-          <span className="nav-toggle-text">Menu</span>
-        </button>
-      </div>
+    {/* Mobile menu button */}
+<button
+  type="button"
+  className="nav-toggle"
+  aria-label={open ? "Close menu" : "Open menu"}
+  aria-expanded={open}
+  onClick={() => {
+    console.log("MENU CLICK");
+    setOpen((v) => !v);
+  }}
+>
+  <span className="nav-toggle-lines" aria-hidden="true" />
+  <span className="nav-toggle-text">Menu</span>
+</button>
+</div>
 
-      {/* Overlay */}
-      <div
-        className={`nav-overlay ${open ? "is-open" : ""}`}
-        onClick={() => setOpen(false)}
-        aria-hidden={!open}
-      />
+{/* Overlay */}
+<div
+  className={`nav-overlay ${open ? "is-open" : ""}`}
+  onClick={() => setOpen(false)}
+  aria-hidden={!open}
+/>
 
-      {/* Side drawer */}
-      <aside className={`nav-drawer ${open ? "is-open" : ""}`} aria-label="Menu">
-        <div className="nav-drawer-head">
-          <div className="nav-drawer-brand">Illuminex</div>
+{/* Side drawer */}
+<aside className={`nav-drawer ${open ? "is-open" : ""}`} aria-label="Menu">
+  <div className="nav-drawer-head">
+    <div className="nav-drawer-brand">Illuminex</div>
 
-          <button
-            type="button"
-            className="nav-drawer-close"
-            aria-label="Close menu"
-            onClick={() => setOpen(false)}
-          >
-            ✕
-          </button>
-        </div>
+    <button
+      type="button"
+      className="nav-drawer-close"
+      aria-label="Close menu"
+      onClick={() => setOpen(false)}
+    >
+      ✕
+    </button>
+  </div>    
 
         <div className="nav-drawer-links">
   <Link href="/" aria-current={pathname === "/" ? "page" : undefined}>Home</Link>

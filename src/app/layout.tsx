@@ -28,11 +28,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={inter.className}>
-      <body>
+      <body className="antialiased">
         <SiteHeader />
+
         {children}
 
-        {/* Footer (CSS already exists in globals.css: .site-footer etc) */}
+        {/* Footer */}
         <footer className="site-footer">
           <div className="footer-inner">
             <img
@@ -42,7 +43,9 @@ export default function RootLayout({
             />
 
             <div className="footer-center">
-              <p className="footer-text">© {new Date().getFullYear()} Illuminex Consultancy. All rights reserved.</p>
+              <p className="footer-text">
+                © {new Date().getFullYear()} Illuminex Consultancy. All rights reserved.
+              </p>
 
               <div className="footer-links">
                 <Link href="/privacy">Privacy</Link>
@@ -58,6 +61,7 @@ export default function RootLayout({
             />
           </div>
         </footer>
+
       </body>
     </html>
   );

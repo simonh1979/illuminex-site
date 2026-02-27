@@ -2495,45 +2495,44 @@ h3 { letter-spacing: 0.035em !important; }
 
 }
 
-
 /* =========================================
-   DESKTOP ONLY: Live Jobs = 2-column grid
-   (tablet + mobile remain single-column)
+   DESKTOP ONLY: Live Jobs as 2-column grid
+   (mobile remains stacked)
 ========================================= */
 
+/* 2 columns on desktop */
 @media (min-width: 1100px) {
-  /* Make the job results list 2 columns */
   .jobs-list {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     gap: 22px !important;
     align-items: stretch;
   }
 
-  /* Each job card should be a normal grid item (NOT span 12) */
+  /* Each card should occupy 1 column (not span 12) */
   .job-card {
     grid-column: auto !important;
     width: 100%;
-    height: 100%;
   }
 
   /* Stop summary text wrapping too early */
   .job-summary {
     max-width: none !important;
   }
-
-  /* Keep the right column consistent so layout is neat */
-  .job-side {
-    min-width: 160px;
-  }
 }
 
-/* Optional: keep mid-screens as 1 column (prevents cramped 2-col) */
+/* Optional: go back to 1 column for mid screens (keeps it clean) */
 @media (min-width: 700px) and (max-width: 1099px) {
   .jobs-list {
     grid-template-columns: 1fr !important;
   }
+}
+@media (min-width: 1100px) {
+  .job-top {
+    align-items: flex-start;
+  }
 
-  .job-card {
-    grid-column: span 12 !important;
+  .job-side {
+    min-width: 160px; /* gives the right column a consistent width */
   }
 }
+

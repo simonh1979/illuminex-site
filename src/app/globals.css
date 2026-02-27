@@ -2415,3 +2415,16 @@ h3 { letter-spacing: 0.035em !important; }
   }
 }
 }
+@media (max-width: 900px) {
+  /* Sector subpages: remove "desktop" side padding that makes cards look squashed */
+  .page-sector {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  /* If the sector inner wrapper is adding extra padding, neutralise it */
+  .page-sector .page-hero-inner {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+}

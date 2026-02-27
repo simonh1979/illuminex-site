@@ -2431,30 +2431,28 @@ h3 { letter-spacing: 0.035em !important; }
   }
 }
 /* ==========================
-   FINAL MOBILE FIX: Sector subpages full width cards
-   (does NOT change desktop)
+   FINAL FIX – Sector subpages true full width on mobile
 ========================== */
 @media (max-width: 900px) {
 
-  /* Let the sector page content use the screen width */
+  /* Remove container constraint */
   main.page.page-sector .page-inner {
-    max-width: none !important;
+    max-width: 100% !important;
     width: 100% !important;
-    padding-left: 18px !important;
-    padding-right: 18px !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
   }
 
-  /* Force the sector grid container to truly fill the wrapper */
-  main.page.page-sector div[style*="grid-template-columns"][style*="repeat(12"] {
-    width: 100% !important;
-    max-width: none !important;
+  /* Remove any inner grid margins */
+  main.page.page-sector .page-inner > div {
     margin-left: 0 !important;
     margin-right: 0 !important;
   }
 
-  /* Cards full width */
+  /* Force sector cards to fill */
   main.page.page-sector .sector-card {
     width: 100% !important;
-    max-width: none !important;
+    max-width: 100% !important;
   }
+
 }

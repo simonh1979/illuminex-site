@@ -2556,16 +2556,16 @@ h3 { letter-spacing: 0.035em !important; }
     grid-column: 1 / -1 !important;
   }
 
-}/* ==========================
-   Clients page – increase readable line length
-   Desktop only
+}
+
+/* ==========================
+   Clients page – refined readable line length (desktop only)
 ========================== */
 
 @media (min-width: 1100px) {
 
-  /* Allow wider text inside clients cards */
   .page-clients .sector-card p {
-    max-width: none !important;
+    max-width: 85ch !important;
   }
 
 }

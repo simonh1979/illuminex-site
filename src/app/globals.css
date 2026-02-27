@@ -286,6 +286,14 @@ main.page-home::before {
   margin-top: 30px;   /* increase breathing room */
 }
 
+@media (max-width: 768px) {
+  .sectors-grid,
+  .sector-grid,
+  .cards-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
 /* ==========================
    SEARCH CARD (HOMEPAGE)
 ========================== */

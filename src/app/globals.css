@@ -2390,23 +2390,6 @@ h3 { letter-spacing: 0.035em !important; }
 }
 
 /* ==========================
-   MOBILE FIX – Sector subpage grid full width
-========================== */
-@media (max-width: 900px) {
-
-  /* Make the 12-column inline grid become 1 column */
-  main div[style*="repeat(12"] {
-    grid-template-columns: 1fr !important;
-    width: 100% !important;
-  }
-
-  /* Make cards span full width */
-  main div[style*="grid-column: span 4"] {
-    grid-column: 1 / -1 !important;
-  }
-
-}
-/* ==========================
    FIX: Subpage content too narrow on mobile
    (keeps desktop exactly the same)
 ========================== */
@@ -2421,5 +2404,29 @@ h3 { letter-spacing: 0.035em !important; }
   .page-inner {
     padding-left: 18px !important;
     padding-right: 18px !important;
+  }
+}
+
+/* ==========================
+   MOBILE FIX: Sector subpage cards stack + full width
+   (no desktop changes)
+========================== */
+@media (max-width: 900px) {
+  /* Target the inline 12-col grid container used on sector pages */
+  .page-sector div[style*="grid-template-columns"][style*="repeat(12"] {
+    grid-template-columns: 1fr !important;
+    width: 100% !important;
+  }
+
+  /* Force any inline span cards to take full row */
+  .page-sector div[style*="grid-column"][style*="span 4"] {
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+  }
+
+  /* Ensure cards can actually expand (prevents narrow “card max-width” issues) */
+  .page-sector .sector-card {
+    width: 100% !important;
+    max-width: none !important;
   }
 }

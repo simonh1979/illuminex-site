@@ -2565,7 +2565,7 @@ h3 { letter-spacing: 0.035em !important; }
 @media (min-width: 1100px) {
 
   .page-clients .sector-card p {
-    max-width: 85ch !important;
+    max-width: 95ch !important;
   }
 
 }

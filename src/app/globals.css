@@ -2407,4 +2407,11 @@ h3 { letter-spacing: 0.035em !important; }
   main [style*="grid-column"][style*="span 4"] {
     grid-column: 1 / -1 !important;
   }
+
+  @media (max-width: 900px) {
+  .sector-card {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
 }

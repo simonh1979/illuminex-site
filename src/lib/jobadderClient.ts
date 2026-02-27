@@ -72,9 +72,12 @@ export async function getValidAccessToken(): Promise<{
   const refreshed = await refreshAccessToken(tokens.refresh_token);
 
   const updated = {
-    ...refreshed,
-    created_at: Date.now(),
-  };
+  access_token: refreshed.access_token,
+  refresh_token: refreshed.refresh_token,
+  token_type: refreshed.token_type,
+  expires_in: refreshed.expires_in,
+  created_at: Date.now(),
+};
 
   await saveJobAdderTokens(updated);
 

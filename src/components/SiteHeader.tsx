@@ -34,9 +34,6 @@ export default function SiteHeader() {
 />
         </a>
 
-{/* TEMP BUILD STAMP */}
-<div style={{ fontSize: 10, opacity: 0.6 }}>build: {process.env.NEXT_PUBLIC_BUILD_ID}</div>
-{/* Desktop nav */}
 
 <nav className="main-nav nav-desktop" aria-label="Primary">
   <Link href="/" aria-current={pathname === "/" ? "page" : undefined}>Home</Link>

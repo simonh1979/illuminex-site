@@ -2390,55 +2390,19 @@ h3 { letter-spacing: 0.035em !important; }
 }
 
 /* ==========================
-   MOBILE FIX: sector subpage cards must stack (Vercel-safe)
-   Targets the inline 12-col grid + span 4 cards used on sector pages
+   MOBILE FIX – Sector subpage grid full width
 ========================== */
 @media (max-width: 900px) {
-  /* Match inline styles like:
-     style="...display:grid; grid-template-columns:repeat(12, 1fr); ..."
-  */
-  main [style*="display:grid"][style*="grid-template-columns"][style*="repeat(12"] {
+
+  /* Make the 12-column inline grid become 1 column */
+  main div[style*="repeat(12"] {
     grid-template-columns: 1fr !important;
+    width: 100% !important;
   }
 
-  /* Match inline styles like:
-     style="grid-column: span 4"
-  */
-  main [style*="grid-column"][style*="span 4"] {
+  /* Make cards span full width */
+  main div[style*="grid-column: span 4"] {
     grid-column: 1 / -1 !important;
   }
 
-  @media (max-width: 900px) {
-  .sector-card {
-    width: 100% !important;
-    max-width: 100% !important;
-  }
-}
-}
-@media (max-width: 900px) {
-  /* Sector subpages: remove "desktop" side padding that makes cards look squashed */
-  .page-sector {
-    padding-left: 16px !important;
-    padding-right: 16px !important;
-  }
-
-  /* If the sector inner wrapper is adding extra padding, neutralise it */
-  .page-sector .page-hero-inner {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-  }
-}
-@media (max-width: 900px) {
-  /* Sector subpages: cards must use full available width */
-  .page-sector .sector-card {
-    width: 100% !important;
-    max-width: none !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-  }
-
-  /* If any card wrapper is centering/narrowing children */
-  .page-sector .sector-card > * {
-    max-width: none !important;
-  }
 }

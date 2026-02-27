@@ -2382,3 +2382,9 @@ main.page.page-contact .sector-card--cta input[type="submit"]{
 h1 { letter-spacing: 0.020em !important; }
 h2 { letter-spacing: 0.017em !important; }
 h3 { letter-spacing: 0.035em !important; }
+
+@media (max-width: 768px) {
+  main.page-sector-kbb div[style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+}

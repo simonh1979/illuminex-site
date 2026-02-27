@@ -2431,28 +2431,31 @@ h3 { letter-spacing: 0.035em !important; }
   }
 }
 /* ==========================
-   FINAL FIX – Sector subpages true full width on mobile
+   FINAL MOBILE WIDTH FIX (Sector subpages)
+   - removes the 1300px constraint actually seen in DevTools
+   - keeps desktop unchanged
 ========================== */
 @media (max-width: 900px) {
 
-  /* Remove container constraint */
-  main.page.page-sector .page-inner {
+  /* the container that is currently max-width:1300px in DevTools */
+  main.page.page-sector .page-hero-inner {
     max-width: 100% !important;
     width: 100% !important;
     padding-left: 12px !important;
     padding-right: 12px !important;
   }
 
-  /* Remove any inner grid margins */
-  main.page.page-sector .page-inner > div {
+  /* the grid wrapper that holds the sector cards */
+  main.page.page-sector .page-hero-inner > div[style*="grid-template-columns"] {
+    width: 100% !important;
+    max-width: 100% !important;
     margin-left: 0 !important;
     margin-right: 0 !important;
   }
 
-  /* Force sector cards to fill */
+  /* cards fill */
   main.page.page-sector .sector-card {
     width: 100% !important;
-    max-width: 100% !important;
+    max-width: none !important;
   }
-
 }

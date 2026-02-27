@@ -135,7 +135,7 @@ export default function ClientsPage() {
                 We use structured assessment and, where appropriate, video interviews to give early insight into communication style and credibility.
                 We can include personality and behavioural tools when they add value, and we build bespoke interview questions that test what matters:
                 commercial judgement, leadership style and stakeholder impact. These are never used to overcomplicate or delay.
-                They exist to reduce risk, highlight leadership style and ensure alignment with your environment
+                They exist to reduce risk, highlight leadership style and ensure alignment with your company's core values and ethos.
               </p>
               <div className="sector-tag" style={{ marginTop: 12 }}>Substance and fit</div>
             </div>

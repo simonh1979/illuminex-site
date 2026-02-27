@@ -2480,3 +2480,17 @@ h3 { letter-spacing: 0.035em !important; }
     max-width: none !important;
   }
 }
+/* ==========================
+   MOBILE GRID FIX – Contact page
+========================== */
+@media (max-width: 900px) {
+
+  main.page.page-contact div[style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  main.page.page-contact .sector-card {
+    grid-column: 1 / -1 !important;
+  }
+
+}

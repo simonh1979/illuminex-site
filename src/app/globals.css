@@ -2406,3 +2406,20 @@ h3 { letter-spacing: 0.035em !important; }
   }
 
 }
+/* ==========================
+   FIX: Subpage content too narrow on mobile
+   (keeps desktop exactly the same)
+========================== */
+@media (max-width: 900px) {
+  .page-hero .page-hero-inner,
+  .jobs-shell,
+  .job-detail-grid {
+    padding-left: 18px !important;
+    padding-right: 18px !important;
+  }
+
+  .page-inner {
+    padding-left: 18px !important;
+    padding-right: 18px !important;
+  }
+}

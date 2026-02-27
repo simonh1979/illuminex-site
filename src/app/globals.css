@@ -2430,32 +2430,53 @@ h3 { letter-spacing: 0.035em !important; }
     max-width: none !important;
   }
 }
+
 /* ==========================
-   FINAL MOBILE WIDTH FIX (Sector subpages)
-   - removes the 1300px constraint actually seen in DevTools
-   - keeps desktop unchanged
+   TRUE GRID FIX – Sector subpages mobile
 ========================== */
 @media (max-width: 900px) {
 
-  /* the container that is currently max-width:1300px in DevTools */
-  main.page.page-sector .page-hero-inner {
-    max-width: 100% !important;
-    width: 100% !important;
-    padding-left: 12px !important;
-    padding-right: 12px !important;
+  /* Force the sector grid wrapper to 1 column */
+  main.page.page-sector div[style*="grid-template-columns"] {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
   }
 
-  /* the grid wrapper that holds the sector cards */
-  main.page.page-sector .page-hero-inner > div[style*="grid-template-columns"] {
-    width: 100% !important;
-    max-width: 100% !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
+  /* Make every sector card span full row */
+  main.page.page-sector .sector-card {
+    grid-column: 1 / -1 !important;
   }
 
-  /* cards fill */
+}
+/* ==========================
+   FINAL MOBILE WIDTH LOCK (Sector subpages)
+   - makes the 1-col grid stretch full width
+   - removes early wrapping limits on the sector hero text
+========================== */
+@media (max-width: 900px) {
+  /* Use almost all the screen width */
+  main.page.page-sector .page-hero .page-hero-inner {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
+
+  /* Make the grid items stretch to fill the column */
+  main.page.page-sector .page-hero .page-hero-inner > div[style*="grid-template-columns"] {
+    width: 100% !important;
+    max-width: 100% !important;
+    justify-items: stretch !important;
+  }
+
+  /* Ensure each card can expand fully */
   main.page.page-sector .sector-card {
     width: 100% !important;
+    max-width: none !important;
+  }
+
+  /* Stop the sector hero paragraph wrapping too early on mobile */
+  main.page.page-sector .sector-hero-text {
     max-width: none !important;
   }
 }

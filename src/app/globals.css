@@ -2388,3 +2388,34 @@ h3 { letter-spacing: 0.035em !important; }
     grid-template-columns: 1fr !important;
   }
 }
+
+/* ==========================
+   MOBILE FIX: Sector cards should stack
+   ========================== */
+@media (max-width: 900px) {
+  /* Force any 12-col inline grid on sector pages into a single column */
+  .page-sector [style*="grid-template-columns:repeat(12"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Force any inline "grid-column: span 4" cards to take full width */
+  .page-sector [style*="grid-column: span 4"] {
+    grid-column: 1 / -1 !important;
+  }
+}
+
+/* ==========================
+   MOBILE FIX: sector subpages cards should stack
+   (targets the inline 12-col grid used on sector pages)
+   ========================== */
+@media (max-width: 900px) {
+  /* Any inline grid using repeat(12, 1fr) becomes 1 column */
+  main [style*="grid-template-columns:repeat(12"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Any inline span cards become full width */
+  main [style*="grid-column: span 4"] {
+    grid-column: 1 / -1 !important;
+  }
+}

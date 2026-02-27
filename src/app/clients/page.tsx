@@ -76,7 +76,7 @@ export default function ClientsPage() {
               gap: 18,
             }}
           >
-            <div className="sector-card" style={{ gridColumn: "span 4" }}>
+            <div className="sector-card" style={{ gridColumn: "span 6" }}>
   <h3>Exclusive retained executive search</h3>
   <p>
     Used for senior, confidential and business-critical appointments where the cost of getting it wrong is high.
@@ -90,24 +90,24 @@ export default function ClientsPage() {
   <div className="sector-tag">Board &amp; Executive</div>
 </div>
 
-            <div className="sector-card" style={{ gridColumn: "span 4" }}>
-              <h3>Specialist strategic recruitment</h3>
-              <p>
-                For mid to senior hires where speed and precision both matter.
-                The commercial structure is different, but the standards are not.
-                You still get a disciplined search and a shortlist you can trust.
-              </p>
-              <div className="sector-tag">Mid–Senior</div>
-            </div>
+<div className="sector-card" style={{ gridColumn: "span 6" }}>
+  <h3>Specialist strategic recruitment</h3>
+  <p>
+    For mid to senior hires where speed and precision both matter.
+    The commercial structure is different, but the standards are not.
+    You still get a disciplined search and a shortlist you can trust.
+  </p>
+  <div className="sector-tag">Mid–Senior</div>
+</div>
 
-            <div className="sector-card" style={{ gridColumn: "span 4" }}>
-              <h3>Shortlists you can rely on</h3>
-              <p>
-                We assess beyond CV narrative. Candidates are evaluated against commercial outcomes,
-                leadership behaviours, stakeholder impact and decision-making track record.
-              </p>
-              <div className="sector-tag">Evidence-led</div>
-            </div>
+<div className="sector-card" style={{ gridColumn: "span 12" }}>
+  <h3>Shortlists you can rely on</h3>
+  <p>
+    We assess beyond CV narrative. Candidates are evaluated against commercial outcomes,
+    leadership behaviours, stakeholder impact and decision-making track record.
+  </p>
+  <div className="sector-tag">Evidence-led</div>
+</div>
 
             {/* How we work (integrated, not a separate page) */}
             <div className="sector-card" style={{ gridColumn: "span 12" }}>

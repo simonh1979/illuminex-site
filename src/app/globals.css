@@ -2428,3 +2428,17 @@ h3 { letter-spacing: 0.035em !important; }
     padding-right: 0 !important;
   }
 }
+@media (max-width: 900px) {
+  /* Sector subpages: cards must use full available width */
+  .page-sector .sector-card {
+    width: 100% !important;
+    max-width: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  /* If any card wrapper is centering/narrowing children */
+  .page-sector .sector-card > * {
+    max-width: none !important;
+  }
+}

@@ -2539,3 +2539,21 @@ h3 { letter-spacing: 0.035em !important; }
     min-width: 0;
   }
 }
+/* =========================================
+   GLOBAL FIX: Stack inline 12-col grids on mobile
+   (About, Clients, Candidates, Services etc)
+========================================= */
+
+@media (max-width: 900px) {
+
+  /* Any inline 12-column grid inside a page */
+  main.page div[style*="grid-template-columns"][style*="repeat(12"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Make cards span full width */
+  main.page .sector-card {
+    grid-column: 1 / -1 !important;
+  }
+
+}

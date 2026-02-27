@@ -2566,7 +2566,7 @@ h3 { letter-spacing: 0.035em !important; }
 
   /* Only affect full-width cards on Clients page */
   .page-clients .sector-card[style*="span 12"] p {
-    max-width: 120ch !important;
+    max-width: 160ch !important;
   }
 
 }

@@ -2560,24 +2560,29 @@ h3 { letter-spacing: 0.035em !important; }
     min-width: 0;
   }
 
-  /* Meta line behaviour (no clipping, no ellipsis) */
-  .job-meta {
-    display: flex;
-    flex-wrap: wrap;       /* stays one line if possible */
-    gap: 10px;
-    white-space: normal;   /* allows wrap if genuinely needed */
-  }
-
-  .job-meta span {
-    white-space: nowrap;   /* keep each token intact */
-  }
-
-  /* Anchor bottom row */
-  .job-bottom {
-    margin-top: auto;
-  }
+  /* Meta line refinement */
+.job-meta {
+  display: flex;
+  flex-wrap: nowrap;      /* keep on one clean line */
+  gap: 6px;               /* tighter spacing */
+  white-space: nowrap;
 }
 
+.job-meta span {
+  white-space: nowrap;
+}
+
+.job-dot {
+  margin: 0 6px;          /* tighter dot spacing */
+  opacity: 0.7;
+}
+}
+
+/* Salary refinement */
+.job-salary {
+  letter-spacing: 0.04em;   /* subtle premium spacing */
+  font-weight: 800;
+}
 
 /* =========================================
    GLOBAL FIX: Stack inline 12-col grids on mobile

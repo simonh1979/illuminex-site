@@ -2569,23 +2569,27 @@ h3 { letter-spacing: 0.035em !important; }
 }
 
 /* ==========================
-   LIVE JOBS – Desktop meta line wrapping fix
-   Prevents orphan last word (e.g. "Senior") dropping early
+   LIVE JOBS – Desktop meta alignment fix
+   Keeps all meta items on one clean line
 ========================== */
+
 @media (min-width: 1100px) {
+
   .job-meta {
-    display: block;         /* stop flex wrapping behaviour */
-    overflow: visible;
+    display: flex;
+    flex-wrap: nowrap;       /* keep on one line */
+    gap: 10px;
+    white-space: nowrap;     /* prevent odd wrapping */
   }
 
-  .job-meta > * {
-    display: inline;        /* treat children like normal text */
+  .job-meta span {
+    white-space: nowrap;
   }
 
   .job-dot {
-    display: inline;
-    margin: 0 10px;         /* consistent spacing around separators */
+    opacity: 0.6;
   }
+
 }
 
 /* =========================================

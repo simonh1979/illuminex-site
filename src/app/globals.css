@@ -2622,3 +2622,20 @@ h3 { letter-spacing: 0.035em !important; }
   }
 
 }
+
+/* ==========================
+   MOBILE BACKGROUND LOCK FIX
+   Prevent cover re-scaling when mobile browser UI resizes
+========================== */
+
+@media (max-width: 900px) {
+
+  main.page::before,
+  main.page::after,
+  main.page-home::before,
+  main.page-home::after {
+    background-size: 1200px auto !important; /* fixed width prevents zoom recalculation */
+    background-position: top center !important;
+  }
+
+}

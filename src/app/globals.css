@@ -2593,7 +2593,6 @@ h3 { letter-spacing: 0.035em !important; }
   letter-spacing: normal;
 }
 
-
 /* =========================================
    GLOBAL FIX: Stack inline 12-col grids on mobile
 ========================================= */
@@ -2621,23 +2620,34 @@ h3 { letter-spacing: 0.035em !important; }
     max-width: 140ch !important;
   }
 
-}/* ==========================
-   MOBILE FIX: prevent background “zoom/shift” on scroll
+}
+
+/* ==========================
+   MOBILE FIX: stop background “zoom/shift” while keeping full coverage
    (Samsung Internet / Chromium)
-   - mobile only
-   - keeps desktop exactly the same
+   - keeps fixed backgrounds
+   - locks to large viewport height to avoid scroll-resize jumps
 ========================== */
 @media (max-width: 900px) {
-  /* Homepage background layers */
   main.page-home::before,
   main.page-home::after,
-  /* Subpage background layers */
   main.page::before,
   main.page::after {
-    position: absolute !important;   /* key change: remove fixed behaviour on mobile */
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    height: 100svh !important;       /* stable viewport height unit */
+    position: fixed !important;
+    inset: 0 !important;
+
+    /* Critical: lock height to the “large viewport” so address-bar changes
+       don’t resize the background and cause the zoom/shift effect */
+    height: 100lvh !important;
+  }
+
+  /* Fallback if 100lvh isn’t supported */
+  @supports not (height: 100lvh) {
+    main.page-home::before,
+    main.page-home::after,
+    main.page::before,
+    main.page::after {
+      height: 100vh !important;
+    }
   }
 }

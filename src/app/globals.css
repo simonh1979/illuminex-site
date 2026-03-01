@@ -2498,58 +2498,37 @@ h3 { letter-spacing: 0.035em !important; }
 }
 
 /* =========================================
-   DESKTOP ONLY: Live Jobs = 2-column grid
-   (mobile stays stacked)
+   LIVE JOBS – DESKTOP LAYOUT
+   2-column grid, equal height, no clipping
 ========================================= */
 
 @media (min-width: 1100px) {
 
-  /* 2-up layout */
+  /* Widen Live Jobs page to align with other sections */
+  .jobs-shell {
+    max-width: 1700px;
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  /* 2-column layout */
   .jobs-list {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 18px;
+    gap: 24px;
     align-items: stretch;
   }
 
-  /* each job card becomes normal grid item */
+  /* Card structure */
   .job-card {
     grid-column: auto !important;
     width: 100%;
-    height: 100%;
+    min-height: 360px;
     display: flex;
     flex-direction: column;
   }
 
-  /* stop early wrapping constraint */
-  .job-summary {
-    max-width: none !important;
-  }
-
-  /* prevent ILX/date stealing width */
-  .job-side {
-    min-width: unset !important;
-    width: auto !important;
-    white-space: nowrap;
-    flex: 0 0 auto;
-  }
-
-  /* give left block space */
-  .job-top {
-    gap: 14px;
-  }
-
-  .job-top > :first-child {
-    flex: 1 1 auto;
-    min-width: 0;
-  }
-
-  /* Anchor bottom row */
-  .job-bottom {
-    margin-top: auto;
-  }
-
-  /* Equalise height by controlling text length */
+  /* Title clamp (max 2 lines) */
   .job-title {
     display: -webkit-box;
     -webkit-box-orient: vertical;
@@ -2557,92 +2536,72 @@ h3 { letter-spacing: 0.035em !important; }
     overflow: hidden;
   }
 
-    /* Premium spacing + consistent presence */
-  .job-card {
-    min-height: 360px;   /* adjust 340–380 if needed */
-  }
-
+  /* Summary clamp (max 4 lines, premium spacing) */
   .job-summary {
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 4;   /* was 3 */
+    -webkit-line-clamp: 4;
     overflow: hidden;
+    max-width: none;
   }
-}
 
-/* ==========================
-   LIVE JOBS – Desktop meta alignment fix
-   Keeps all meta items on one clean line
-========================== */
+  /* Prevent right-side meta (ILX/date) stealing width */
+  .job-side {
+    white-space: nowrap;
+    flex: 0 0 auto;
+  }
 
-@media (min-width: 1100px) {
+  .job-top {
+    gap: 16px;
+  }
 
+  .job-top > :first-child {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  /* Meta line behaviour (no clipping, no ellipsis) */
   .job-meta {
     display: flex;
-    flex-wrap: nowrap;       /* keep on one line */
+    flex-wrap: wrap;       /* stays one line if possible */
     gap: 10px;
-    white-space: nowrap;     /* prevent odd wrapping */
+    white-space: normal;   /* allows wrap if genuinely needed */
   }
 
   .job-meta span {
-    white-space: nowrap;
+    white-space: nowrap;   /* keep each token intact */
   }
 
-  .job-dot {
-    opacity: 0.6;
-  }
-
-}
-
-/* ==========================
-   LIVE JOBS – Desktop width refinement only
-   (no mobile impact)
-========================== */
-
-@media (min-width: 1100px) {
-
-  /* Make Live Jobs page match wider layout of other pages */
-  .jobs-shell {
-    max-width: 1700px;        /* increase width */
-    padding-left: 40px;       /* reduce dead space */
-    padding-right: 40px;
-  }
-
-}
-
-@media (min-width: 1100px) {
-  .job-meta {
-    overflow: hidden;
-    text-overflow: ellipsis;
+  /* Anchor bottom row */
+  .job-bottom {
+    margin-top: auto;
   }
 }
+
 
 /* =========================================
    GLOBAL FIX: Stack inline 12-col grids on mobile
-   (About, Clients, Candidates, Services etc)
 ========================================= */
 
 @media (max-width: 900px) {
 
-  /* Any inline 12-column grid inside a page */
   main.page div[style*="grid-template-columns"][style*="repeat(12"] {
     grid-template-columns: 1fr !important;
   }
 
-  /* Make cards span full width */
   main.page .sector-card {
     grid-column: 1 / -1 !important;
   }
 
 }
 
-/* ==========================
-   Clients page – full width card text refinement (desktop only)
-========================== */
+
+/* =========================================
+   CLIENTS PAGE – Full-width card refinement (desktop only)
+========================================= */
 
 @media (min-width: 1100px) {
 
-  /* Only affect full-width cards on Clients page */
   .page-clients .sector-card[style*="span 12"] p {
     max-width: 140ch !important;
   }

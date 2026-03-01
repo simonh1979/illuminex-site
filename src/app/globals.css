@@ -2555,13 +2555,37 @@ h3 { letter-spacing: 0.035em !important; }
     overflow: hidden;
   }
 
+    /* Premium spacing + consistent presence */
+  .job-card {
+    min-height: 360px;   /* adjust 340–380 if needed */
+  }
+
   .job-summary {
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 4;   /* was 3 */
     overflow: hidden;
   }
+}
 
+/* ==========================
+   LIVE JOBS – Desktop meta line wrapping fix
+   Prevents orphan last word (e.g. "Senior") dropping early
+========================== */
+@media (min-width: 1100px) {
+  .job-meta {
+    display: block;         /* stop flex wrapping behaviour */
+    overflow: visible;
+  }
+
+  .job-meta > * {
+    display: inline;        /* treat children like normal text */
+  }
+
+  .job-dot {
+    display: inline;
+    margin: 0 10px;         /* consistent spacing around separators */
+  }
 }
 
 /* =========================================

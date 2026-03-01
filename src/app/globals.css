@@ -2584,6 +2584,16 @@ h3 { letter-spacing: 0.035em !important; }
   font-weight: 800;
 }
 
+/* Salary range dash spacing refinement */
+.job-salary {
+  letter-spacing: 0.03em;
+}
+
+.job-salary::before {
+  letter-spacing: normal;
+}
+
+
 /* =========================================
    GLOBAL FIX: Stack inline 12-col grids on mobile
 ========================================= */

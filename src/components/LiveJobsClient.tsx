@@ -46,6 +46,17 @@ function slugify(input: string) {
     .slice(0, 80);
 }
 
+function formatSalary(raw?: string) {
+  if (!raw) return "";
+
+  return raw
+    // normalise any dash types (hyphen, en-dash, em-dash) and add spacing
+    .replace(/\s*[-–—]\s*/g, " – ")
+    // tidy multiple spaces
+    .replace(/\s{2,}/g, " ")
+    .trim();
+}
+
 function LiveJobsClientInner() {
   const router = useRouter();
   const pathname = usePathname();
@@ -290,7 +301,9 @@ function LiveJobsClientInner() {
                 <p className="job-summary">{job.summary}</p>
 
                 <div className="job-bottom">
-                  <div className="job-salary">{job.salary ?? "Salary: DOE"}</div>
+                  <div className="job-salary">
+                    {job.salary ? formatSalary(job.salary) : "Salary: DOE"}
+                </div>
 
                   {/* Later: this becomes /live-jobs/[slug] and a JobAdder apply link */}
                   <a

@@ -2624,18 +2624,22 @@ h3 { letter-spacing: 0.035em !important; }
 }
 
 /* ==========================
-   MOBILE BACKGROUND LOCK FIX
-   Prevent cover re-scaling when mobile browser UI resizes
+   MOBILE FIX: prevent background “zoom/shift” on scroll
+   (Samsung Internet / Chromium)
+   - mobile only
+   - keeps desktop exactly the same
 ========================== */
-
 @media (max-width: 900px) {
-
-  main.page::before,
-  main.page::after,
+  /* Homepage background layers */
   main.page-home::before,
-  main.page-home::after {
-    background-size: 1200px auto !important; /* fixed width prevents zoom recalculation */
-    background-position: top center !important;
+  main.page-home::after,
+  /* Subpage background layers */
+  main.page::before,
+  main.page::after {
+    position: absolute !important;   /* key change: remove fixed behaviour on mobile */
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: 100svh !important;       /* stable viewport height unit */
   }
-
 }

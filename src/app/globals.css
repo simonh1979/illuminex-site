@@ -2595,16 +2595,19 @@ h3 { letter-spacing: 0.035em !important; }
 }
 
 /* ==========================
-   LIVE JOBS – Wider desktop container + less dead space
-   Keeps mobile unchanged
+   LIVE JOBS – Desktop width refinement only
+   (no mobile impact)
 ========================== */
+
 @media (min-width: 1100px) {
-  /* Match wider pages like hero/header containers */
+
+  /* Make Live Jobs page match wider layout of other pages */
   .jobs-shell {
-    max-width: 1680px !important;
-    padding-left: 40px !important;
-    padding-right: 40px !important;
+    max-width: 1700px;        /* increase width */
+    padding-left: 40px;       /* reduce dead space */
+    padding-right: 40px;
   }
+
 }
 
 @media (min-width: 1100px) {

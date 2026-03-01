@@ -1079,7 +1079,7 @@ main.page {
 /* Background image for all subpages (full scroll) */
 main.page::before {
   content: "";
-  position: absolute;
+  position: fixed;
   inset: 0;
   background-image: url("/hero-bg-sub1.jpg");
   background-repeat: no-repeat;
@@ -1095,7 +1095,7 @@ main.page::before {
 /* Blue overlay for all subpages (full scroll) */
 main.page::after {
   content: "";
-  position: absolute;
+  position: fixed;
   inset: 0;
   background: linear-gradient(
     135deg,
@@ -2621,9 +2621,7 @@ h3 { letter-spacing: 0.035em !important; }
     max-width: 140ch !important;
   }
 
-}
-
-/* ==========================
+}/* ==========================
    MOBILE FIX: prevent background “zoom/shift” on scroll
    (Samsung Internet / Chromium)
    - mobile only

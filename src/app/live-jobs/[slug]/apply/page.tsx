@@ -1,195 +1,75 @@
-import Link from "next/link";
-import { headers } from "next/headers";
+// src/app/live-jobs/[slug]/apply/page.tsx
+
+import type { Metadata } from "next";
 import ApplyFormClient from "@/components/ApplyFormClient";
 
-type Job = {
-  id: string;
-  jobAdId?: number;
-  title: string;
-  location: string;
-  sector: string;
-  jobType: "Permanent" | "Contract";
-  experienceLevel: "Mid" | "Senior" | "Executive";
-  salary?: string;
-  postedAt: string;
-  summary: string;
+type Props = {
+  params: {
+    slug: string;
+  };
 };
 
-function getJobIdFromSlug(slugParam: unknown) {
-  // slugParam should normally be a string, but let's handle anything safely.
-  const slug =
-    typeof slugParam === "string"
-      ? slugParam
-      : Array.isArray(slugParam)
-      ? slugParam.join("/")
-      : "";
+export const metadata: Metadata = {
+  title: "Apply | Illuminex Consultancy",
+  description:
+    "Submit your application confidentially. Executive search and specialist recruitment across UK professional and technical sectors.",
+};
 
-  if (!slug) return null;
+export default function ApplyPage({ params }: Props) {
+  // Extract jobId from slug (last part after final dash)
+  const slugParts = params.slug.split("-");
+  const jobId = slugParts[slugParts.length - 1] || "Unknown";
 
-  // 1) Preferred: ILX-001 at end
-  const endMatch = slug.match(/(ILX-\d+)$/i);
-  if (endMatch) return endMatch[1].toUpperCase();
-
-  // 2) Fallback: ILX-001 anywhere in the slug
-  const anyMatch = slug.match(/(ILX-\d+)/i);
-  if (anyMatch) return anyMatch[1].toUpperCase();
-
-  return null;
-}
-
-async function getBaseUrl() {
-  const h = await headers();
-  const host = h.get("host") ?? "localhost:3000";
-
-  // In dev (including viewing from phone/tablet on your network), always use http
-  if (process.env.NODE_ENV === "development") {
-    return `http://${host}`;
-  }
-
-  // In production, respect proxy headers if present
-  const proto = h.get("x-forwarded-proto") ?? "https";
-  return `${proto}://${host}`;
-}
-
-export const dynamic = "force-dynamic";
-
-export default async function ApplyPage({
-  params,
-}: {
-  params: { slug: string };
-}) {
-
- const { slug } = await params;
-const jobId = getJobIdFromSlug(slug);
-
-  if (!jobId) {
-    return (
-      <main className="page">
-        <section className="page-hero">
-          <div className="page-hero-inner">
-            <div className="sector-card" style={{ gridColumn: "span 12" }}>
-              <h3>Role not found</h3>
-              <p className="jobs-muted">This link looks incomplete. Please return to Live Jobs and try again.</p>
-              <div style={{ marginTop: 14 }}>
-                <Link className="sector-cta" href="/live-jobs">Back to Live Jobs</Link>
-              </div>
-            </div>
-          </div>
-        </section>
-      </main>
-    );
-  }
-
-  const baseUrl = await getBaseUrl();
-  let job: Job | null = null;
-
-  try {
-    const res = await fetch(`${baseUrl}/api/jobs/${encodeURIComponent(jobId)}`, {
-      cache: "no-store",
-      headers: { Accept: "application/json" },
-    });
-    if (res.ok) job = (await res.json()) as Job;
-  } catch {
-    job = null;
-  }
-
-  if (!job) {
-    return (
-      <main className="page">
-        <section className="page-hero">
-          <div className="page-hero-inner">
-            <div className="sector-card" style={{ gridColumn: "span 12" }}>
-              <h3>Role unavailable</h3>
-              <p className="jobs-muted">This vacancy may have been filled or removed. Please return to Live Jobs.</p>
-              <div style={{ marginTop: 14 }}>
-                <Link className="sector-cta" href="/live-jobs">Back to Live Jobs</Link>
-              </div>
-            </div>
-          </div>
-        </section>
-      </main>
-    );
-  }
+  // Convert slug back to readable title (optional improvement)
+  const jobTitle = slugParts
+    .slice(0, -1)
+    .join(" ")
+    .replace(/\b\w/g, (l) => l.toUpperCase());
 
   return (
-    <main className="page">
+    <main className="page page-apply">
       <section className="page-hero">
         <div className="page-hero-inner">
-          <div className="jobs-shell" style={{ paddingBottom: 40 }}>
-           <div className="sector-card apply-card" style={{ gridColumn: "span 12" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
-                <div>
-                  <h3 style={{ marginBottom: 8 }}>Apply — {job.title}</h3>
-                  <div className="job-meta">
-                    <span>{job.location}</span>
-                    <span className="job-dot">•</span>
-                    <span>{job.sector}</span>
-                    <span className="job-dot">•</span>
-                    <span>{job.jobType}</span>
-                    <span className="job-dot">•</span>
-                    <span>{job.experienceLevel}</span>
-                  </div>
-                  <p className="jobs-muted" style={{ marginTop: 10, maxWidth: 90 + "ch" }}>
-                    {job.summary}
-                  </p>
-                </div>
+          <h1
+            style={{
+              fontSize: "clamp(2.2rem, 2.8vw, 3.1rem)",
+              fontWeight: 900,
+              letterSpacing: "-0.02em",
+              lineHeight: 1.12,
+            }}
+          >
+            Apply for this role
+          </h1>
 
-                <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
-                  <Link className="jobs-clear" href={`/live-jobs/${encodeURIComponent(slug)}`}>
-                    Back to role
-                  </Link>
-                  <Link className="jobs-clear" href="/live-jobs">
-                    All roles
-                  </Link>
-                </div>
-              </div>
+          <p
+            style={{
+              marginTop: 16,
+              maxWidth: 1180,
+              fontSize: "clamp(1.05rem, 1.1vw, 1.2rem)",
+              lineHeight: 1.75,
+              opacity: 0.92,
+            }}
+          >
+            Your application will be handled discreetly and in line with our
+            Privacy Policy.
+          </p>
 
-<div className="apply-grid" style={{ marginTop: 18 }}>
-  {/* LEFT: Form */}
-  <div className="apply-main">
-    <h3 style={{ marginBottom: 10 }}>Your details</h3>
-<p className="jobs-muted apply-intro" style={{ marginBottom: 16 }}>
-  Please complete the form below. You can upload your CV and confirm acceptance of our Terms & Conditions.
-</p>
-
-    <ApplyFormClient jobId={job.id} jobTitle={job.title} jobAdId={job.jobAdId} />
-
-  </div>
-
-  {/* RIGHT: Summary panel */}
-  <aside className="apply-aside">
-    <h3 style={{ marginBottom: 10 }}>Your application</h3>
-
-    <div className="apply-panel">
-      <div className="apply-panel-row">
-        <span>Role</span>
-        <strong>{job.title}</strong>
-      </div>
-      <div className="apply-panel-row">
-        <span>Location</span>
-        <strong>{job.location}</strong>
-      </div>
-      <div className="apply-panel-row">
-        <span>Sector</span>
-        <strong>{job.sector}</strong>
-      </div>
-      <div className="apply-panel-row">
-        <span>Type</span>
-        <strong>{job.jobType}</strong>
-      </div>
-      <div className="apply-panel-row">
-        <span>Level</span>
-        <strong>{job.experienceLevel}</strong>
-      </div>
-
-      <div className="apply-panel-divider" />
-
-      <p className="jobs-muted" style={{ margin: 0 }}>
-        We treat all applications discreetly. If you have questions, use the note field in the form.
-      </p>
-    </div>
-  </aside>
-</div>
+          <div
+            style={{
+              marginTop: 34,
+              display: "grid",
+              gridTemplateColumns: "repeat(12, 1fr)",
+              gap: 18,
+            }}
+          >
+            <div
+              className="sector-card sector-card--cta"
+              style={{ gridColumn: "span 12" }}
+            >
+              <ApplyFormClient
+                jobId={jobId}
+                jobTitle={jobTitle}
+              />
             </div>
           </div>
         </div>
@@ -197,4 +77,3 @@ const jobId = getJobIdFromSlug(slug);
     </main>
   );
 }
-

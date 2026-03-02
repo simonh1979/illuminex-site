@@ -30,20 +30,15 @@ async function verifyRecaptcha(token: string) {
 
   const data = await res.json().catch(() => null);
 
-  if (!res.ok) {
-    throw new Error(`reCAPTCHA verification request failed (${res.status}).`);
-  }
-
-  if (!data?.success) {
-    throw new Error("reCAPTCHA verification failed.");
-  }
+  if (!res.ok) throw new Error(`reCAPTCHA verification request failed (${res.status}).`);
+  if (!data?.success) throw new Error("reCAPTCHA verification failed.");
 }
 
 export async function POST(req: Request) {
   try {
     const form = await req.formData();
 
-    // Honeypot field (keep empty)
+    // Honeypot (keep empty)
     const website = String(form.get("website") || "");
     if (website.trim().length > 0) {
       return NextResponse.json({ ok: true });
@@ -59,27 +54,31 @@ export async function POST(req: Request) {
     }
     await verifyRecaptcha(recaptchaToken);
 
-    // Fields
-    const name = String(form.get("name") || "").trim();
+    // Fields (match ApplyFormClient.tsx)
+    const jobId = String(form.get("jobId") || "").trim();
+    const jobTitle = String(form.get("jobTitle") || "").trim();
+    const jobAdId = String(form.get("jobAdId") || "").trim();
+
+    const fullName = String(form.get("fullName") || "").trim();
     const email = String(form.get("email") || "").trim();
     const phone = String(form.get("phone") || "").trim();
-    const notes = String(form.get("notes") || "").trim();
+    const linkedin = String(form.get("linkedin") || "").trim();
+    const message = String(form.get("message") || "").trim();
 
-    if (name.length < 2) {
-      return NextResponse.json(
-        { ok: false, error: "Name is too short." },
-        { status: 400 }
-      );
+    const terms = String(form.get("terms") || "") === "true";
+
+    if (fullName.length < 2) {
+      return NextResponse.json({ ok: false, error: "Name is too short." }, { status: 400 });
     }
     if (!isEmail(email)) {
-      return NextResponse.json(
-        { ok: false, error: "Enter a valid email address." },
-        { status: 400 }
-      );
+      return NextResponse.json({ ok: false, error: "Enter a valid email address." }, { status: 400 });
     }
     if (!phone) {
+      return NextResponse.json({ ok: false, error: "Please enter a phone number." }, { status: 400 });
+    }
+    if (!terms) {
       return NextResponse.json(
-        { ok: false, error: "Please enter a phone number." },
+        { ok: false, error: "Please confirm acceptance of the Terms & Conditions." },
         { status: 400 }
       );
     }
@@ -87,10 +86,7 @@ export async function POST(req: Request) {
     // CV (required)
     const file = form.get("cv");
     if (!(file instanceof File)) {
-      return NextResponse.json(
-        { ok: false, error: "Please attach your CV." },
-        { status: 400 }
-      );
+      return NextResponse.json({ ok: false, error: "Please attach your CV." }, { status: 400 });
     }
 
     if (!ALLOWED_MIME.has(file.type)) {
@@ -110,10 +106,7 @@ export async function POST(req: Request) {
 
     const to = process.env.APPLY_TO;
     if (!to) {
-      return NextResponse.json(
-        { ok: false, error: "APPLY_TO not set on server." },
-        { status: 500 }
-      );
+      return NextResponse.json({ ok: false, error: "APPLY_TO not set on server." }, { status: 500 });
     }
 
     const bytes = Buffer.from(await file.arrayBuffer());
@@ -123,15 +116,20 @@ export async function POST(req: Request) {
       from: fromAddress(),
       to,
       replyTo: email,
-      subject: `New candidate application — ${name}`,
+      subject: `New candidate application — ${fullName}${jobTitle ? ` (${jobTitle})` : ""}`,
       text: `New candidate application:
 
-Name: ${name}
-Email: ${email}
-Phone: ${phone || "-"}
+Role: ${jobTitle || "-"}
+Website job ID: ${jobId || "-"}
+JobAdder JobAd ID: ${jobAdId || "-"}
 
-Notes:
-${notes || "-"}
+Name: ${fullName}
+Email: ${email}
+Phone: ${phone}
+LinkedIn: ${linkedin || "-"}
+
+Message:
+${message || "-"}
 
 Attached: ${file.name} (${file.type}, ${Math.round(sizeMb * 10) / 10}MB)
 `,

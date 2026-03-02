@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 
 type FormState = {
@@ -18,6 +18,8 @@ type FormState = {
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/i;
 
 export default function CandidateRegisterFormClient() {
+  const recaptchaRef = useRef<ReCAPTCHA | null>(null);
+
   const [form, setForm] = useState<FormState>({
     fullName: "",
     email: "",
@@ -34,6 +36,8 @@ export default function CandidateRegisterFormClient() {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string>("");
   const [submitted, setSubmitted] = useState(false);
+
+  const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "";
 
   const fileLabel = useMemo(() => {
     if (!form.cvFile) return "No file selected";
@@ -54,19 +58,27 @@ export default function CandidateRegisterFormClient() {
     return null;
   }
 
-  async function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setSubmitError("");
 
+    if (!siteKey) {
+      setSubmitError("reCAPTCHA is not configured. Please try again later.");
+      return;
+    }
+
     const err = validate();
-    if (err) return setSubmitError(err);
+    if (err) {
+      setSubmitError(err);
+      return;
+    }
 
     setSubmitting(true);
 
     try {
       const fd = new FormData();
 
-      // Honeypot
+      // Honeypot (keep empty)
       fd.append("website", "");
 
       fd.append("fullName", form.fullName);
@@ -83,19 +95,26 @@ export default function CandidateRegisterFormClient() {
 
       fd.append("recaptchaToken", recaptchaToken);
 
-      const res = await fetch("/api/candidate-register", { method: "POST", body: fd });
-
-      if (!res.ok) {
-        const text = await res.text().catch(() => "");
-        throw new Error(text || `Request failed (${res.status})`);
-      }
+      const res = await fetch("/api/candidate-register", {
+        method: "POST",
+        body: fd,
+      });
 
       const data = await res.json().catch(() => ({}));
-      if (!data?.ok) throw new Error(data?.error || "Something went wrong.");
+
+      if (!res.ok || !data?.ok) {
+        throw new Error(data?.error || `Request failed (${res.status})`);
+      }
 
       setSubmitted(true);
+
+      // Reset reCAPTCHA cleanly
+      recaptchaRef.current?.reset();
+      setRecaptchaToken("");
     } catch (error: any) {
       setSubmitError(error?.message || "Something went wrong. Please try again.");
+      recaptchaRef.current?.reset();
+      setRecaptchaToken("");
     } finally {
       setSubmitting(false);
     }
@@ -103,7 +122,7 @@ export default function CandidateRegisterFormClient() {
 
   if (submitted) {
     return (
-      <div className="apply-success">
+      <div className="apply-success" aria-live="polite">
         <h3 style={{ marginBottom: 10 }}>Registration received</h3>
         <p className="jobs-muted" style={{ marginBottom: 14 }}>
           Thank you — we’ve received your details and CV. We’ll respond quickly and discreetly.
@@ -124,38 +143,47 @@ export default function CandidateRegisterFormClient() {
   }
 
   return (
-    <form className="apply-form" onSubmit={onSubmit}>
+    <form className="apply-form" onSubmit={onSubmit} noValidate>
       <div className="apply-form-grid">
         <div className="apply-field">
-          <label htmlFor="fullName">Full name <span className="apply-req">*</span></label>
+          <label htmlFor="fullName">
+            Full name <span className="apply-req">*</span>
+          </label>
           <input
             id="fullName"
             type="text"
             value={form.fullName}
             onChange={(e) => setField("fullName", e.target.value)}
             autoComplete="name"
+            placeholder="Your full name"
           />
         </div>
 
         <div className="apply-field">
-          <label htmlFor="email">Email <span className="apply-req">*</span></label>
+          <label htmlFor="email">
+            Email <span className="apply-req">*</span>
+          </label>
           <input
             id="email"
             type="email"
             value={form.email}
             onChange={(e) => setField("email", e.target.value)}
             autoComplete="email"
+            placeholder="you@company.com"
           />
         </div>
 
         <div className="apply-field">
-          <label htmlFor="phone">Phone <span className="apply-req">*</span></label>
+          <label htmlFor="phone">
+            Phone <span className="apply-req">*</span>
+          </label>
           <input
             id="phone"
             type="tel"
             value={form.phone}
             onChange={(e) => setField("phone", e.target.value)}
             autoComplete="tel"
+            placeholder="+44…"
           />
         </div>
 
@@ -171,7 +199,10 @@ export default function CandidateRegisterFormClient() {
         </div>
 
         <div className="apply-field apply-field--wide">
-          <label htmlFor="cv">CV <span className="apply-req">*</span> <span className="apply-hint">(PDF/DOC/DOCX)</span></label>
+          <label htmlFor="cv">
+            CV <span className="apply-req">*</span>{" "}
+            <span className="apply-hint">(PDF/DOC/DOCX)</span>
+          </label>
 
           <div className="apply-file">
             <input
@@ -201,38 +232,81 @@ export default function CandidateRegisterFormClient() {
 
       <div className="apply-foot">
         <label className="apply-check">
-          <input type="checkbox" checked={form.terms} onChange={(e) => setField("terms", e.target.checked)} />
-          <span>I accept the Terms &amp; Conditions <span className="apply-req">*</span></span>
+          <input
+            type="checkbox"
+            checked={form.terms}
+            onChange={(e) => setField("terms", e.target.checked)}
+          />
+          <span>
+            I accept the Terms &amp; Conditions <span className="apply-req">*</span>
+          </span>
         </label>
 
         <label className="apply-check">
-          <input type="checkbox" checked={form.privacy} onChange={(e) => setField("privacy", e.target.checked)} />
-          <span>I have read the Privacy Policy <span className="apply-req">*</span></span>
+          <input
+            type="checkbox"
+            checked={form.privacy}
+            onChange={(e) => setField("privacy", e.target.checked)}
+          />
+          <span>
+            I have read the Privacy Policy <span className="apply-req">*</span>
+          </span>
         </label>
 
         <label className="apply-check">
-          <input type="checkbox" checked={form.cookies} onChange={(e) => setField("cookies", e.target.checked)} />
-          <span>I accept the Cookies Policy <span className="apply-req">*</span></span>
+          <input
+            type="checkbox"
+            checked={form.cookies}
+            onChange={(e) => setField("cookies", e.target.checked)}
+          />
+          <span>
+            I accept the Cookies Policy <span className="apply-req">*</span>
+          </span>
         </label>
 
-        <div style={{ marginTop: 8 }}>
-<ReCAPTCHA
-  sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY as string}
-  onChange={(token: string | null) => setRecaptchaToken(token ?? "")}
-/>
+        <div style={{ marginTop: 12 }}>
+          {siteKey ? (
+            <ReCAPTCHA
+              ref={recaptchaRef}
+              sitekey={siteKey}
+              onChange={(token: string | null) => setRecaptchaToken(token ?? "")}
+            />
+          ) : (
+            <div className="apply-error">
+              reCAPTCHA is not configured. Set NEXT_PUBLIC_RECAPTCHA_SITE_KEY.
+            </div>
+          )}
+
+          <p style={{ marginTop: 10, fontSize: "0.9rem", opacity: 0.85, lineHeight: 1.5 }}>
+            This site is protected by reCAPTCHA and the Google{" "}
+            <a
+              href="https://policies.google.com/privacy"
+              target="_blank"
+              rel="noreferrer"
+              style={{ color: "inherit" }}
+            >
+              Privacy Policy
+            </a>{" "}
+            and{" "}
+            <a
+              href="https://policies.google.com/terms"
+              target="_blank"
+              rel="noreferrer"
+              style={{ color: "inherit" }}
+            >
+              Terms of Service
+            </a>{" "}
+            apply.
+          </p>
         </div>
 
         {submitError ? <div className="apply-error">{submitError}</div> : null}
 
         <div className="apply-actions">
-          <button className="apply-submit" type="submit" disabled={submitting}>
+          <button className="apply-submit" type="submit" disabled={submitting || !siteKey}>
             {submitting ? "Submitting…" : "Register & upload CV"}
           </button>
         </div>
-
-        <p style={{ marginTop: 8, fontSize: "0.82rem", opacity: 0.85 }}>
-          This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.
-        </p>
       </div>
     </form>
   );

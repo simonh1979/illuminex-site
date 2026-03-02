@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
 
 type Props = {
   jobId: string;
@@ -31,6 +32,8 @@ export default function ApplyFormClient({ jobId, jobTitle, jobAdId }: Props) {
     cvFile: null,
   });
 
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string>("");
   const [submitted, setSubmitted] = useState(false);
@@ -46,10 +49,12 @@ export default function ApplyFormClient({ jobId, jobTitle, jobAdId }: Props) {
 
   function validate(): string | null {
     if (!form.fullName.trim()) return "Please enter your full name.";
-    if (!form.email.trim() || !EMAIL_RE.test(form.email)) return "Please enter a valid email address.";
+    if (!form.email.trim() || !EMAIL_RE.test(form.email))
+      return "Please enter a valid email address.";
     if (!form.phone.trim()) return "Please enter a phone number.";
     if (!form.cvFile) return "Please upload your CV (PDF/DOC/DOCX).";
     if (!form.terms) return "Please confirm acceptance of the Terms & Conditions.";
+    if (!recaptchaToken) return "Please complete reCAPTCHA.";
     return null;
   }
 
@@ -69,11 +74,13 @@ export default function ApplyFormClient({ jobId, jobTitle, jobAdId }: Props) {
       const fd = new FormData();
       fd.append("jobId", jobId);
       fd.append("jobTitle", jobTitle);
-      fd.append("fullName", form.fullName);
+
+      // IMPORTANT: API expects these keys
+      fd.append("name", form.fullName);
       fd.append("email", form.email);
       fd.append("phone", form.phone);
-      fd.append("linkedin", form.linkedin);
-      fd.append("message", form.message);
+      fd.append("notes", form.message);
+
       fd.append("terms", String(form.terms));
       if (form.cvFile) fd.append("cv", form.cvFile);
 
@@ -81,14 +88,18 @@ export default function ApplyFormClient({ jobId, jobTitle, jobAdId }: Props) {
         fd.append("jobAdId", String(jobAdId));
       }
 
+      fd.append("recaptchaToken", recaptchaToken || "");
+
       const res = await fetch("/api/apply", { method: "POST", body: fd });
 
-      if (!res.ok) {
-        const text = await res.text().catch(() => "");
-        throw new Error(text || `Request failed (${res.status})`);
+      const json = await res.json().catch(() => null);
+
+      if (!res.ok || !json?.ok) {
+        throw new Error(json?.error || `Request failed (${res.status})`);
       }
 
       setSubmitted(true);
+      setRecaptchaToken(null);
     } catch (error: any) {
       setSubmitError(error?.message || "Something went wrong. Please try again.");
     } finally {
@@ -96,7 +107,6 @@ export default function ApplyFormClient({ jobId, jobTitle, jobAdId }: Props) {
     }
   }
 
-  // ✅ IMPORTANT: className matches your CSS :has() rule in globals.css
   if (submitted) {
     return (
       <div className="apply-state is-submitted" aria-live="polite">
@@ -120,13 +130,14 @@ export default function ApplyFormClient({ jobId, jobTitle, jobAdId }: Props) {
           </div>
         </div>
 
-        <div className="apply-success-actions" style={{ marginTop: 14, display: "flex", gap: 10, flexWrap: "wrap" }}>
-          <a className="jobs-clear" href="/live-jobs">View all roles</a>
-          <button
-            type="button"
-            className="jobs-clear"
-            onClick={() => window.history.back()}
-          >
+        <div
+          className="apply-success-actions"
+          style={{ marginTop: 14, display: "flex", gap: 10, flexWrap: "wrap" }}
+        >
+          <a className="jobs-clear" href="/live-jobs">
+            View all roles
+          </a>
+          <button type="button" className="jobs-clear" onClick={() => window.history.back()}>
             Back to role
           </button>
         </div>
@@ -134,7 +145,6 @@ export default function ApplyFormClient({ jobId, jobTitle, jobAdId }: Props) {
     );
   }
 
-  // ✅ Optional: also wrap the form in apply-state for consistency (not required, but tidy)
   return (
     <div className="apply-state is-form">
       <form className="apply-form" onSubmit={onSubmit}>
@@ -236,6 +246,35 @@ export default function ApplyFormClient({ jobId, jobTitle, jobAdId }: Props) {
               <span className="apply-req">*</span>
             </span>
           </label>
+
+          {/* reCAPTCHA */}
+          <div style={{ marginTop: 16 }}>
+            <ReCAPTCHA
+              sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
+              onChange={(token) => setRecaptchaToken(token)}
+            />
+            <p style={{ marginTop: 10, fontSize: "0.9rem", opacity: 0.85, lineHeight: 1.5 }}>
+              This site is protected by reCAPTCHA and the Google{" "}
+              <a
+                href="https://policies.google.com/privacy"
+                target="_blank"
+                rel="noreferrer"
+                style={{ color: "inherit" }}
+              >
+                Privacy Policy
+              </a>{" "}
+              and{" "}
+              <a
+                href="https://policies.google.com/terms"
+                target="_blank"
+                rel="noreferrer"
+                style={{ color: "inherit" }}
+              >
+                Terms of Service
+              </a>{" "}
+              apply.
+            </p>
+          </div>
 
           <div className="apply-actions">
             {submitError ? <div className="apply-error">{submitError}</div> : null}

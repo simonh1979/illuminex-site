@@ -1,28 +1,36 @@
 "use client";
 
 import { useState } from "react";
+import RecaptchaClient from "@/components/RecaptchaClient";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
 export default function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState<string>("");
+  const [recaptchaToken, setRecaptchaToken] = useState<string>("");
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setStatus("sending");
     setError("");
 
+    if (!recaptchaToken) {
+      setStatus("error");
+      setError("Please complete reCAPTCHA.");
+      return;
+    }
+
     const fd = new FormData(e.currentTarget);
 
-    // Honeypot field (should remain empty)
     const payload = {
       name: String(fd.get("name") || ""),
       email: String(fd.get("email") || ""),
       company: String(fd.get("company") || ""),
       phone: String(fd.get("phone") || ""),
       message: String(fd.get("message") || ""),
-      website: String(fd.get("website") || ""),
+      website: String(fd.get("website") || ""), // honeypot
+      recaptchaToken,
     };
 
     const res = await fetch("/api/contact", {
@@ -40,6 +48,7 @@ export default function ContactForm() {
     }
 
     setStatus("sent");
+    setRecaptchaToken("");
     (e.currentTarget as HTMLFormElement).reset();
   }
 
@@ -81,6 +90,8 @@ export default function ContactForm() {
           <textarea name="message" required placeholder="Tell us what you need…" />
         </div>
       </div>
+
+      <RecaptchaClient onToken={setRecaptchaToken} />
 
       {status === "error" && <div className="apply-error">{error}</div>}
       {status === "sent" && (

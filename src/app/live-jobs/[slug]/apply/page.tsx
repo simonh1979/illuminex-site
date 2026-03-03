@@ -4,9 +4,7 @@ import type { Metadata } from "next";
 import ApplyFormClient from "@/components/ApplyFormClient";
 
 type Props = {
-  params: {
-    slug: string;
-  };
+  params: Promise<{ slug: string }>;
 };
 
 export const metadata: Metadata = {
@@ -15,9 +13,11 @@ export const metadata: Metadata = {
     "Submit your application confidentially. Executive search and specialist recruitment across UK professional and technical sectors.",
 };
 
-export default function ApplyPage({ params }: Props) {
+export default async function ApplyPage({ params }: Props) {
+  const { slug } = await params;
+
   // Extract jobId from slug (last part after final dash)
-  const slugParts = params.slug.split("-");
+  const slugParts = slug.split("-");
   const jobId = slugParts[slugParts.length - 1] || "Unknown";
 
   // Convert slug back to readable title (optional improvement)

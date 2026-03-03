@@ -2562,11 +2562,16 @@ h3 { letter-spacing: 0.035em !important; }
 
   /* Meta line refinement */
 .job-meta {
-  display: flex;
-  flex-wrap: nowrap;      /* keep on one clean line */
-  gap: 6px;               /* tighter spacing */
-  white-space: nowrap;
-}
+    display: flex;
+    flex-wrap: wrap;      /* change */
+    gap: 6px;
+    white-space: normal;  /* change */
+  }
+
+  .job-meta span {
+    white-space: normal;  /* change */
+  }
+
 
 .job-meta span {
   white-space: nowrap;

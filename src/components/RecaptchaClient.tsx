@@ -37,7 +37,9 @@ function loadV3Script(siteKey: string): Promise<void> {
 }
 
 export async function executeRecaptchaV3(action: string): Promise<string> {
-  const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_V3_SITE_KEY;
+   const siteKey =
+  process.env.NEXT_PUBLIC_RECAPTCHA_V3_SITE_KEY ||
+  process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
 
   if (!siteKey) throw new Error("Missing NEXT_PUBLIC_RECAPTCHA_V3_SITE_KEY");
 

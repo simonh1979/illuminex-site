@@ -8,7 +8,7 @@ export const runtime = "nodejs";
 ========================================================= */
 
 const RATE_WINDOW_MS = 60_000; // 1 minute
-const RATE_MAX = 6;            // 6 requests per minute per IP
+const RATE_MAX = 6; // 6 requests per minute per IP
 const ipHits = new Map<string, { count: number; resetAt: number }>();
 
 function rateLimit(ip: string) {
@@ -55,6 +55,30 @@ async function verifyRecaptcha(token: string) {
 }
 
 /* =========================================================
+   Mock mode rules
+   - If you do NOT have real email/SMTP yet, keep mock ON.
+   - We only attempt sendMail when ALL required env vars exist.
+========================================================= */
+
+function shouldMockEmail() {
+  const required = [
+    process.env.CONTACT_TO,
+    process.env.MAIL_HOST,
+    process.env.MAIL_PORT,
+    process.env.MAIL_USER,
+    process.env.MAIL_PASS,
+  ];
+
+  // If ANY are missing -> mock
+  if (required.some((v) => !v)) return true;
+
+  // If placeholder host is still present -> mock
+  if ((process.env.MAIL_HOST || "").includes("yourprovider.com")) return true;
+
+  return false;
+}
+
+/* =========================================================
    POST handler
 ========================================================= */
 
@@ -83,8 +107,8 @@ export async function POST(req: Request) {
       message = "",
       company = "",
       phone = "",
-      website = "",        // honeypot
-      recaptchaToken = "", // required
+      website = "", // honeypot
+      recaptchaToken = "",
     } = body;
 
     /* =========================
@@ -123,24 +147,16 @@ export async function POST(req: Request) {
     }
 
     /* =========================
-       Mock mode (Preview/Dev)
-       - If CONTACT_TO is missing, pretend success
-       - But ONLY outside production
+       Mock mode (no email yet)
     ========================= */
-    const to = process.env.CONTACT_TO;
-    const isProd = process.env.VERCEL_ENV === "production" || process.env.NODE_ENV === "production";
-
-    if (!to) {
-      if (!isProd) {
-        // Mock success for testing on Preview/local without mailbox setup
-        return NextResponse.json({ ok: true, mocked: true });
-      }
-      return NextResponse.json({ ok: false, error: "CONTACT_TO not set on server." }, { status: 500 });
+    if (shouldMockEmail()) {
+      return NextResponse.json({ ok: true, mocked: true });
     }
 
     /* =========================
        Email transport
     ========================= */
+    const to = process.env.CONTACT_TO!;
     const transport = getTransport();
 
     const subject = `New website enquiry — ${cleanName}`;
@@ -167,9 +183,6 @@ IP: ${ip}
 
     return NextResponse.json({ ok: true });
   } catch (err: any) {
-    return NextResponse.json(
-      { ok: false, error: err?.message || "Server error." },
-      { status: 500 }
-    );
+    return NextResponse.json({ ok: false, error: err?.message || "Server error." }, { status: 500 });
   }
 }

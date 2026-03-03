@@ -1,3 +1,5 @@
+// src/app/api/apply/route.ts
+
 import { NextResponse } from "next/server";
 import { getTransport, fromAddress } from "@/lib/mailer";
 
@@ -32,14 +34,21 @@ async function verifyRecaptcha(token: string) {
     body: body.toString(),
   });
 
-  const data = await res.json().catch(() => null);
+  const data: any = await res.json().catch(() => null);
 
   // Debug
   console.log("verifyRecaptcha: http status", res.status);
   console.log("verifyRecaptcha: google response", data);
 
   if (!res.ok) throw new Error(`reCAPTCHA verification request failed (${res.status}).`);
-  if (!data?.success) throw new Error("reCAPTCHA verification failed.");
+
+  if (!data?.success) {
+    const codes = Array.isArray(data?.["error-codes"])
+      ? data["error-codes"].join(", ")
+      : "unknown";
+    const hostname = data?.hostname ? ` (hostname: ${data.hostname})` : "";
+    throw new Error(`reCAPTCHA verification failed: ${codes}${hostname}`);
+  }
 }
 
 export async function POST(req: Request) {
@@ -131,7 +140,10 @@ export async function POST(req: Request) {
     console.log("APPLY_TO exists?", Boolean(to));
 
     if (!to) {
-      return NextResponse.json({ ok: false, error: "APPLY_TO not set on server." }, { status: 500 });
+      return NextResponse.json(
+        { ok: false, error: "APPLY_TO not set on server." },
+        { status: 500 }
+      );
     }
 
     const bytes = Buffer.from(await file.arrayBuffer());
@@ -170,6 +182,7 @@ Attached: ${file.name} (${file.type}, ${Math.round(sizeMb * 10) / 10}MB)
     return NextResponse.json({ ok: true });
   } catch (err: any) {
     console.log("Apply API error:", err?.message || err);
+
     return NextResponse.json(
       { ok: false, error: err?.message || "Server error." },
       { status: 500 }

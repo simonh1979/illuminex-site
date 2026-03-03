@@ -25,8 +25,8 @@ export default function ContactPage() {
               opacity: 0.92,
             }}
           >
-            Whether you are hiring or considering a move, share the essentials and we will come back to you promptly
-            with the most sensible next step. Discretion and integrity are standard.
+            Whether you are hiring or considering a move, share the essentials and we will come back to you promptly with
+            the most sensible next step. Discretion and integrity are standard.
           </p>
 
           <div
@@ -57,7 +57,99 @@ export default function ContactPage() {
 
             <div className="sector-card sector-card--cta" style={{ gridColumn: "span 12" }}>
               <h3>Send a message</h3>
+
               <ContactForm />
+
+              {/* Contact details panel (premium, restrained) */}
+              <div className="contact-panel" aria-label="Contact details">
+                <div className="contact-panel-inner">
+                  <div className="contact-panel-head">
+                    <div>
+                      <div className="contact-panel-kicker">Contact details</div>
+                      <div className="contact-panel-title">Illuminex Ltd</div>
+                    </div>
+                  </div>
+
+                  <div className="contact-panel-grid">
+                    {/* Email */}
+                    <div className="contact-panel-item">
+                      <div className="contact-panel-label">
+                        <span className="contact-icon" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" width="20" height="20" fill="none">
+                            <path
+                              d="M4 7.5A2.5 2.5 0 0 1 6.5 5h11A2.5 2.5 0 0 1 20 7.5v9A2.5 2.5 0 0 1 17.5 19h-11A2.5 2.5 0 0 1 4 16.5v-9Z"
+                              stroke="currentColor"
+                              strokeWidth="1.6"
+                            />
+                            <path
+                              d="m6.5 7.5 5.15 4.12a1.6 1.6 0 0 0 2 0L18.5 7.5"
+                              stroke="currentColor"
+                              strokeWidth="1.6"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        </span>
+                        Email
+                      </div>
+                      <div className="contact-panel-value">
+                        <a className="contact-panel-link" href="mailto:hello@illuminex.co.uk">
+                          hello@illuminex.co.uk
+                        </a>
+                      </div>
+                    </div>
+
+                    {/* Phone */}
+                    <div className="contact-panel-item">
+                      <div className="contact-panel-label">
+                        <span className="contact-icon" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" width="20" height="20" fill="none">
+                            <path
+                              d="M7.5 3.5h2.2c.6 0 1.1.4 1.2 1l.6 3c.1.5-.2 1.1-.7 1.3l-1.6.7a13.2 13.2 0 0 0 5.3 5.3l.7-1.6c.2-.5.8-.8 1.3-.7l3 .6c.6.1 1 .6 1 1.2v2.2c0 .7-.5 1.3-1.2 1.4-9 .9-16.2-6.3-15.3-15.3.1-.7.7-1.2 1.4-1.2Z"
+                              stroke="currentColor"
+                              strokeWidth="1.6"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        </span>
+                        Phone
+                      </div>
+                      <div className="contact-panel-value">To be confirmed</div>
+                    </div>
+
+                    {/* Registered office */}
+                    <div className="contact-panel-item">
+                      <div className="contact-panel-label">
+                        <span className="contact-icon" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" width="20" height="20" fill="none">
+                            <path
+                              d="M12 21s7-4.6 7-11a7 7 0 1 0-14 0c0 6.4 7 11 7 11Z"
+                              stroke="currentColor"
+                              strokeWidth="1.6"
+                              strokeLinejoin="round"
+                            />
+                            <path
+                              d="M12 10.2a2.2 2.2 0 1 0 0-4.4 2.2 2.2 0 0 0 0 4.4Z"
+                              stroke="currentColor"
+                              strokeWidth="1.6"
+                            />
+                          </svg>
+                        </span>
+                        Registered office
+                      </div>
+                      <div className="contact-panel-value">To be confirmed</div>
+                    </div>
+
+                    {/* Company No. */}
+                    <div className="contact-panel-item">
+                      <div className="contact-panel-label">Company No.</div>
+                      <div className="contact-panel-value">16961631</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {/* /Contact details panel */}
             </div>
           </div>
         </div>

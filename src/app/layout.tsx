@@ -21,11 +21,7 @@ const inter = Inter({
   display: "swap",
 });
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={inter.className}>
       <body className="antialiased">
@@ -33,7 +29,6 @@ export default function RootLayout({
 
         {children}
 
-        {/* Footer */}
         <footer className="site-footer">
           <div className="footer-inner">
             <img
@@ -43,15 +38,28 @@ export default function RootLayout({
             />
 
             <div className="footer-center">
-              <p className="footer-text">
-                © {new Date().getFullYear()} Illuminex Consultancy. All rights reserved.
+              <p className="footer-legal">
+                © 2026 Illuminex Ltd. Registered in England &amp; Wales. Company No. 16961631. All rights reserved.
               </p>
 
-              <div className="footer-links">
+              <div className="footer-meta">
+                <span>Registered office: To be confirmed</span>
+                <span className="footer-dot">•</span>
+                <a className="footer-email" href="mailto:hello@illuminex.co.uk">
+                  hello@illuminex.co.uk
+                </a>
+              </div>
+
+              <p className="footer-compliance">
+                Illuminex Ltd operates in accordance with UK data protection law and is registered with the ICO. REC
+                membership is in progress.
+              </p>
+
+              <nav className="footer-links" aria-label="Footer links">
                 <Link href="/privacy">Privacy</Link>
                 <Link href="/terms">Terms</Link>
                 <Link href="/cookies">Cookies</Link>
-              </div>
+              </nav>
             </div>
 
             <img
@@ -61,7 +69,6 @@ export default function RootLayout({
             />
           </div>
         </footer>
-
       </body>
     </html>
   );

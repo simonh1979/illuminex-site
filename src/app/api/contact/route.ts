@@ -4,28 +4,11 @@ import { getTransport, fromAddress } from "@/lib/mailer";
 export const runtime = "nodejs";
 
 /* =========================================================
-   CONFIG
-   - Rate limit
-   - Mock behaviour (Preview/Dev)
+   Rate limiting (basic per-IP throttle)
 ========================================================= */
 
 const RATE_WINDOW_MS = 60_000; // 1 minute
-const RATE_MAX = 6; // 6 requests per minute per IP
-
-/**
- * Mock Mode B:
- * - Preview/Development: if CONTACT_TO is missing, return ok:true (mocked)
- * - Production: require CONTACT_TO (so you don't go live broken)
- */
-function isProductionEnv() {
-  const vercelEnv = process.env.VERCEL_ENV; // "production" | "preview" | "development"
-  return vercelEnv === "production" || process.env.NODE_ENV === "production";
-}
-
-/* =========================================================
-   RATE LIMITING (basic per-IP throttle)
-========================================================= */
-
+const RATE_MAX = 6;            // 6 requests per minute per IP
 const ipHits = new Map<string, { count: number; resetAt: number }>();
 
 function rateLimit(ip: string) {
@@ -44,24 +27,12 @@ function rateLimit(ip: string) {
 }
 
 /* =========================================================
-   UTILITIES
+   Utilities
 ========================================================= */
-
-function getClientIp(req: Request) {
-  return (
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-    req.headers.get("x-real-ip") ||
-    "unknown"
-  );
-}
 
 function isEmail(v: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
 }
-
-/* =========================================================
-   reCAPTCHA (server verify)
-========================================================= */
 
 async function verifyRecaptcha(token: string) {
   const secret = process.env.RECAPTCHA_SECRET_KEY;
@@ -84,15 +55,15 @@ async function verifyRecaptcha(token: string) {
 }
 
 /* =========================================================
-   MAIN HANDLER
+   POST handler
 ========================================================= */
 
 export async function POST(req: Request) {
   try {
-    /* =========================
-       1) Rate limit
-    ========================= */
-    const ip = getClientIp(req);
+    const ip =
+      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+      req.headers.get("x-real-ip") ||
+      "unknown";
 
     if (!rateLimit(ip).ok) {
       return NextResponse.json(
@@ -101,12 +72,7 @@ export async function POST(req: Request) {
       );
     }
 
-    /* =========================
-       2) Parse request body
-       (Contact form uses JSON)
-    ========================= */
     const body = await req.json().catch(() => null);
-
     if (!body) {
       return NextResponse.json({ ok: false, error: "Invalid request." }, { status: 400 });
     }
@@ -117,30 +83,28 @@ export async function POST(req: Request) {
       message = "",
       company = "",
       phone = "",
-      website = "", // honeypot
+      website = "",        // honeypot
       recaptchaToken = "", // required
     } = body;
 
     /* =========================
-       3) Honeypot trap
+       Honeypot trap
     ========================= */
     if (typeof website === "string" && website.trim().length > 0) {
-      // Pretend success to avoid tipping bots
       return NextResponse.json({ ok: true });
     }
 
     /* =========================
-       4) reCAPTCHA validation
+       reCAPTCHA validation
     ========================= */
     const token = String(recaptchaToken || "").trim();
     if (!token) {
       return NextResponse.json({ ok: false, error: "Please complete reCAPTCHA." }, { status: 400 });
     }
-
     await verifyRecaptcha(token);
 
     /* =========================
-       5) Field validation
+       Field validation
     ========================= */
     const cleanName = String(name).trim();
     const cleanEmail = String(email).trim();
@@ -151,35 +115,31 @@ export async function POST(req: Request) {
     if (cleanName.length < 2) {
       return NextResponse.json({ ok: false, error: "Name is too short." }, { status: 400 });
     }
-
     if (!isEmail(cleanEmail)) {
       return NextResponse.json({ ok: false, error: "Enter a valid email address." }, { status: 400 });
     }
-
     if (cleanMessage.length < 10) {
       return NextResponse.json({ ok: false, error: "Message is too short." }, { status: 400 });
     }
 
     /* =========================
-       6) Mock Mode B (no mailbox yet)
+       Mock mode (Preview/Dev)
+       - If CONTACT_TO is missing, pretend success
+       - But ONLY outside production
     ========================= */
     const to = process.env.CONTACT_TO;
+    const isProd = process.env.VERCEL_ENV === "production" || process.env.NODE_ENV === "production";
 
     if (!to) {
-      // Production must fail (safe go-live)
-      if (isProductionEnv()) {
-        return NextResponse.json(
-          { ok: false, error: "CONTACT_TO not set on server." },
-          { status: 500 }
-        );
+      if (!isProd) {
+        // Mock success for testing on Preview/local without mailbox setup
+        return NextResponse.json({ ok: true, mocked: true });
       }
-
-      // Preview/Dev succeeds (mock)
-      return NextResponse.json({ ok: true, mocked: true });
+      return NextResponse.json({ ok: false, error: "CONTACT_TO not set on server." }, { status: 500 });
     }
 
     /* =========================
-       7) Email transport (real send)
+       Email transport
     ========================= */
     const transport = getTransport();
 
@@ -205,9 +165,6 @@ IP: ${ip}
       text,
     });
 
-    /* =========================
-       8) Success response
-    ========================= */
     return NextResponse.json({ ok: true });
   } catch (err: any) {
     return NextResponse.json(

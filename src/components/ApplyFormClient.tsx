@@ -33,7 +33,6 @@ export default function ApplyFormClient({ jobId, jobTitle, jobAdId }: Props) {
   });
 
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
-
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string>("");
   const [submitted, setSubmitted] = useState(false);
@@ -49,7 +48,8 @@ export default function ApplyFormClient({ jobId, jobTitle, jobAdId }: Props) {
 
   function validate(): string | null {
     if (!form.fullName.trim()) return "Please enter your full name.";
-    if (!form.email.trim() || !EMAIL_RE.test(form.email)) return "Please enter a valid email address.";
+    if (!form.email.trim() || !EMAIL_RE.test(form.email))
+      return "Please enter a valid email address.";
     if (!form.phone.trim()) return "Please enter a phone number.";
     if (!form.cvFile) return "Please upload your CV (PDF/DOC/DOCX).";
     if (!form.terms) return "Please confirm acceptance of the Terms & Conditions.";
@@ -77,7 +77,7 @@ export default function ApplyFormClient({ jobId, jobTitle, jobAdId }: Props) {
       fd.append("jobTitle", jobTitle);
       if (typeof jobAdId === "number") fd.append("jobAdId", String(jobAdId));
 
-      // ✅ MUST match API keys
+      // MUST match API keys
       fd.append("fullName", form.fullName);
       fd.append("email", form.email);
       fd.append("phone", form.phone);
@@ -85,6 +85,7 @@ export default function ApplyFormClient({ jobId, jobTitle, jobAdId }: Props) {
       fd.append("message", form.message);
       fd.append("terms", String(form.terms));
 
+      // CV
       if (form.cvFile) fd.append("cv", form.cvFile);
 
       // reCAPTCHA
@@ -129,9 +130,16 @@ export default function ApplyFormClient({ jobId, jobTitle, jobAdId }: Props) {
           </div>
         </div>
 
-        <div className="apply-success-actions" style={{ marginTop: 14, display: "flex", gap: 10, flexWrap: "wrap" }}>
-          <a className="jobs-clear" href="/live-jobs">View all roles</a>
-          <button type="button" className="jobs-clear" onClick={() => window.history.back()}>Back to role</button>
+        <div
+          className="apply-success-actions"
+          style={{ marginTop: 14, display: "flex", gap: 10, flexWrap: "wrap" }}
+        >
+          <a className="jobs-clear" href="/live-jobs">
+            View all roles
+          </a>
+          <button type="button" className="jobs-clear" onClick={() => window.history.back()}>
+            Back to role
+          </button>
         </div>
       </div>
     );
@@ -234,8 +242,8 @@ export default function ApplyFormClient({ jobId, jobTitle, jobAdId }: Props) {
               onChange={(e) => setField("terms", e.target.checked)}
             />
             <span>
-              I confirm I have read and accept the T&amp;Cs and consent to being contacted about this role.{" "}
-              <span className="apply-req">*</span>
+              I confirm I have read and accept the T&amp;Cs and consent to being contacted about
+              this role. <span className="apply-req">*</span>
             </span>
           </label>
 
@@ -246,11 +254,21 @@ export default function ApplyFormClient({ jobId, jobTitle, jobAdId }: Props) {
             />
             <p style={{ marginTop: 10, fontSize: "0.9rem", opacity: 0.85, lineHeight: 1.5 }}>
               This site is protected by reCAPTCHA and the Google{" "}
-              <a href="https://policies.google.com/privacy" target="_blank" rel="noreferrer" style={{ color: "inherit" }}>
+              <a
+                href="https://policies.google.com/privacy"
+                target="_blank"
+                rel="noreferrer"
+                style={{ color: "inherit" }}
+              >
                 Privacy Policy
               </a>{" "}
               and{" "}
-              <a href="https://policies.google.com/terms" target="_blank" rel="noreferrer" style={{ color: "inherit" }}>
+              <a
+                href="https://policies.google.com/terms"
+                target="_blank"
+                rel="noreferrer"
+                style={{ color: "inherit" }}
+              >
                 Terms of Service
               </a>{" "}
               apply.
@@ -259,6 +277,7 @@ export default function ApplyFormClient({ jobId, jobTitle, jobAdId }: Props) {
 
           <div className="apply-actions">
             {submitError ? <div className="apply-error">{submitError}</div> : null}
+
             <button className="apply-submit" type="submit" disabled={submitting}>
               {submitting ? "Submitting…" : "Submit application"}
             </button>

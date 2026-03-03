@@ -1,7 +1,16 @@
+// C:\Users\simon\Documents\illuminex-site\src\app\api\contact\route.ts
+
 import { NextResponse } from "next/server";
 import { getTransport, fromAddress } from "@/lib/mailer";
 
 export const runtime = "nodejs";
+
+/* =========================================================
+   Config
+========================================================= */
+
+const RECAPTCHA_ACTION = "contact_submit";
+const MIN_SCORE = 0.5; // tune later (0.3–0.7 common)
 
 /* =========================================================
    Rate limiting (basic per-IP throttle)
@@ -34,7 +43,11 @@ function isEmail(v: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
 }
 
-async function verifyRecaptcha(token: string) {
+function isMockMode() {
+  return String(process.env.MOCK_FORMS || "").toLowerCase() === "true";
+}
+
+async function verifyRecaptcha(token: string, expectedAction: string) {
   const secret = process.env.RECAPTCHA_SECRET_KEY;
   if (!secret) throw new Error("RECAPTCHA_SECRET_KEY not set on server.");
 
@@ -52,30 +65,16 @@ async function verifyRecaptcha(token: string) {
 
   if (!res.ok) throw new Error(`reCAPTCHA verification request failed (${res.status}).`);
   if (!data?.success) throw new Error("reCAPTCHA verification failed.");
-}
 
-/* =========================================================
-   Mock mode rules
-   - If you do NOT have real email/SMTP yet, keep mock ON.
-   - We only attempt sendMail when ALL required env vars exist.
-========================================================= */
+  // v3 checks
+  if (data.action && data.action !== expectedAction) {
+    throw new Error("Invalid reCAPTCHA action.");
+  }
 
-function shouldMockEmail() {
-  const required = [
-    process.env.CONTACT_TO,
-    process.env.MAIL_HOST,
-    process.env.MAIL_PORT,
-    process.env.MAIL_USER,
-    process.env.MAIL_PASS,
-  ];
-
-  // If ANY are missing -> mock
-  if (required.some((v) => !v)) return true;
-
-  // If placeholder host is still present -> mock
-  if ((process.env.MAIL_HOST || "").includes("yourprovider.com")) return true;
-
-  return false;
+  const score = typeof data.score === "number" ? data.score : 0;
+  if (score < MIN_SCORE) {
+    throw new Error("reCAPTCHA score too low.");
+  }
 }
 
 /* =========================================================
@@ -109,32 +108,33 @@ export async function POST(req: Request) {
       phone = "",
       website = "", // honeypot
       recaptchaToken = "",
-    } = body;
+    } = body as Record<string, unknown>;
 
     /* =========================
-       Honeypot trap
+       Honeypot
     ========================= */
     if (typeof website === "string" && website.trim().length > 0) {
       return NextResponse.json({ ok: true });
     }
 
     /* =========================
-       reCAPTCHA validation
+       reCAPTCHA v3
     ========================= */
     const token = String(recaptchaToken || "").trim();
     if (!token) {
-      return NextResponse.json({ ok: false, error: "Please complete reCAPTCHA." }, { status: 400 });
+      return NextResponse.json({ ok: false, error: "Please complete verification." }, { status: 400 });
     }
-    await verifyRecaptcha(token);
+
+    await verifyRecaptcha(token, RECAPTCHA_ACTION);
 
     /* =========================
        Field validation
     ========================= */
-    const cleanName = String(name).trim();
-    const cleanEmail = String(email).trim();
-    const cleanMessage = String(message).trim();
-    const cleanCompany = String(company).trim();
-    const cleanPhone = String(phone).trim();
+    const cleanName = String(name || "").trim();
+    const cleanEmail = String(email || "").trim();
+    const cleanMessage = String(message || "").trim();
+    const cleanCompany = String(company || "").trim();
+    const cleanPhone = String(phone || "").trim();
 
     if (cleanName.length < 2) {
       return NextResponse.json({ ok: false, error: "Name is too short." }, { status: 400 });
@@ -147,20 +147,41 @@ export async function POST(req: Request) {
     }
 
     /* =========================
-       Mock mode (no email yet)
+       MOCK MODE (no SMTP)
     ========================= */
-    if (shouldMockEmail()) {
-      return NextResponse.json({ ok: true, mocked: true });
+    if (isMockMode()) {
+      return NextResponse.json({
+        ok: true,
+        mode: "mock",
+        received: {
+          name: cleanName,
+          email: cleanEmail,
+          company: cleanCompany || "-",
+          phone: cleanPhone || "-",
+          message: cleanMessage,
+        },
+      });
     }
 
     /* =========================
-       Email transport
+       Live email mode
     ========================= */
-    const to = process.env.CONTACT_TO!;
+    const to = process.env.CONTACT_TO;
+    if (!to) {
+      return NextResponse.json(
+        { ok: false, error: "CONTACT_TO not set on server." },
+        { status: 500 }
+      );
+    }
+
     const transport = getTransport();
 
-    const subject = `New website enquiry — ${cleanName}`;
-    const text = `New enquiry from the website:
+    await transport.sendMail({
+      from: fromAddress(),
+      to,
+      replyTo: cleanEmail,
+      subject: `New website enquiry — ${cleanName}`,
+      text: `New enquiry from the website:
 
 Name: ${cleanName}
 Email: ${cleanEmail}
@@ -171,18 +192,14 @@ Message:
 ${cleanMessage}
 
 IP: ${ip}
-`;
-
-    await transport.sendMail({
-      from: fromAddress(),
-      to,
-      replyTo: cleanEmail,
-      subject,
-      text,
+`,
     });
 
     return NextResponse.json({ ok: true });
   } catch (err: any) {
-    return NextResponse.json({ ok: false, error: err?.message || "Server error." }, { status: 500 });
+    return NextResponse.json(
+      { ok: false, error: err?.message || "Server error." },
+      { status: 500 }
+    );
   }
 }

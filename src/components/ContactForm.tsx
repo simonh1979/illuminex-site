@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import RecaptchaClient from "@/components/RecaptchaClient";
+import RecaptchaClient, { executeRecaptchaV3, RecaptchaDisclosure } from "@/components/RecaptchaClient";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
@@ -10,33 +10,30 @@ export default function ContactForm() {
 
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState<string>("");
-  const [recaptchaToken, setRecaptchaToken] = useState<string>("");
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setStatus("sending");
     setError("");
 
-    if (!recaptchaToken) {
-      setStatus("error");
-      setError("Please complete reCAPTCHA.");
-      return;
-    }
-
-    const formEl = e.currentTarget;
-    const fd = new FormData(formEl);
-
-    const payload = {
-      name: String(fd.get("name") || ""),
-      email: String(fd.get("email") || ""),
-      company: String(fd.get("company") || ""),
-      phone: String(fd.get("phone") || ""),
-      message: String(fd.get("message") || ""),
-      website: String(fd.get("website") || ""), // honeypot
-      recaptchaToken,
-    };
-
     try {
+      const token = await executeRecaptchaV3("contact_submit");
+
+      const formEl = formRef.current;
+      if (!formEl) throw new Error("Form not ready.");
+
+      const fd = new FormData(formEl);
+
+      const payload = {
+        name: String(fd.get("name") || ""),
+        email: String(fd.get("email") || ""),
+        company: String(fd.get("company") || ""),
+        phone: String(fd.get("phone") || ""),
+        message: String(fd.get("message") || ""),
+        website: String(fd.get("website") || ""), // honeypot
+        recaptchaToken: token,
+      };
+
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -46,15 +43,10 @@ export default function ContactForm() {
       const data = await res.json().catch(() => ({}));
 
       if (!res.ok || !data?.ok) {
-        setStatus("error");
-        setError(data?.error || "Something went wrong. Try again.");
-        return;
+        throw new Error(data?.error || "Something went wrong. Try again.");
       }
 
       setStatus("sent");
-      setRecaptchaToken("");
-
-      // Safe reset (never crashes)
       formRef.current?.reset();
     } catch (err: any) {
       setStatus("error");
@@ -64,6 +56,9 @@ export default function ContactForm() {
 
   return (
     <form ref={formRef} onSubmit={onSubmit} className="contact-form" noValidate>
+      {/* preload v3 script */}
+      <RecaptchaClient />
+
       {/* honeypot */}
       <input
         type="text"
@@ -101,7 +96,7 @@ export default function ContactForm() {
         </div>
       </div>
 
-      <RecaptchaClient onToken={setRecaptchaToken} />
+      <RecaptchaDisclosure />
 
       {status === "error" && <div className="apply-error">{error}</div>}
       {status === "sent" && (

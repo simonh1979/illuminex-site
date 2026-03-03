@@ -9,20 +9,15 @@ export const runtime = "nodejs";
    Config
 ========================================================= */
 
+const RECAPTCHA_ACTION = "candidate_submit"; // ✅ MUST match the client action
+const MIN_SCORE = 0.5; // tune later (0.3–0.7 common)
+
 const MAX_FILE_MB = 8;
 const ALLOWED_MIME = new Set([
   "application/pdf",
   "application/msword",
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
 ]);
-
-/**
- * Set MOCK_FORMS="true" in .env.local (and optionally Vercel)
- * to force mock success (no email send).
- */
-function isMockMode() {
-  return String(process.env.MOCK_FORMS || "").toLowerCase() === "true";
-}
 
 /* =========================================================
    Utilities
@@ -32,7 +27,7 @@ function isEmail(v: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
 }
 
-async function verifyRecaptcha(token: string) {
+async function verifyRecaptcha(token: string, expectedAction: string) {
   const secret = process.env.RECAPTCHA_SECRET_KEY;
   if (!secret) throw new Error("RECAPTCHA_SECRET_KEY not set on server.");
 
@@ -50,6 +45,16 @@ async function verifyRecaptcha(token: string) {
 
   if (!res.ok) throw new Error(`reCAPTCHA verification request failed (${res.status}).`);
   if (!data?.success) throw new Error("reCAPTCHA verification failed.");
+
+  // v3 action check (only if Google returns an action)
+  if (typeof data.action === "string" && data.action !== expectedAction) {
+    throw new Error("Invalid reCAPTCHA action.");
+  }
+
+  const score = typeof data.score === "number" ? data.score : 0;
+  if (score < MIN_SCORE) {
+    throw new Error("reCAPTCHA score too low.");
+  }
 }
 
 /* =========================================================
@@ -61,19 +66,25 @@ export async function POST(req: Request) {
     const form = await req.formData();
 
     /* =========================
-       Honeypot
+       Honeypot (keep empty)
     ========================= */
     const website = String(form.get("website") || "");
-    if (website.trim().length > 0) return NextResponse.json({ ok: true });
+    if (website.trim().length > 0) {
+      return NextResponse.json({ ok: true });
+    }
 
     /* =========================
-       reCAPTCHA
+       reCAPTCHA v3 token (required)
     ========================= */
     const recaptchaToken = String(form.get("recaptchaToken") || "").trim();
     if (!recaptchaToken) {
-      return NextResponse.json({ ok: false, error: "Please complete reCAPTCHA." }, { status: 400 });
+      return NextResponse.json(
+        { ok: false, error: "Verification missing. Please try again." },
+        { status: 400 }
+      );
     }
-    await verifyRecaptcha(recaptchaToken);
+
+    await verifyRecaptcha(recaptchaToken, RECAPTCHA_ACTION);
 
     /* =========================
        Fields
@@ -92,10 +103,16 @@ export async function POST(req: Request) {
       return NextResponse.json({ ok: false, error: "Name is too short." }, { status: 400 });
     }
     if (!isEmail(email)) {
-      return NextResponse.json({ ok: false, error: "Enter a valid email address." }, { status: 400 });
+      return NextResponse.json(
+        { ok: false, error: "Enter a valid email address." },
+        { status: 400 }
+      );
     }
     if (!phone) {
-      return NextResponse.json({ ok: false, error: "Please enter a phone number." }, { status: 400 });
+      return NextResponse.json(
+        { ok: false, error: "Please enter a phone number." },
+        { status: 400 }
+      );
     }
     if (!terms || !privacy || !cookies) {
       return NextResponse.json(
@@ -128,17 +145,28 @@ export async function POST(req: Request) {
     }
 
     /* =========================
-       MOCK MODE (no SMTP)
+       MOCK MODE / Email transport
     ========================= */
     const to = process.env.CANDIDATE_TO;
-    if (isMockMode() || !to) {
-      // Do not call getTransport() in mock mode (prevents SMTP errors)
-      return NextResponse.json({ ok: true, mock: true });
+
+    // If no mailbox yet, keep mock testing safe:
+    if (!to) {
+      return NextResponse.json({
+        ok: true,
+        mode: "mock",
+        received: {
+          fullName,
+          email,
+          phone,
+          linkedin: linkedin || "-",
+          message: message || "-",
+          cvName: file.name,
+          cvType: file.type,
+          cvSizeMb: Math.round(sizeMb * 10) / 10,
+        },
+      });
     }
 
-    /* =========================
-       Send email (when live)
-    ========================= */
     const bytes = Buffer.from(await file.arrayBuffer());
     const transport = getTransport();
 

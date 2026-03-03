@@ -1,12 +1,12 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import ReCAPTCHA from "react-google-recaptcha";
+import RecaptchaClient, { executeRecaptchaV3, RecaptchaDisclosure } from "@/components/RecaptchaClient";
 
 type Props = {
   jobId: string;
   jobTitle: string;
-  jobAdId?: number; // JobAdder JobAd ID (when available)
+  jobAdId?: number;
 };
 
 type FormState = {
@@ -32,7 +32,6 @@ export default function ApplyFormClient({ jobId, jobTitle, jobAdId }: Props) {
     cvFile: null,
   });
 
-  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string>("");
   const [submitted, setSubmitted] = useState(false);
@@ -48,12 +47,10 @@ export default function ApplyFormClient({ jobId, jobTitle, jobAdId }: Props) {
 
   function validate(): string | null {
     if (!form.fullName.trim()) return "Please enter your full name.";
-    if (!form.email.trim() || !EMAIL_RE.test(form.email))
-      return "Please enter a valid email address.";
+    if (!form.email.trim() || !EMAIL_RE.test(form.email)) return "Please enter a valid email address.";
     if (!form.phone.trim()) return "Please enter a phone number.";
     if (!form.cvFile) return "Please upload your CV (PDF/DOC/DOCX).";
     if (!form.terms) return "Please confirm acceptance of the Terms & Conditions.";
-    if (!recaptchaToken) return "Please complete reCAPTCHA.";
     return null;
   }
 
@@ -70,14 +67,14 @@ export default function ApplyFormClient({ jobId, jobTitle, jobAdId }: Props) {
     setSubmitting(true);
 
     try {
+      const token = await executeRecaptchaV3("apply_submit");
+
       const fd = new FormData();
 
-      // Job context
       fd.append("jobId", jobId);
       fd.append("jobTitle", jobTitle);
       if (typeof jobAdId === "number") fd.append("jobAdId", String(jobAdId));
 
-      // MUST match API keys
       fd.append("fullName", form.fullName);
       fd.append("email", form.email);
       fd.append("phone", form.phone);
@@ -85,11 +82,9 @@ export default function ApplyFormClient({ jobId, jobTitle, jobAdId }: Props) {
       fd.append("message", form.message);
       fd.append("terms", String(form.terms));
 
-      // CV
       if (form.cvFile) fd.append("cv", form.cvFile);
 
-      // reCAPTCHA
-      fd.append("recaptchaToken", recaptchaToken || "");
+      fd.append("recaptchaToken", token);
 
       const res = await fetch("/api/apply", { method: "POST", body: fd });
       const json = await res.json().catch(() => null);
@@ -99,7 +94,6 @@ export default function ApplyFormClient({ jobId, jobTitle, jobAdId }: Props) {
       }
 
       setSubmitted(true);
-      setRecaptchaToken(null);
     } catch (error: any) {
       setSubmitError(error?.message || "Something went wrong. Please try again.");
     } finally {
@@ -130,10 +124,7 @@ export default function ApplyFormClient({ jobId, jobTitle, jobAdId }: Props) {
           </div>
         </div>
 
-        <div
-          className="apply-success-actions"
-          style={{ marginTop: 14, display: "flex", gap: 10, flexWrap: "wrap" }}
-        >
+        <div className="apply-success-actions" style={{ marginTop: 14, display: "flex", gap: 10, flexWrap: "wrap" }}>
           <a className="jobs-clear" href="/live-jobs">
             View all roles
           </a>
@@ -147,6 +138,9 @@ export default function ApplyFormClient({ jobId, jobTitle, jobAdId }: Props) {
 
   return (
     <div className="apply-state is-form">
+      {/* preload v3 script */}
+      <RecaptchaClient />
+
       <form className="apply-form" onSubmit={onSubmit}>
         <div className="apply-form-grid">
           <div className="apply-field">
@@ -204,8 +198,7 @@ export default function ApplyFormClient({ jobId, jobTitle, jobAdId }: Props) {
 
           <div className="apply-field apply-field--wide">
             <label htmlFor="cv">
-              CV <span className="apply-req">*</span>{" "}
-              <span className="apply-hint">(PDF/DOC/DOCX)</span>
+              CV <span className="apply-req">*</span> <span className="apply-hint">(PDF/DOC/DOCX)</span>
             </label>
 
             <div className="apply-file">
@@ -236,44 +229,14 @@ export default function ApplyFormClient({ jobId, jobTitle, jobAdId }: Props) {
 
         <div className="apply-foot">
           <label className="apply-check">
-            <input
-              type="checkbox"
-              checked={form.terms}
-              onChange={(e) => setField("terms", e.target.checked)}
-            />
+            <input type="checkbox" checked={form.terms} onChange={(e) => setField("terms", e.target.checked)} />
             <span>
-              I confirm I have read and accept the T&amp;Cs and consent to being contacted about
-              this role. <span className="apply-req">*</span>
+              I confirm I have read and accept the T&amp;Cs and consent to being contacted about this role.{" "}
+              <span className="apply-req">*</span>
             </span>
           </label>
 
-          <div style={{ marginTop: 16 }}>
-            <ReCAPTCHA
-              sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
-              onChange={(token) => setRecaptchaToken(token)}
-            />
-            <p style={{ marginTop: 10, fontSize: "0.9rem", opacity: 0.85, lineHeight: 1.5 }}>
-              This site is protected by reCAPTCHA and the Google{" "}
-              <a
-                href="https://policies.google.com/privacy"
-                target="_blank"
-                rel="noreferrer"
-                style={{ color: "inherit" }}
-              >
-                Privacy Policy
-              </a>{" "}
-              and{" "}
-              <a
-                href="https://policies.google.com/terms"
-                target="_blank"
-                rel="noreferrer"
-                style={{ color: "inherit" }}
-              >
-                Terms of Service
-              </a>{" "}
-              apply.
-            </p>
-          </div>
+          <RecaptchaDisclosure />
 
           <div className="apply-actions">
             {submitError ? <div className="apply-error">{submitError}</div> : null}

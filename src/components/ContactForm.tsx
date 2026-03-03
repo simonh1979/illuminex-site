@@ -1,11 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import RecaptchaClient from "@/components/RecaptchaClient";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
 export default function ContactForm() {
+  const formRef = useRef<HTMLFormElement>(null);
+
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState<string>("");
   const [recaptchaToken, setRecaptchaToken] = useState<string>("");
@@ -21,7 +23,8 @@ export default function ContactForm() {
       return;
     }
 
-    const fd = new FormData(e.currentTarget);
+    const formEl = e.currentTarget;
+    const fd = new FormData(formEl);
 
     const payload = {
       name: String(fd.get("name") || ""),
@@ -33,27 +36,34 @@ export default function ContactForm() {
       recaptchaToken,
     };
 
-    const res = await fetch("/api/contact", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
-    const data = await res.json().catch(() => ({}));
+      const data = await res.json().catch(() => ({}));
 
-    if (!res.ok || !data.ok) {
+      if (!res.ok || !data?.ok) {
+        setStatus("error");
+        setError(data?.error || "Something went wrong. Try again.");
+        return;
+      }
+
+      setStatus("sent");
+      setRecaptchaToken("");
+
+      // Safe reset (never crashes)
+      formRef.current?.reset();
+    } catch (err: any) {
       setStatus("error");
-      setError(data?.error || "Something went wrong. Try again.");
-      return;
+      setError(err?.message || "Something went wrong. Try again.");
     }
-
-    setStatus("sent");
-    setRecaptchaToken("");
-    (e.currentTarget as HTMLFormElement).reset();
   }
 
   return (
-    <form onSubmit={onSubmit} className="contact-form" noValidate>
+    <form ref={formRef} onSubmit={onSubmit} className="contact-form" noValidate>
       {/* honeypot */}
       <input
         type="text"

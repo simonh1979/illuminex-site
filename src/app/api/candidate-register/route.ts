@@ -5,12 +5,28 @@ import { getTransport, fromAddress } from "@/lib/mailer";
 
 export const runtime = "nodejs";
 
+/* =========================================================
+   Config
+========================================================= */
+
 const MAX_FILE_MB = 8;
 const ALLOWED_MIME = new Set([
   "application/pdf",
   "application/msword",
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
 ]);
+
+/**
+ * Set MOCK_FORMS="true" in .env.local (and optionally Vercel)
+ * to force mock success (no email send).
+ */
+function isMockMode() {
+  return String(process.env.MOCK_FORMS || "").toLowerCase() === "true";
+}
+
+/* =========================================================
+   Utilities
+========================================================= */
 
 function isEmail(v: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
@@ -32,36 +48,36 @@ async function verifyRecaptcha(token: string) {
 
   const data = await res.json().catch(() => null);
 
-  if (!res.ok) {
-    throw new Error(`reCAPTCHA verification request failed (${res.status}).`);
-  }
-
-  if (!data?.success) {
-    throw new Error("reCAPTCHA verification failed.");
-  }
+  if (!res.ok) throw new Error(`reCAPTCHA verification request failed (${res.status}).`);
+  if (!data?.success) throw new Error("reCAPTCHA verification failed.");
 }
+
+/* =========================================================
+   POST handler
+========================================================= */
 
 export async function POST(req: Request) {
   try {
     const form = await req.formData();
 
-    // Honeypot (keep empty)
+    /* =========================
+       Honeypot
+    ========================= */
     const website = String(form.get("website") || "");
-    if (website.trim().length > 0) {
-      return NextResponse.json({ ok: true });
-    }
+    if (website.trim().length > 0) return NextResponse.json({ ok: true });
 
-    // reCAPTCHA token (required)
-    const recaptchaToken = String(form.get("recaptchaToken") || "");
+    /* =========================
+       reCAPTCHA
+    ========================= */
+    const recaptchaToken = String(form.get("recaptchaToken") || "").trim();
     if (!recaptchaToken) {
-      return NextResponse.json(
-        { ok: false, error: "Please complete reCAPTCHA." },
-        { status: 400 }
-      );
+      return NextResponse.json({ ok: false, error: "Please complete reCAPTCHA." }, { status: 400 });
     }
     await verifyRecaptcha(recaptchaToken);
 
-    // Fields
+    /* =========================
+       Fields
+    ========================= */
     const fullName = String(form.get("fullName") || "").trim();
     const email = String(form.get("email") || "").trim();
     const phone = String(form.get("phone") || "").trim();
@@ -73,22 +89,13 @@ export async function POST(req: Request) {
     const cookies = String(form.get("cookies") || "") === "true";
 
     if (fullName.length < 2) {
-      return NextResponse.json(
-        { ok: false, error: "Name is too short." },
-        { status: 400 }
-      );
+      return NextResponse.json({ ok: false, error: "Name is too short." }, { status: 400 });
     }
     if (!isEmail(email)) {
-      return NextResponse.json(
-        { ok: false, error: "Enter a valid email address." },
-        { status: 400 }
-      );
+      return NextResponse.json({ ok: false, error: "Enter a valid email address." }, { status: 400 });
     }
     if (!phone) {
-      return NextResponse.json(
-        { ok: false, error: "Please enter a phone number." },
-        { status: 400 }
-      );
+      return NextResponse.json({ ok: false, error: "Please enter a phone number." }, { status: 400 });
     }
     if (!terms || !privacy || !cookies) {
       return NextResponse.json(
@@ -97,13 +104,12 @@ export async function POST(req: Request) {
       );
     }
 
-    // CV (required)
+    /* =========================
+       CV (required)
+    ========================= */
     const file = form.get("cv");
     if (!(file instanceof File)) {
-      return NextResponse.json(
-        { ok: false, error: "Please attach your CV." },
-        { status: 400 }
-      );
+      return NextResponse.json({ ok: false, error: "Please attach your CV." }, { status: 400 });
     }
 
     if (!ALLOWED_MIME.has(file.type)) {
@@ -121,16 +127,19 @@ export async function POST(req: Request) {
       );
     }
 
+    /* =========================
+       MOCK MODE (no SMTP)
+    ========================= */
     const to = process.env.CANDIDATE_TO;
-    if (!to) {
-      return NextResponse.json(
-        { ok: false, error: "CANDIDATE_TO not set on server." },
-        { status: 500 }
-      );
+    if (isMockMode() || !to) {
+      // Do not call getTransport() in mock mode (prevents SMTP errors)
+      return NextResponse.json({ ok: true, mock: true });
     }
 
+    /* =========================
+       Send email (when live)
+    ========================= */
     const bytes = Buffer.from(await file.arrayBuffer());
-
     const transport = getTransport();
 
     await transport.sendMail({

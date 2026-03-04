@@ -167,12 +167,12 @@ export default function ClientsPage() {
               </div>
             </div>
 
-            {/* Optional: quiet link back to Home (kept subtle) */}
-            <p style={{ marginTop: 10, opacity: 0.9 }}>
-              <Link href="/" style={{ color: "inherit", textDecoration: "none" }}>
-                ← Back to homepage
-              </Link>
-            </p>
+            {/* Back to homepage */}
+            <div style={{ marginTop: 18 }}>
+              <Link className="sector-cta" href="/">
+              ← Back to Homepage
+            </Link>
+            </div>
           </div>
         </div>
       </section>

@@ -1,10 +1,12 @@
-// src/app/live-jobs/[slug]/apply/page.tsx
+// C:\Users\simon\Documents\illuminex-site\src\app\live-jobs\[slug]\apply\page.tsx
 
 import type { Metadata } from "next";
+import Link from "next/link";
 import ApplyFormClient from "@/components/ApplyFormClient";
 
 type Props = {
   params: Promise<{ slug: string }>;
+  searchParams?: Promise<{ from?: string }>;
 };
 
 export const metadata: Metadata = {
@@ -13,14 +15,16 @@ export const metadata: Metadata = {
     "Submit your application confidentially. Executive search and specialist recruitment across UK professional and technical sectors.",
 };
 
-export default async function ApplyPage({ params }: Props) {
+export default async function ApplyPage({ params, searchParams }: Props) {
   const { slug } = await params;
+  const sp = (await searchParams) ?? {};
+  const from = typeof sp.from === "string" && sp.from.trim() ? sp.from : "/live-jobs";
 
   // Extract jobId from slug (last part after final dash)
   const slugParts = slug.split("-");
   const jobId = slugParts[slugParts.length - 1] || "Unknown";
 
-  // Convert slug back to readable title (optional improvement)
+  // Convert slug back to readable title (optional)
   const jobTitle = slugParts
     .slice(0, -1)
     .join(" ")
@@ -30,6 +34,13 @@ export default async function ApplyPage({ params }: Props) {
     <main className="page page-apply">
       <section className="page-hero">
         <div className="page-hero-inner">
+          {/* Orange pill back button */}
+          <div style={{ marginBottom: 18 }}>
+            <Link className="sector-cta" href={from}>
+              ← Back to results
+            </Link>
+          </div>
+
           <h1
             style={{
               fontSize: "clamp(2.2rem, 2.8vw, 3.1rem)",
@@ -50,8 +61,7 @@ export default async function ApplyPage({ params }: Props) {
               opacity: 0.92,
             }}
           >
-            Your application will be handled discreetly and in line with our
-            Privacy Policy.
+            Your application will be handled discreetly and in line with our Privacy Policy.
           </p>
 
           <div
@@ -62,14 +72,8 @@ export default async function ApplyPage({ params }: Props) {
               gap: 18,
             }}
           >
-            <div
-              className="sector-card sector-card--cta"
-              style={{ gridColumn: "span 12" }}
-            >
-              <ApplyFormClient
-                jobId={jobId}
-                jobTitle={jobTitle}
-              />
+            <div className="sector-card sector-card--cta" style={{ gridColumn: "span 12" }}>
+              <ApplyFormClient jobId={jobId} jobTitle={jobTitle} />
             </div>
           </div>
         </div>

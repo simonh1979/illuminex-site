@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 
 type Job = {
   id: string;
@@ -31,7 +31,6 @@ function getJobIdFromSlug(slug: string) {
   return null;
 }
 
-
 function formatDate(iso: string) {
   try {
     return new Date(iso).toLocaleDateString("en-GB", {
@@ -46,8 +45,14 @@ function formatDate(iso: string) {
 
 export default function LiveJobDetailPage() {
   const params = useParams<{ slug: string }>();
+  const searchParams = useSearchParams();
+
   const slug = (params?.slug as string) ?? "";
   const jobId = useMemo(() => getJobIdFromSlug(slug), [slug]);
+
+  // Preserve the filtered list URL if provided
+  const fromParam = searchParams.get("from");
+  const backHref = fromParam ? decodeURIComponent(fromParam) : "/live-jobs";
 
   const [job, setJob] = useState<Job | null>(null);
   const [loading, setLoading] = useState(true);
@@ -103,8 +108,8 @@ export default function LiveJobDetailPage() {
                 This role link looks incomplete. Please return to Live Jobs and try again.
               </p>
               <div style={{ marginTop: 14 }}>
-                <a className="sector-cta" href="/live-jobs">
-                  Back to Live Jobs
+                <a className="sector-cta" href={backHref}>
+                  ← Back to results
                 </a>
               </div>
             </div>
@@ -142,8 +147,8 @@ export default function LiveJobDetailPage() {
                 This vacancy may have been filled or removed. Please return to Live Jobs.
               </p>
               <div style={{ marginTop: 14 }}>
-                <a className="sector-cta" href="/live-jobs">
-                  Back to Live Jobs
+                <a className="sector-cta" href={backHref}>
+                  ← Back to results
                 </a>
               </div>
             </div>
@@ -153,10 +158,21 @@ export default function LiveJobDetailPage() {
     );
   }
 
+  // Build apply link and carry "from" through to apply page too
+  const encodedFrom = encodeURIComponent(backHref);
+  const applyHref = `/live-jobs/${encodeURIComponent(slug)}/apply?from=${encodedFrom}`;
+
   return (
     <main className="page">
       <section className="page-hero">
         <div className="page-hero-inner">
+          {/* Back link (keeps filters) */}
+          <div style={{ marginBottom: 14 }}>
+            <a className="sector-cta" href={backHref}>
+              ← Back to results
+            </a>
+          </div>
+
           <div className="job-detail-grid">
             {/* LEFT: Job details */}
             <div className="sector-card job-detail-main">
@@ -208,9 +224,9 @@ export default function LiveJobDetailPage() {
                 {job.salary ?? "Salary: DOE"}
               </div>
 
-              <a className="sector-cta" href={`/live-jobs/${encodeURIComponent(slug)}/apply`}>
-  Apply / Enquire
-</a>
+              <a className="sector-cta" href={applyHref}>
+                Apply / Enquire
+              </a>
 
               <p className="jobs-muted" style={{ marginTop: 14 }}>
                 Next step will include CV upload + acceptance of T&amp;Cs.

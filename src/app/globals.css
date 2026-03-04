@@ -15,7 +15,20 @@
   --soft-white: #f8f9fb;
   --charcoal: #1a1a1a;
   --white: #ffffff;
+
+  /* Type system (site-wide) */
+  --type-body: 400;
+  --type-strong: 600;
+  --type-heading: 750;
+
+  --track-body: 0.012em;
+  --track-strong: 0.016em;
+  --track-heading: -0.01em;
+
+  --lh-body: 1.65;
+  --lh-tight: 1.18;
 }
+
 
 /* ==========================
    GLOBAL RESET
@@ -32,17 +45,23 @@ body {
   overflow-x: hidden;
 }
 
-body {
+body{
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  letter-spacing: 0.01em;
+
+  font-weight: var(--type-body);
+  letter-spacing: var(--track-body);
+  line-height: var(--lh-body);
+
+  /* improves typography rendering */
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+
   background: var(--primary-blue);
   color: var(--white);
   font-family: inherit;
-
 }
 
 main {
@@ -583,93 +602,7 @@ main.page-home::before {
   .main-nav { justify-content: center; }
 }
 
-/* ==========================
-   FOOTER (MATCH HEADER)
-========================== */
 
-.site-footer {
-  position: relative;
-  background: var(--brand-blue-gradient);
-  color: var(--white);
-  text-align: center;
-  padding: 2px 0 4px;
-}
-
-.site-footer::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 8px;
-  background: var(--brand-orange-gradient);
-}
-
-.footer-inner {
-  max-width: 1680px;   /* was 1440px */
-  margin: 0 auto;
-  padding: 0 64px;     /* was 0 32px */
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  min-height: 92px;
-}
-
-.footer-text {
-  margin: 0;
-  font-size: 0.92rem;
-  letter-spacing: 0.3px;
-  line-height: 1.2;
-  white-space: nowrap;
-}
-
-.footer-emblem {
-  height: 100px;
-  width: auto;
-  opacity: 0.92;
-  justify-self: start;
-  filter: drop-shadow(0 6px 14px rgba(0,0,0,0.28));
-}
-
-.footer-emblem--right {
-  justify-self: end;
-  transform: scaleX(-1);
-}
-
-@media (max-width: 1100px) {
-  .footer-emblem { height: 80px; }
-  .footer-inner { min-height: 78px; }
-}
-
-@media (max-width: 900px) {
-  .footer-emblem { height: 64px; }
-  .footer-inner { min-height: 66px; }
-}
-
-@media (max-width: 600px) {
-  .footer-inner {
-    grid-template-columns: 44px 1fr 44px; /* fixed slots prevents clipping */
-    column-gap: 12px;
-    align-items: center;
-    padding: 12px 14px;                 /* more right padding */
-    min-height: 74px;
-    overflow: visible;
-  }
-
-  .footer-emblem {
-    display: block;
-    height: 44px;
-    width: 44px;                        /* cap width so it can’t overflow */
-    max-width: 44px;
-    object-fit: contain;
-    opacity: 0.92;
-  }
-
-  .footer-text {
-    font-size: 0.86rem;
-    white-space: normal;
-  }
-}
 
 /* ==========================
    TYPO / KICKER
@@ -2215,37 +2148,7 @@ main.page.page-contact::before {
   transform: scale(1.00) !important;       /* removes extra zoom */
 }
 
-/* ==========================
-   FOOTER: lock emblem alignment (robust)
-========================== */
 
-/* keep the 3-column grid */
-.site-footer .footer-inner{
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-}
-
-/* force the LEFT emblem container to the left edge */
-.site-footer .footer-inner > :first-child{
-  justify-self: start;
-}
-
-/* center text stays centered */
-.site-footer .footer-inner > :nth-child(2){
-  justify-self: center;
-}
-
-/* force the RIGHT emblem container to the right edge */
-.site-footer .footer-inner > :last-child{
-  justify-self: end;
-}
-
-/* remove any default spacing that can offset the emblems */
-.site-footer .footer-emblem{
-  margin: 0;
-  display: block;
-}
 
 /* ==========================
    CONTACT: add breathing room above submit button
@@ -2264,8 +2167,9 @@ main.page.page-contact .sector-card--cta input[type="submit"]{
 
 .footer-links{
   margin-top: 6px;
-  font-size: 1rem;
-  opacity: 0.98;
+  font-size: 0.88rem;   /* matches body copy */
+  opacity: 0.92;
+  letter-spacing: 0.02em;
 }
 
 .footer-links a{
@@ -3242,93 +3146,7 @@ main.page-home::before {
   .main-nav { justify-content: center; }
 }
 
-/* ==========================
-   FOOTER (MATCH HEADER)
-========================== */
 
-.site-footer {
-  position: relative;
-  background: var(--brand-blue-gradient);
-  color: var(--white);
-  text-align: center;
-  padding: 2px 0 4px;
-}
-
-.site-footer::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 8px;
-  background: var(--brand-orange-gradient);
-}
-
-.footer-inner {
-  max-width: 1680px;   /* was 1440px */
-  margin: 0 auto;
-  padding: 0 64px;     /* was 0 32px */
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  min-height: 92px;
-}
-
-.footer-text {
-  margin: 0;
-  font-size: 0.92rem;
-  letter-spacing: 0.3px;
-  line-height: 1.2;
-  white-space: nowrap;
-}
-
-.footer-emblem {
-  height: 100px;
-  width: auto;
-  opacity: 0.92;
-  justify-self: start;
-  filter: drop-shadow(0 6px 14px rgba(0,0,0,0.28));
-}
-
-.footer-emblem--right {
-  justify-self: end;
-  transform: scaleX(-1);
-}
-
-@media (max-width: 1100px) {
-  .footer-emblem { height: 80px; }
-  .footer-inner { min-height: 78px; }
-}
-
-@media (max-width: 900px) {
-  .footer-emblem { height: 64px; }
-  .footer-inner { min-height: 66px; }
-}
-
-@media (max-width: 600px) {
-  .footer-inner {
-    grid-template-columns: 44px 1fr 44px; /* fixed slots prevents clipping */
-    column-gap: 12px;
-    align-items: center;
-    padding: 12px 14px;                 /* more right padding */
-    min-height: 74px;
-    overflow: visible;
-  }
-
-  .footer-emblem {
-    display: block;
-    height: 44px;
-    width: 44px;                        /* cap width so it can’t overflow */
-    max-width: 44px;
-    object-fit: contain;
-    opacity: 0.92;
-  }
-
-  .footer-text {
-    font-size: 0.86rem;
-    white-space: normal;
-  }
-}
 
 /* ==========================
    TYPO / KICKER
@@ -4874,37 +4692,6 @@ main.page.page-contact::before {
   transform: scale(1.00) !important;       /* removes extra zoom */
 }
 
-/* ==========================
-   FOOTER: lock emblem alignment (robust)
-========================== */
-
-/* keep the 3-column grid */
-.site-footer .footer-inner{
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-}
-
-/* force the LEFT emblem container to the left edge */
-.site-footer .footer-inner > :first-child{
-  justify-self: start;
-}
-
-/* center text stays centered */
-.site-footer .footer-inner > :nth-child(2){
-  justify-self: center;
-}
-
-/* force the RIGHT emblem container to the right edge */
-.site-footer .footer-inner > :last-child{
-  justify-self: end;
-}
-
-/* remove any default spacing that can offset the emblems */
-.site-footer .footer-emblem{
-  margin: 0;
-  display: block;
-}
 
 /* ==========================
    CONTACT: add breathing room above submit button
@@ -5331,8 +5118,8 @@ h3 { letter-spacing: 0.035em !important; }
 .contact-panel-inner{
   border-radius: 16px;
 
-  /* LIGHTER blue glass */
   background: rgba(18, 76, 118, 0.92);
+  backdrop-filter: blur(6px);
 
   border: 1px solid rgba(255, 255, 255, 0.14);
   padding: 18px 18px 16px;
@@ -5352,39 +5139,42 @@ h3 { letter-spacing: 0.035em !important; }
 
 .contact-panel-kicker{
   font-size: 0.95rem;
-  opacity: 0.88;
+  opacity: 0.82;
   margin-bottom: 4px;
-  font-weight: 850;
-  letter-spacing: 0.01em;
+  font-weight: 500;
+  letter-spacing: 0.04em;
 }
 
 .contact-panel-title{
-  font-size: 1.25rem;
-  font-weight: 900;
-  letter-spacing: 0.02em;   /* was negative */
+  font-size: 1.32rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  margin-top: 4px;
 }
 
 .contact-panel-grid{
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  gap: 14px 18px;
+  gap: 18px 22px;
   margin-top: 10px;
 }
 
 .contact-panel-item{
   grid-column: span 6;
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.055);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 14px;
   padding: 12px 12px 11px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
 }
 
 .contact-panel-label{
-  font-size: 0.74rem;
-  font-weight: 900;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  opacity: 0.95;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: capitalize;
+  opacity: 0.9;
+
   display: flex;
   align-items: center;
   gap: 10px;
@@ -5399,24 +5189,31 @@ h3 { letter-spacing: 0.035em !important; }
 }
 
 .contact-icon svg{
-  width: 20px;  /* icon size */
-  height: 20px; /* icon size */
+  width: 26px;
+  height: 26px;
+  min-width: 26px;
+  min-height: 26px;
+  display: block;
 }
 
 .contact-panel-value{
   font-size: 1.02rem;
-  font-weight: 800;
-  letter-spacing: -0.01em;
-  opacity: 0.96;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  opacity: 0.94;
   margin-top: 6px;
 }
 
 .contact-panel-link{
   color: inherit;
+  text-decoration: none;
+  opacity: 0.96;
+  font-weight: 700;
+}
+
+.contact-panel-link:hover{
   text-decoration: underline;
   text-underline-offset: 3px;
-  text-decoration-thickness: 1px;
-  opacity: 0.95;
 }
 
 .contact-panel-link:hover{
@@ -5425,4 +5222,340 @@ h3 { letter-spacing: 0.035em !important; }
 
 @media (max-width: 900px){
   .contact-panel-item{ grid-column: span 12; }
+}
+
+/* ==========================
+   FOOTER (MATCH HEADER) — FINAL SINGLE SOURCE
+========================== */
+
+.site-footer{
+  position: relative;
+  background: var(--brand-blue-gradient);
+  color: var(--white);
+  text-align: center;
+
+  /* key fixes */
+  padding: 26px 0 22px;   /* top padding stops text hitting orange bar */
+}
+
+.site-footer::before{
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: var(--brand-orange-gradient);
+  opacity: 0.95;
+}
+
+.footer-inner{
+  max-width: 1680px;
+  margin: 0 auto;
+  padding: 0 28px;
+
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+
+  min-height: 110px; /* gives a premium base height */
+}
+
+.footer-emblem{
+  display: block;
+
+  /* Fill the available inner height WITHOUT increasing footer depth */
+  height: 110px;       /* matches .footer-inner min-height */
+  width: auto;
+
+  /* remove the cap that stops it growing */
+  max-width: none;
+
+  object-fit: contain;
+  opacity: 0.92;
+  filter: drop-shadow(0 6px 14px rgba(0,0,0,0.28));
+  justify-self: start;
+}
+
+.footer-emblem--right{
+  justify-self: end;
+  transform: scaleX(-1);
+}
+
+/* center stack */
+.footer-center{
+  justify-self: center;
+  text-align: center;
+  line-height: 1.45; /* premium but not airy */
+}
+
+/* legal line */
+.footer-legal{
+  margin: 0 0 10px;
+  font-size: 0.95rem;
+  font-weight: 500;          /* softer */
+  letter-spacing: 0.02em;    /* more premium readability */
+  opacity: 0.98;
+}
+
+/* contact row (email left / phone right) */
+.footer-contact-row{
+  margin: 10px auto 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  width: 100%;
+  max-width: 760px;  /* tighter centre so email/phone move outward */
+  gap: 160px;        /* stronger separation */
+}
+
+.footer-contact{
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  white-space: nowrap;
+  font-size: 0.95rem;
+  font-weight: 550;          /* softer */
+  letter-spacing: 0.02em;    /* stops “squashed” look */
+}
+
+/* bigger icons */
+.footer-contact__icon{
+  width: 26px;
+  height: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-contact__icon svg{
+  width: 35px;
+  height: 35px;
+}
+
+/* remove default blue but keep hyperlink action */
+.footer-email{
+  color: inherit;
+  text-decoration: none;
+}
+
+.footer-email:hover{
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* registered office line */
+.footer-registered{
+  margin-top: 6px;
+  font-size: 0.92rem;
+  opacity: 0.92;
+}
+
+/* footer links smaller */
+.footer-links{
+  margin-top: 10px;
+  font-size: 0.88rem;
+  opacity: 0.92;
+  letter-spacing: 0.02em;
+}
+
+.footer-links a{
+  color: inherit;
+  text-decoration: none;
+  margin: 0 12px;
+
+  text-transform: capitalize;
+  letter-spacing: 0.04em;
+  font-weight: 500;
+  opacity: 0.9;
+
+  transition: opacity 0.2s ease;
+}
+
+.footer-links a:hover{
+  opacity: 1;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.footer-links a:hover{
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* responsive */
+@media (max-width: 1100px){
+  .footer-emblem{ height: 96px; max-width: none; }
+  .footer-inner{ min-height: 100px; }
+  .footer-contact-row{ max-width: 860px; gap: 70px; }
+}
+
+@media (max-width: 900px){
+  .footer-emblem{ height: 84px; max-width: none; }
+  .footer-inner{ min-height: 96px; padding: 0 18px; }
+  .footer-contact-row{ gap: 40px; }
+}
+
+@media (max-width: 600px){
+  .footer-inner{
+    grid-template-columns: 46px 1fr 46px;
+    padding: 0 14px;
+    min-height: 110px;
+  }
+
+  .footer-emblem{
+    height: 60px;
+    max-width: none;
+  }
+
+  .footer-contact-row{
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+  }
+}
+/* ==========================
+   TYPE LOCK (site-wide consistency)
+   - improves readability
+   - does NOT change layout/design
+========================== */
+
+body{
+  font-weight: var(--type-body);
+  letter-spacing: var(--track-body);
+  line-height: var(--lh-body);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* headings: consistent weight + spacing */
+h1, h2, h3{
+  font-weight: var(--type-heading);
+  letter-spacing: var(--track-heading);
+  line-height: var(--lh-tight);
+}
+
+/* common “strong” text (cards, meta, etc.) */
+strong,
+.footer-legal,
+.contact-panel-value{
+  font-weight: var(--type-strong);
+  letter-spacing: var(--track-strong);
+}
+
+/* labels / small headings (keep crisp, not shouty) */
+.contact-panel-label,
+.page-kicker,
+.kicker{
+  letter-spacing: 0.08em;
+  font-weight: 650;
+}
+
+.jobs-results-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:18px;
+}
+
+.jobs-count{
+  font-weight:600;
+  opacity:0.9;
+}
+
+.jobs-active-filters{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.filter-chip{
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.2);
+  border-radius:999px;
+  padding:6px 12px;
+  font-size:0.85rem;
+  cursor:pointer;
+  transition:all .2s ease;
+}
+
+.filter-chip:hover{
+  background:rgba(255,255,255,0.16);
+}
+
+.filter-clear{
+  background:transparent;
+  border:1px solid rgba(255,255,255,0.25);
+  border-radius:999px;
+  padding:6px 14px;
+  font-size:0.85rem;
+  cursor:pointer;
+  opacity:0.9;
+  transition:all .2s ease;
+}
+
+.filter-clear:hover{
+  background:rgba(255,255,255,0.12);
+  opacity:1;
+}
+
+/* Jobs back link — keep on-brand (not purple) */
+.jobs-back-link{
+  color: inherit;
+  text-decoration: none;
+  font-weight: 750;
+  opacity: 0.92;
+}
+.jobs-back-link:hover{
+  opacity: 1;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.jobs-back-link:visited{
+  color: inherit;
+}
+
+/* ================================
+   TermsFeed Cookie Banner – Size Fix
+   (matches your actual DOM)
+================================ */
+
+/* Outer banner */
+#termsfeed-com---nb.termsfeed-com---nb {
+  width: 420px !important;
+  max-width: 420px !important;
+  font-size: 13px !important;
+  border-radius: 14px !important;
+}
+
+/* Inner container padding (this is what’s making it feel “massive”) */
+#termsfeed-com---nb .cc-nb-main-container {
+  padding: 14px !important;
+}
+
+/* Message text */
+#termsfeed-com---nb .cc-nb-title {
+  font-size: 16px !important;
+  margin-bottom: 8px !important;
+}
+
+#termsfeed-com---nb .cc-nb-text {
+  font-size: 13px !important;
+  line-height: 1.35 !important;
+}
+
+/* Buttons */
+#termsfeed-com---nb button {
+  padding: 8px 12px !important;
+  font-size: 13px !important;
+  border-radius: 8px !important;
+}
+
+/* Mobile */
+@media (max-width: 520px) {
+  #termsfeed-com---nb.termsfeed-com---nb {
+    width: calc(100vw - 20px) !important;
+    max-width: none !important;
+  }
 }

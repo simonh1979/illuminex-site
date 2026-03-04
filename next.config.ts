@@ -1,6 +1,13 @@
+// C:\Users\simon\Documents\illuminex-site\next.config.ts
 import type { NextConfig } from "next";
 
 const isProd = process.env.NODE_ENV === "production";
+
+const TERMSFEED = "https://www.termsfeed.com";
+const RECAPTCHA_1 = "https://www.google.com/recaptcha/";
+const RECAPTCHA_2 = "https://www.gstatic.com/recaptcha/";
+const GA_TAGMANAGER = "https://www.googletagmanager.com";
+const GA_ANALYTICS = "https://www.google-analytics.com";
 
 const csp = isProd
   ? [
@@ -11,10 +18,11 @@ const csp = isProd
       "img-src 'self' data: blob: https:",
       "font-src 'self' data: https:",
       "style-src 'self' 'unsafe-inline'",
-      // ✅ Allow Next.js hydration scripts
-      "script-src 'self' 'unsafe-inline' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/",
-      "connect-src 'self' https: https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/",
-      "frame-src 'self' https://www.google.com/recaptcha/ https://recaptcha.google.com/recaptcha/",
+      // NOTE: TermsFeed + reCAPTCHA + GA4
+      // (no 'unsafe-eval' in prod)
+      `script-src 'self' 'unsafe-inline' ${TERMSFEED} ${GA_TAGMANAGER} ${GA_ANALYTICS} ${RECAPTCHA_1} ${RECAPTCHA_2}`,
+      `connect-src 'self' https: ${GA_TAGMANAGER} ${GA_ANALYTICS} ${RECAPTCHA_1} ${RECAPTCHA_2}`,
+      `frame-src 'self' ${RECAPTCHA_1} https://recaptcha.google.com/recaptcha/`,
       "form-action 'self'",
       "upgrade-insecure-requests",
     ].join("; ")
@@ -26,9 +34,10 @@ const csp = isProd
       "img-src 'self' data: blob: https:",
       "font-src 'self' data: https:",
       "style-src 'self' 'unsafe-inline'",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/",
-      "connect-src 'self' http: https: ws: wss: https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/",
-      "frame-src 'self' https://www.google.com/recaptcha/ https://recaptcha.google.com/recaptcha/",
+      // Dev needs 'unsafe-eval' for Next/React dev tooling
+      `script-src 'self' 'unsafe-inline' 'unsafe-eval' ${TERMSFEED} ${GA_TAGMANAGER} ${GA_ANALYTICS} ${RECAPTCHA_1} ${RECAPTCHA_2}`,
+      `connect-src 'self' http: https: ws: wss: ${GA_TAGMANAGER} ${GA_ANALYTICS} ${RECAPTCHA_1} ${RECAPTCHA_2}`,
+      `frame-src 'self' ${RECAPTCHA_1} https://recaptcha.google.com/recaptcha/`,
       "form-action 'self'",
     ].join("; ");
 

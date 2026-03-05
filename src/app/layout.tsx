@@ -7,6 +7,7 @@ import { Inter } from "next/font/google";
 import type { Metadata } from "next";
 import Link from "next/link";
 import type React from "react";
+import CookiePreferencesButton from "../components/CookiePreferencesButton";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.illuminex.co.uk"),
@@ -106,6 +107,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </nav>
             </div>
 
+            <CookiePreferencesButton />
+            
             {/* RIGHT EMBLEM */}
             <div className="footer-emblem-wrap footer-emblem-wrap--right">
               <img

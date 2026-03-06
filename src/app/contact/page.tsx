@@ -60,7 +60,7 @@ export default function ContactPage() {
 
               <ContactForm />
 
-              {/* Contact details panel (premium, restrained) */}
+              {/* Contact details panel */}
               <div className="contact-panel" aria-label="Contact details">
                 <div className="contact-panel-inner">
                   <div className="contact-panel-head">
@@ -68,10 +68,20 @@ export default function ContactPage() {
                       <div className="contact-panel-kicker">Contact details</div>
                       <div className="contact-panel-title">Illuminex Ltd</div>
                     </div>
+
+                    <span
+                      className="contact-linkedin"
+                      aria-label="LinkedIn page coming soon"
+                    >
+                      <img
+                        src="/linkedin-blue-white-logo.png"
+                        alt="LinkedIn"
+                        className="contact-linkedin-icon"
+                      />
+                    </span>
                   </div>
 
                   <div className="contact-panel-grid">
-                    {/* Email */}
                     <div className="contact-panel-item">
                       <div className="contact-panel-label">
                         <span className="contact-icon" aria-hidden="true">
@@ -99,7 +109,6 @@ export default function ContactPage() {
                       </div>
                     </div>
 
-                    {/* Phone */}
                     <div className="contact-panel-item">
                       <div className="contact-panel-label">
                         <span className="contact-icon" aria-hidden="true">
@@ -118,7 +127,6 @@ export default function ContactPage() {
                       <div className="contact-panel-value">To be confirmed</div>
                     </div>
 
-                    {/* Registered office */}
                     <div className="contact-panel-item">
                       <div className="contact-panel-label">
                         <span className="contact-icon" aria-hidden="true">
@@ -141,7 +149,6 @@ export default function ContactPage() {
                       <div className="contact-panel-value">To be confirmed</div>
                     </div>
 
-                    {/* Company No. */}
                     <div className="contact-panel-item">
                       <div className="contact-panel-label">Company No.</div>
                       <div className="contact-panel-value">16961631</div>

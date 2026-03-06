@@ -3,7 +3,6 @@ export default function CookiesPage() {
     <main className="page page-cookies">
       <section className="page-hero">
         <div className="page-hero-inner">
-
           <h1
             style={{
               fontSize: "clamp(2.2rem, 2.8vw, 3.1rem)",
@@ -24,88 +23,170 @@ export default function CookiesPage() {
               opacity: 0.92,
             }}
           >
-            This Cookie Policy explains how Illuminex LTD uses cookies and similar
+            This Cookie Policy explains how Illuminex Ltd uses cookies and similar
             technologies on this website in accordance with the Privacy and
-            Electronic Communications Regulations (PECR).
+            Electronic Communications Regulations (PECR) and applicable UK data
+            protection law.
           </p>
 
-          {/* What Are Cookies */}
           <div style={{ marginTop: 34 }} className="sector-card">
-            <h3>1. What Are Cookies</h3>
+            <h3>1. What Cookies Are</h3>
             <p style={{ marginBottom: 0 }}>
               Cookies are small text files placed on your device when you visit a
-              website. They help websites function properly and improve user
-              experience. Some cookies are essential for site operation, while
-              others are used for analytics or marketing purposes.
+              website. They help websites operate properly, remember certain
+              preferences, improve security and provide information about how the
+              website is used.
             </p>
           </div>
 
-          {/* How We Use Cookies */}
           <div style={{ marginTop: 18 }} className="sector-card">
             <h3>2. How We Use Cookies</h3>
             <p>
-              At present, this website uses only essential cookies and security
-              technologies required for the proper functioning of the site.
+              Illuminex Ltd uses cookies and similar technologies to support the
+              operation, security and performance of this website.
             </p>
             <p style={{ marginBottom: 0 }}>
-              We do not use advertising cookies, tracking pixels or third-party
-              marketing technologies.
+              Some cookies are strictly necessary for the website to function.
+              Others, such as analytics or future advertising-related cookies,
+              will only be used where you have provided the relevant consent
+              through our cookie preferences tool.
             </p>
           </div>
 
-          {/* Essential Cookies */}
           <div style={{ marginTop: 18 }} className="sector-card">
-            <h3>3. Essential Cookies</h3>
+            <h3>3. Categories of Cookies We Use</h3>
+            <p>We may use the following categories of cookies:</p>
+            <ul style={{ marginBottom: 0 }}>
+              <li>
+                <strong>Strictly necessary cookies</strong> – required for the
+                core operation, security and stability of the website.
+              </li>
+              <li>
+                <strong>Preference and consent cookies</strong> – used to
+                remember your cookie choices and related settings.
+              </li>
+              <li>
+                <strong>Analytics cookies</strong> – used to understand how
+                visitors use the website and to improve performance, where
+                consent has been given.
+              </li>
+              <li>
+                <strong>Advertising or marketing cookies</strong> – these may be
+                used in future in connection with platforms such as LinkedIn or
+                Meta, but only where appropriate consent has been obtained.
+              </li>
+            </ul>
+          </div>
+
+          <div style={{ marginTop: 18 }} className="sector-card">
+            <h3>4. Strictly Necessary Cookies</h3>
             <p>
-              Essential cookies enable core website functionality, including page
-              navigation and secure form submission. These cookies do not require
-              consent under PECR as they are necessary for the operation of the
+              Strictly necessary cookies are required for the website to function
+              correctly. These may include cookies or similar technologies used
+              for page delivery, security controls, spam prevention and the
+              storage of essential session or consent-related settings.
+            </p>
+            <p style={{ marginBottom: 0 }}>
+              Because these cookies are necessary for the operation of the
+              website, they do not require consent under PECR.
+            </p>
+          </div>
+
+          <div style={{ marginTop: 18 }} className="sector-card">
+            <h3>5. Analytics Cookies</h3>
+            <p>
+              Where consent has been provided, we may use analytics technologies
+              such as Google Analytics to understand how visitors interact with
+              the website, including which pages are visited, how long visitors
+              remain on the site and how the website performs across devices and
+              browsers.
+            </p>
+            <p style={{ marginBottom: 0 }}>
+              Analytics cookies are not activated unless you have positively
+              accepted them through our cookie preferences tool.
+            </p>
+          </div>
+
+          <div style={{ marginTop: 18 }} className="sector-card">
+            <h3>6. Google reCAPTCHA and Security Technologies</h3>
+            <p>
+              We use Google reCAPTCHA and related security technologies to help
+              protect our website and forms from spam, automated abuse and
+              malicious activity.
+            </p>
+            <p style={{ marginBottom: 0 }}>
+              These technologies may collect device and interaction data as part
+              of their security function. Their use is subject to Google’s own
+              terms and privacy documentation.
+            </p>
+          </div>
+
+          <div style={{ marginTop: 18 }} className="sector-card">
+            <h3>7. Future Advertising and Tracking Technologies</h3>
+            <p>
+              We may in future use advertising, remarketing or conversion
+              tracking technologies provided by third-party platforms such as
+              LinkedIn or Meta in support of recruitment marketing and business
+              development activity.
+            </p>
+            <p style={{ marginBottom: 0 }}>
+              If such technologies are introduced, they will be subject to an
+              appropriate consent mechanism and this Cookie Policy will be
+              updated accordingly.
+            </p>
+          </div>
+
+          <div style={{ marginTop: 18 }} className="sector-card">
+            <h3>8. Managing Your Cookie Preferences</h3>
+            <p>
+              You can accept, reject or amend your preferences for non-essential
+              cookies through the cookie preferences tool made available on this
               website.
             </p>
             <p style={{ marginBottom: 0 }}>
-              Disabling essential cookies may affect how the website functions.
+              You can also control cookies through your browser settings.
+              However, restricting certain cookies may affect website
+              functionality or your experience of using the site.
             </p>
           </div>
 
-          {/* reCAPTCHA */}
           <div style={{ marginTop: 18 }} className="sector-card">
-            <h3>4. Google reCAPTCHA</h3>
+            <h3>9. How Long Cookies Remain on Your Device</h3>
             <p>
-              We use Google reCAPTCHA to protect our website from spam and
-              automated abuse. This service may collect hardware and software
-              information, including device and application data, and send it to
-              Google for analysis.
+              Some cookies are deleted when you close your browser session,
+              whilst others remain on your device for a defined period or until
+              deleted manually.
             </p>
             <p style={{ marginBottom: 0 }}>
-              Use of reCAPTCHA is subject to Google’s Privacy Policy and Terms of
-              Service.
+              The duration will depend on the specific cookie and its purpose,
+              including whether it is required for session management, consent
+              storage or analytics.
             </p>
           </div>
 
-          {/* Future Changes */}
           <div style={{ marginTop: 18 }} className="sector-card">
-            <h3>5. Future Changes</h3>
+            <h3>10. Changes to This Cookie Policy</h3>
+            <p style={{ marginBottom: 0 }}>
+              We may update this Cookie Policy from time to time to reflect
+              changes in legal requirements, website functionality or the
+              technologies we use. The latest version will always be published on
+              this page.
+            </p>
+          </div>
+
+          <div style={{ marginTop: 18 }} className="sector-card">
+            <h3>11. Contact</h3>
             <p>
-              If we introduce analytics or non-essential cookies in the future,
-              we will implement an appropriate consent mechanism in line with
-              PECR requirements before such technologies are activated.
+              If you have any questions about our use of cookies or similar
+              technologies, please contact us at hello@illuminex.co.uk.
             </p>
             <p style={{ marginBottom: 0 }}>
-              This Cookie Policy will be updated accordingly.
+              Further information about how we handle personal data is available in our{" "}
+              <a href="/privacy" className="text-link">
+                Privacy Policy
+              </a>.
             </p>
           </div>
-
-          {/* Managing Cookies */}
-          <div style={{ marginTop: 18 }} className="sector-card">
-            <h3>6. Managing Cookies</h3>
-            <p style={{ marginBottom: 0 }}>
-              Most web browsers allow you to control cookies through your browser
-              settings. You can usually modify your browser to decline cookies or
-              notify you when a cookie is set. However, disabling essential cookies
-              may affect site functionality.
-            </p>
-          </div>
-
         </div>
       </section>
     </main>

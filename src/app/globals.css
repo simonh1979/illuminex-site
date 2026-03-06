@@ -3151,14 +3151,43 @@ box-shadow:
 }
 
 /* ========================================
-   FOOTER — Mobile watermark emblem (no extra depth)
-   (single source of truth)
+   FOOTER MOBILE-ONLY CONTENT VISIBILITY
+   Keep desktop footer completely unchanged
+======================================== */
+
+/* Hide the new mobile footer content on desktop / large screens */
+.footer-mobile-only{
+  display: none;
+}
+
+/* ========================================
+   FOOTER — Premium mobile footer
+   (mobile only — does NOT affect desktop)
 ======================================== */
 @media (max-width: 700px){
 
-  /* Hide the physical emblems on mobile so they don't add height */
+  /* Show the new mobile-only footer content */
+  .footer-mobile-only{
+    display: flex !important;
+    width: 100% !important;
+    max-width: 420px !important;
+    margin: 0 auto !important;
+    flex-direction: column !important;
+    gap: 28px !important;
+    text-align: left !important;
+  }
+
+  /* Hide the physical emblems on mobile */
   .site-footer .footer-emblem-wrap--left,
   .site-footer .footer-emblem-wrap--right{
+    display: none !important;
+  }
+
+  /* Hide original desktop footer content on mobile only */
+  .site-footer .footer-legal,
+  .site-footer .footer-contact-row,
+  .site-footer .footer-registered,
+  .site-footer .footer-links{
     display: none !important;
   }
 
@@ -3166,39 +3195,206 @@ box-shadow:
   .site-footer .footer-inner{
     grid-template-columns: 1fr !important;
     padding: 18px 16px 22px !important;
-
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
-
     position: relative !important;
-    z-index: 1 !important; /* text above watermark */
+    z-index: 1 !important;
   }
 
-  /* Watermark container */
   .site-footer{
-    overflow: hidden;
-    position: relative; /* ensures ::after positions correctly */
+    overflow: hidden !important;
+    position: relative !important;
   }
 
-  /* Watermark emblem behind text */
+  /* No background watermark now */
   .site-footer::after{
-    content: "";
-    position: absolute;
-    inset: 0;
-
-    background: url("/Illuminex-logo-emblem-transparent-background-high-res.png") center / 420px no-repeat;
-
-    opacity: 0.30;
-    filter: drop-shadow(0 10px 22px rgba(0,0,0,0.28));
-
-    pointer-events: none;
-    z-index: 0;
+    display: none !important;
   }
 
   /* Move cookie cog below footer links */
   .site-footer #open_preferences_center{
     margin-top: 14px !important;
+  }
+
+  /* Main company logo */
+  .site-footer .footer-main-logo-link{
+    display: block !important;
+    width: fit-content !important;
+    margin-right: auto !important;
+    margin-left: 0 !important;
+    margin-top: -25px !important;
+    margin-bottom: -12px !important;
+  }
+
+  .site-footer .footer-main-logo{
+    width: 190px !important;
+    height: auto !important;
+    display: block !important;
+  }
+
+  /* Section wrapper */
+  .site-footer .footer-mobile-section{
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+
+  /* Section titles */
+  .site-footer .footer-mobile-title{
+    position: relative !important;
+    display: inline-block !important;
+    width: fit-content !important;
+    padding-bottom: 8px !important;
+    margin-bottom: 14px !important;
+    font-size: 1.1rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.03em !important;
+  }
+
+  /* Thin tapered orange line exactly under text width */
+  .site-footer .footer-mobile-title::after{
+    content: "";
+    position: absolute;
+    left: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    height: 2px !important;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      #ff8c00 15%,
+      #ff6a00 50%,
+      #ff8c00 85%,
+      transparent 100%
+    ) !important;
+  }
+
+  /* Pill stack */
+  .site-footer .footer-mobile-pill-stack{
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+
+  /* Footer pills — same system as sidebar pills */
+  .site-footer .footer-mobile-pill{
+    display: block !important;
+    position: relative !important;
+    overflow: hidden !important;
+    padding: 10px 14px !important;
+    padding-right: 72px !important;
+    border-radius: 999px !important;
+    border: 3px solid transparent !important;
+
+    background:
+      linear-gradient(var(--accent-blue), var(--accent-blue)) padding-box,
+      linear-gradient(135deg, #ff6a00, #ff8c00, #ffb347) border-box !important;
+
+    color: rgba(255,255,255,0.96) !important;
+    text-decoration: none !important;
+    font-weight: 600 !important;
+
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.18),
+      inset 0 -1px 0 rgba(0,0,0,0.18),
+      0 10px 22px rgba(0,0,0,0.18) !important;
+  }
+
+  /* Active pill */
+  .site-footer .footer-mobile-pill[aria-current="page"]{
+    background:
+      linear-gradient(#062f4f, #062f4f) padding-box,
+      linear-gradient(135deg, #ff6a00, #ff8c00, #ffb347) border-box !important;
+
+    color: rgba(255,255,255,0.98) !important;
+    font-weight: 900 !important;
+  }
+
+  /* Emblem inside each footer pill */
+  .site-footer .footer-mobile-pill::after{
+    content: "" !important;
+    position: absolute !important;
+    right: 18px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    width: 80px !important;
+    height: 80px !important;
+    background: url("/Illuminex-logo-emblem-transparent-background-high-res.png") center / contain no-repeat !important;
+    pointer-events: none !important;
+  }
+
+  /* Address block */
+  .site-footer .footer-mobile-textblock{
+    font-size: 0.95rem !important;
+    line-height: 1.6 !important;
+  }
+
+  /* Contact stack */
+  .site-footer .footer-mobile-contact-stack{
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+
+  /* Phone link fix */
+  .site-footer .footer-mobile-contact-stack a[href^="tel"]{
+    color: rgba(255,255,255,0.96) !important;
+    text-decoration: none !important;
+  }
+
+  .site-footer .footer-mobile-contact-stack a[href^="tel"]:hover{
+    color: rgba(255,255,255,0.96) !important;
+    text-decoration: none !important;
+  }
+
+  /* Social row */
+  .site-footer .footer-mobile-socials{
+    display: flex !important;
+    gap: 18px !important;
+    align-items: center !important;
+    margin-top: 6px !important;
+    flex-wrap: wrap !important;
+  }
+
+  .footer-mobile-linkedin{
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 6px !important;
+    border-radius: 8px !important;
+    transition: transform .2s ease, opacity .2s ease, box-shadow .2s ease !important;
+  }
+
+  .footer-mobile-linkedin:hover{
+    transform: translateY(-2px) !important;
+    opacity: 0.95 !important;
+    box-shadow: 0 0 10px rgba(255,140,0,0.6) !important;
+  }
+
+  .footer-linkedin-icon{
+    width: 36px !important;
+    height: auto !important;
+    display: block !important;
+  }
+
+  .site-footer .footer-mobile-rec{
+    font-size: 0.9rem !important;
+    opacity: 0.75 !important;
+  }
+
+  /* Bottom copyright block */
+  .site-footer .footer-mobile-bottom{
+    text-align: center !important;
+    font-size: 0.85rem !important;
+    line-height: 1.5 !important;
+    margin-top: 10px !important;
+    opacity: 0.9 !important;
+  }
+
+  /* Never show desktop linkedin icon on mobile */
+  .footer-desktop-linkedin{
+    display: none !important;
   }
 }
 
@@ -3211,29 +3407,25 @@ box-shadow:
   .nav-drawer-links a{
     position: relative !important;
     overflow: hidden !important;
-
     display: block !important;
     padding: 12px 12px !important;
     padding-right: 72px !important;
-
     border-radius: 999px !important;
 
-    /* ORANGE GRADIENT BORDER (pill-safe) */
     border: 3px solid transparent !important;
     background:
-      linear-gradient(--accent-blue,--accent-blue) padding-box,
+      linear-gradient(var(--accent-blue), var(--accent-blue)) padding-box,
       linear-gradient(135deg,#ff6a00,#ff8c00,#ffb347) border-box !important;
 
     box-shadow:
-  inset 0 1px 0 rgba(255,255,255,0.18),
-  inset 0 -1px 0 rgba(0,0,0,0.18),
-  0 10px 22px rgba(0,0,0,0.18);
+      inset 0 1px 0 rgba(255,255,255,0.18),
+      inset 0 -1px 0 rgba(0,0,0,0.18),
+      0 10px 22px rgba(0,0,0,0.18);
 
     color: rgba(255,255,255,0.96) !important;
     text-decoration: none !important;
   }
 
-  /* Active page = darker blue */
   .nav-drawer-links a[aria-current="page"]{
     background:
       linear-gradient(#062f4f,#062f4f) padding-box,
@@ -3246,7 +3438,6 @@ box-shadow:
       0 14px 30px rgba(0,0,0,0.22) !important;
   }
 
-  /* Emblem inside pill */
   .nav-drawer-links a::after{
     content: "" !important;
     position: absolute !important;
@@ -3260,4 +3451,113 @@ box-shadow:
     background: url("/Illuminex-logo-emblem-transparent-background-high-res.png") center / contain no-repeat !important;
     pointer-events: none !important;
   }
+}
+
+/* ========================================
+   DESKTOP FOOTER LINKEDIN ICON
+   (desktop only)
+======================================== */
+@media (min-width: 701px){
+
+  .footer-desktop-bottom{
+    margin-top: 14px !important;
+    padding-bottom: 10px !important;
+    display: flex !important;
+    justify-content: center !important;
+    gap: 18px !important;
+    position: relative !important;
+  }
+
+  .footer-desktop-linkedin{
+    position: absolute !important;
+    top: -50px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    padding: 6px !important;
+    border-radius: 8px !important;
+    transition: transform .2s ease, opacity .2s ease, box-shadow .2s ease !important;
+  }
+
+  .footer-desktop-linkedin:hover{
+    transform: translateX(-50%) translateY(-2px) !important;
+    opacity: 0.95 !important;
+    box-shadow: 0 0 10px rgba(255,140,0,0.6) !important;
+  }
+
+  .footer-desktop-linkedin-icon{
+    width: 46px !important;
+    height: auto !important;
+    display: block !important;
+    filter: brightness(1.3) !important;
+  }
+}
+
+/* ========================================
+   CONTACT PANEL LINKEDIN ICON
+======================================== */
+
+.contact-linkedin{
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin-left: 10px !important;
+  transition: transform .2s ease, opacity .2s ease, box-shadow .2s ease !important;
+}
+
+.contact-linkedin:hover{
+  transform: translateY(-2px) !important;
+  opacity: 0.95 !important;
+  box-shadow: 0 0 10px rgba(255,140,0,0.6) !important;
+}
+
+.contact-linkedin-icon{
+  width: 52px !important;
+  height: auto !important;
+  display: block !important;
+  filter: brightness(1.3) !important;
+}
+
+/* Privacy / legal page lists */
+.sector-card ul{
+  padding-left: 24px;
+  margin-top: 10px;
+}
+
+.sector-card li{
+  margin-bottom: 6px;
+  line-height: 1.6;
+}
+
+.page-privacy .sector-card p{
+  max-width: 860px;
+}
+
+.page-privacy .sector-card h3{
+  letter-spacing: -0.01em;
+}
+
+.page-cookies .sector-card p{
+  max-width: 860px;
+}
+
+.page-cookies .sector-card h3{
+  letter-spacing: -0.01em;
+}
+
+.text-link{
+  color:#ff8c00;
+  text-decoration:none;
+  font-weight:600;
+}
+
+.text-link:hover{
+  text-decoration:underline;
+}
+
+.page-terms .sector-card p{
+  max-width: 860px;
+}
+
+.page-terms .sector-card h3{
+  letter-spacing: -0.01em;
 }

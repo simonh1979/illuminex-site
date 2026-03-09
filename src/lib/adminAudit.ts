@@ -87,3 +87,30 @@ export async function getAuditEvents(
     return [];
   }
 }
+
+export async function countAuditEventsByAction(
+  action: string,
+  sinceTs?: number
+): Promise<number> {
+  try {
+    const events = await readAll();
+    return events.filter(
+      (e) => e.action === action && (sinceTs ? e.ts >= sinceTs : true)
+    ).length;
+  } catch (err) {
+    console.warn("[adminAudit] count failed:", err);
+    return 0;
+  }
+}
+
+export async function getLatestAuditEventByAction(
+  action: string
+): Promise<AdminAuditEvent | null> {
+  try {
+    const events = await readAll();
+    return events.find((e) => e.action === action) ?? null;
+  } catch (err) {
+    console.warn("[adminAudit] latest failed:", err);
+    return null;
+  }
+}

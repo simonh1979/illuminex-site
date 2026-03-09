@@ -14,17 +14,15 @@ type Job = {
   salary?: string;
   postedAt: string;
   summary: string;
-  description?: string; // HTML string (later from JobAdder)
+  description?: string;
 };
 
 function getJobIdFromSlug(slug: string) {
   if (!slug) return null;
 
-  // 1) Preferred: ILX-001 at end
   const endMatch = slug.match(/(ILX-\d+)$/i);
   if (endMatch) return endMatch[1].toUpperCase();
 
-  // 2) Fallback: ILX-001 anywhere in the slug
   const anyMatch = slug.match(/(ILX-\d+)/i);
   if (anyMatch) return anyMatch[1].toUpperCase();
 
@@ -50,10 +48,11 @@ export default function LiveJobDetailPage() {
   const slug = (params?.slug as string) ?? "";
   const jobId = useMemo(() => getJobIdFromSlug(slug), [slug]);
 
-  // Preserve the filtered list URL if provided
   const fromParam = searchParams.get("from");
   const backHref = fromParam ? decodeURIComponent(fromParam) : "/live-jobs";
 
+  const encodedFrom = encodeURIComponent(backHref);
+  
   const [job, setJob] = useState<Job | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<"" | "invalid-link" | "unavailable">("");
@@ -91,12 +90,62 @@ export default function LiveJobDetailPage() {
     }
 
     run();
+
     return () => {
       cancelled = true;
     };
   }, [jobId]);
 
-  // Invalid slug / missing ID
+  useEffect(() => {
+  if (!job) return;
+
+  async function trackView() {
+    try {
+      await fetch("/api/admin/track/job-view", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          jobId: job!.id,
+          title: job!.title,
+          slug,
+          sector: job!.sector,
+          location: job!.location,
+        }),
+        keepalive: true,
+      });
+    } catch {
+      // fail silently — job page must never break
+    }
+  }
+
+  trackView();
+}, [job, slug]);
+
+  async function trackApplyClick() {
+    if (!job) return;
+
+    try {
+      await fetch("/api/admin/track/job-apply-click", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          jobId: job.id,
+          title: job.title,
+          slug,
+          sector: job.sector,
+          location: job.location,
+        }),
+        keepalive: true,
+      });
+    } catch {
+      // fail silently — apply flow must never break
+    }
+  }
+
   if (!loading && error === "invalid-link") {
     return (
       <main className="page">
@@ -105,7 +154,8 @@ export default function LiveJobDetailPage() {
             <div className="sector-card">
               <h3>Role not found</h3>
               <p className="jobs-muted">
-                This role link looks incomplete. Please return to Live Jobs and try again.
+                This role link looks incomplete. Please return to Live Jobs and
+                try again.
               </p>
               <div style={{ marginTop: 14 }}>
                 <a className="sector-cta" href={backHref}>
@@ -119,7 +169,6 @@ export default function LiveJobDetailPage() {
     );
   }
 
-  // Loading skeleton
   if (loading) {
     return (
       <main className="page">
@@ -127,7 +176,10 @@ export default function LiveJobDetailPage() {
           <div className="page-hero-inner">
             <div className="job-detail-grid">
               <div className="sector-card job-detail-main jobs-skel" />
-              <aside className="sector-card job-detail-aside jobs-skel" style={{ minHeight: 260 }} />
+              <aside
+                className="sector-card job-detail-aside jobs-skel"
+                style={{ minHeight: 260 }}
+              />
             </div>
           </div>
         </section>
@@ -135,7 +187,6 @@ export default function LiveJobDetailPage() {
     );
   }
 
-  // Couldn’t fetch job
   if (!job) {
     return (
       <main className="page">
@@ -144,7 +195,8 @@ export default function LiveJobDetailPage() {
             <div className="sector-card">
               <h3>Role unavailable</h3>
               <p className="jobs-muted">
-                This vacancy may have been filled or removed. Please return to Live Jobs.
+                This vacancy may have been filled or removed. Please return to
+                Live Jobs.
               </p>
               <div style={{ marginTop: 14 }}>
                 <a className="sector-cta" href={backHref}>
@@ -158,15 +210,18 @@ export default function LiveJobDetailPage() {
     );
   }
 
-  // Build apply link and carry "from" through to apply page too
-  const encodedFrom = encodeURIComponent(backHref);
-  const applyHref = `/live-jobs/${encodeURIComponent(slug)}/apply?from=${encodedFrom}`;
+  const applyHref =
+  `/live-jobs/${encodeURIComponent(slug)}/apply` +
+  `?from=${encodedFrom}` +
+  `&sector=${encodeURIComponent(job.sector || "")}` +
+  `&location=${encodeURIComponent(job.location || "")}` +
+  `&jobTitle=${encodeURIComponent(job.title || "")}` +
+  `&jobId=${encodeURIComponent(job.id || "")}`;
 
   return (
     <main className="page">
       <section className="page-hero">
         <div className="page-hero-inner">
-          {/* Back link (keeps filters) */}
           <div style={{ marginBottom: 14 }}>
             <a className="sector-cta" href={backHref}>
               ← Back to results
@@ -174,7 +229,6 @@ export default function LiveJobDetailPage() {
           </div>
 
           <div className="job-detail-grid">
-            {/* LEFT: Job details */}
             <div className="sector-card job-detail-main">
               <div className="job-top">
                 <div>
@@ -205,15 +259,15 @@ export default function LiveJobDetailPage() {
                   <>
                     <h4 style={{ marginTop: 18, marginBottom: 10 }}>Overview</h4>
                     <p className="jobs-muted" style={{ opacity: 0.95 }}>
-                      Full job description will appear here when we connect to your ATS feed.
-                      For now, this is mock content to validate the layout and UX.
+                      Full job description will appear here when we connect to
+                      your ATS feed. For now, this is mock content to validate
+                      the layout and UX.
                     </p>
                   </>
                 )}
               </div>
             </div>
 
-            {/* RIGHT: Apply panel */}
             <aside className="sector-card job-detail-aside">
               <h3 style={{ marginBottom: 10 }}>Apply now</h3>
               <p className="jobs-muted" style={{ marginBottom: 14 }}>
@@ -224,7 +278,11 @@ export default function LiveJobDetailPage() {
                 {job.salary ?? "Salary: DOE"}
               </div>
 
-              <a className="sector-cta" href={applyHref}>
+              <a
+                className="sector-cta"
+                href={applyHref}
+                onClick={trackApplyClick}
+              >
                 Apply / Enquire
               </a>
 

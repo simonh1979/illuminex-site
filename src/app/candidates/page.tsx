@@ -43,7 +43,7 @@ export default function CandidatesPage() {
               opacity: 0.92,
             }}
           >
-            We work with high-calibre candidates across professional and technical sectors, from regional leadership through to executive appointments.
+            We work with high calibre candidates across professional and technical sectors, from regional leadership through to executive appointments.
             You can expect clear communication, honest feedback and opportunities that match your experience and direction.
           </p>
 

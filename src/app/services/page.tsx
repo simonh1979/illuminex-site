@@ -24,8 +24,8 @@ export default function ServicesPage() {
             }}
           >
             Illuminex is established as an executive search and specialist recruitment consultancy. Over time, the platform will extend to
-            include carefully selected partner services across HR, Payroll and Health &amp; Safety. Introductions will be relationship-led and
-            value-driven,{" "}
+            include carefully selected partner services across HR, Payroll and Health &amp; Safety. Introductions will be relationship led and
+            value driven,{" "}
             <span style={{ whiteSpace: "nowrap" }}> not directory listings.</span>
           </p>
 
@@ -40,7 +40,7 @@ export default function ServicesPage() {
             <div className="sector-card" style={{ gridColumn: "span 4" }}>
               <h3>Executive search</h3>
               <p>
-                Senior and board-level appointments where discretion, structure and disciplined assessment are essential. Retained mandates
+                Senior and board level appointments where discretion, structure and disciplined assessment are essential. Retained mandates
                 managed with clarity and pace.
               </p>
               <div className="sector-tag">Retained search</div>
@@ -49,7 +49,7 @@ export default function ServicesPage() {
             <div className="sector-card" style={{ gridColumn: "span 4" }}>
               <h3>Specialist recruitment</h3>
               <p>
-                Mid-senior commercial and technical hires across defined sectors. Focused delivery with proper market mapping and brand
+                Mid senior commercial and technical hires across defined sectors. Focused delivery with proper market mapping and brand
                 protection.
               </p>
               <div className="sector-tag">Specialist</div>

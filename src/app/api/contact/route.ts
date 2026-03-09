@@ -2,6 +2,7 @@
 
 import { NextResponse } from "next/server";
 import { getTransport, fromAddress } from "@/lib/mailer";
+import { logAdminEvent } from "@/lib/adminAudit";
 
 export const runtime = "nodejs";
 
@@ -150,18 +151,30 @@ export async function POST(req: Request) {
        MOCK MODE (no SMTP)
     ========================= */
     if (isMockMode()) {
-      return NextResponse.json({
-        ok: true,
-        mode: "mock",
-        received: {
-          name: cleanName,
-          email: cleanEmail,
-          company: cleanCompany || "-",
-          phone: cleanPhone || "-",
-          message: cleanMessage,
-        },
-      });
-    }
+  await logAdminEvent({
+    action: "contact.submit",
+    actorEmail: cleanEmail,
+    actor: cleanName,
+    ip,
+    meta: {
+      company: cleanCompany || null,
+      phone: cleanPhone || null,
+      mode: "mock",
+    },
+  });
+
+  return NextResponse.json({
+    ok: true,
+    mode: "mock",
+    received: {
+      name: cleanName,
+      email: cleanEmail,
+      company: cleanCompany || "-",
+      phone: cleanPhone || "-",
+      message: cleanMessage,
+    },
+  });
+}
 
     /* =========================
        Live email mode
@@ -194,6 +207,18 @@ ${cleanMessage}
 IP: ${ip}
 `,
     });
+
+    await logAdminEvent({
+  action: "contact.submit",
+  actorEmail: cleanEmail,
+  actor: cleanName,
+  ip,
+  meta: {
+    company: cleanCompany || null,
+    phone: cleanPhone || null,
+    mode: "live",
+  },
+});
 
     return NextResponse.json({ ok: true });
   } catch (err: any) {

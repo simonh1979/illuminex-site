@@ -30,7 +30,7 @@ export default function AboutPage() {
               lineHeight: 1.12,
             }}
           >
-            Built for high-stakes hiring where reputation matters.
+            Built for high stakes hiring where reputation matters.
           </h1>
 
           <p
@@ -55,7 +55,7 @@ export default function AboutPage() {
             }}
           >
             <div className="sector-card" style={{ gridColumn: "span 6" }}>
-              <h3>Search, not CV-sifting</h3>
+              <h3>Search, not CV sifting</h3>
               <p>
                 We lead with market intelligence, mapping and targeted outreach, then validate fit, motivation and delivery history before you ever meet.
               </p>
@@ -79,11 +79,11 @@ export default function AboutPage() {
             </div>
 
             <div className="sector-card" style={{ gridColumn: "span 6" }}>
-              <h3>UK-wide coverage</h3>
+              <h3>UK wide coverage</h3>
               <p>
                 National, regional and remote roles across the UK. We move with urgency, but quality and integrity remain the benchmark.
               </p>
-              <div className="sector-tag">UK-wide</div>
+              <div className="sector-tag">UK wide</div>
             </div>
 
             <div className="sector-card sector-card--cta" style={{ gridColumn: "span 12" }}>

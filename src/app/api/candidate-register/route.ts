@@ -2,6 +2,7 @@
 
 import { NextResponse } from "next/server";
 import { getTransport, fromAddress } from "@/lib/mailer";
+import { logAdminEvent } from "@/lib/adminAudit";
 
 export const runtime = "nodejs";
 
@@ -151,21 +152,35 @@ export async function POST(req: Request) {
 
     // If no mailbox yet, keep mock testing safe:
     if (!to) {
-      return NextResponse.json({
-        ok: true,
-        mode: "mock",
-        received: {
-          fullName,
-          email,
-          phone,
-          linkedin: linkedin || "-",
-          message: message || "-",
-          cvName: file.name,
-          cvType: file.type,
-          cvSizeMb: Math.round(sizeMb * 10) / 10,
-        },
-      });
-    }
+  await logAdminEvent({
+    action: "candidate.register",
+    actorEmail: email,
+    actor: fullName,
+    meta: {
+      phone,
+      linkedin: linkedin || null,
+      cvName: file.name,
+      cvType: file.type,
+      cvSizeMb: Math.round(sizeMb * 10) / 10,
+      mode: "mock",
+    },
+  });
+
+  return NextResponse.json({
+    ok: true,
+    mode: "mock",
+    received: {
+      fullName,
+      email,
+      phone,
+      linkedin: linkedin || "-",
+      message: message || "-",
+      cvName: file.name,
+      cvType: file.type,
+      cvSizeMb: Math.round(sizeMb * 10) / 10,
+    },
+  });
+}
 
     const bytes = Buffer.from(await file.arrayBuffer());
     const transport = getTransport();
@@ -195,6 +210,20 @@ Attached: ${file.name} (${file.type}, ${Math.round(sizeMb * 10) / 10}MB)
         },
       ],
     });
+
+      await logAdminEvent({
+        action: "candidate.register",
+        actorEmail: email,
+        actor: fullName,
+        meta: {
+          phone,
+          linkedin: linkedin || null,
+          cvName: file.name,
+          cvType: file.type,
+          cvSizeMb: Math.round(sizeMb * 10) / 10,
+          mode: "live",
+        },
+      });
 
     return NextResponse.json({ ok: true });
   } catch (err: any) {

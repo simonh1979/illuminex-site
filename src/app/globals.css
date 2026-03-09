@@ -328,7 +328,7 @@ main.page-home::before {
   text-align: center;
   font-size: 1.5rem;
   margin-bottom: 18px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--primary-blue);
 }
 
@@ -1460,7 +1460,7 @@ main.page .page-hero::after {
   }
 }
 
-@media (max-width: 992px) {
+  @media (max-width: 992px) {
   .hero-inner {
     flex-direction: column;
     align-items: stretch;
@@ -1468,9 +1468,9 @@ main.page .page-hero::after {
   }
 
   .search-card {
-    width: 100%;
-    max-width: 420px;
-    margin: 0 auto;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 auto !important;
   }
 }
 
@@ -1487,6 +1487,16 @@ main.page .page-hero::after {
     padding-bottom: 60px;
   }
 }
+
+/* Mobile spacing: push search box down from hero */
+@media (max-width: 700px){
+  .search-card{
+    margin-top: 30px !important;
+    width: calc(100% + 40px) !important;
+    margin-left: -20px !important;
+  }
+}
+
 
 /* ==========================
    APPLY PAGE (PREMIUM)
@@ -3146,7 +3156,7 @@ box-shadow:
   }
 
   main.page-home .hero-left{
-    margin-top: 0 !important;
+    margin-top: -30px !important;
   }
 }
 
@@ -3560,4 +3570,157 @@ box-shadow:
 
 .page-terms .sector-card h3{
   letter-spacing: -0.01em;
+}
+
+/* Mobile: stack sector card pills vertically */
+@media (max-width: 700px){
+
+  .sector-card-actions{
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+  }
+
+  .sector-card-actions .sector-cta-mini,
+  .sector-card-actions .sector-cta{
+    width: auto !important;
+    margin-left: 0 !important;
+    justify-content: flex-start !important;
+  }
+
+}
+
+/* Mobile hero heading — keep strong size but prevent ugly wrapping */
+@media (max-width:700px){
+
+  .hero-left h1{
+    font-size: clamp(2rem, 6vw, 2.35rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    text-shadow: 0 3px 18px rgba(0,0,0,0.35);
+  }
+
+}
+
+/* HERO heading line balancing (premium typography) */
+.hero-left h1{
+  text-wrap: balance;
+}
+
+/* Cookie preferences cog — make subtle */
+#open_preferences_center{
+
+  opacity: 0.6;
+  filter: saturate(0.6);
+
+  transition: opacity 0.2s ease, transform 0.2s ease;
+
+}
+
+/* Slightly clearer on hover so users still notice it */
+#open_preferences_center:hover{
+
+  opacity: 0.85;
+  transform: translateY(-1px);
+
+}
+
+/* TermsFeed cookie button — use custom cookie image only */
+#open_preferences_center svg{
+  display: none !important;
+}
+
+#open_preferences_center{
+  width: 44px !important;
+  height: 44px !important;
+  padding: 0 !important;
+
+  background: transparent !important;
+  background-image: url("/cookie-icon.png") !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: contain !important;
+
+  border: 0 !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+#open_preferences_center:focus-visible{
+  outline: 2px solid #ff8c00;
+  outline-offset: 3px;
+}
+
+/* Cookie button fade-in animation */
+
+#open_preferences_center{
+  opacity: 0;
+  animation: cookieFadeIn 0.8s ease forwards;
+  animation-delay: 1.25s;
+}
+
+@keyframes cookieFadeIn{
+  from{
+    opacity:0;
+    transform:translateY(6px);
+  }
+
+  to{
+    opacity:0.6;
+    transform:translateY(0);
+  }
+}
+
+/* Smaller cookie button on mobile */
+@media (max-width:700px){
+
+  #open_preferences_center{
+    width:36px !important;
+    height:36px !important;
+
+    background-size:34px !important;
+  }
+
+}
+
+/* Accessibility: skip navigation link */
+.skip-link{
+  position:absolute;
+  left:-9999px;
+  top:auto;
+}
+
+.skip-link:focus{
+  left:20px;
+  top:20px;
+
+  background:linear-gradient(135deg,#ff7a00,#ff8c00,#ffb347);
+  color:#083a63;
+
+  padding:10px 16px;
+  border-radius:999px;
+  font-weight:900;
+  letter-spacing:0.04em;
+
+  box-shadow:0 10px 22px rgba(0,0,0,0.25);
+
+  z-index:100000;
+}
+
+/* Admin dashboard links */
+/* Admin dashboard links */
+.admin-page a,
+.admin-page a:visited,
+.admin-page .jobs-muted a,
+.admin-page .jobs-muted a:visited{
+  color: #ff8c00 !important;
+  text-decoration: none !important;
+  font-weight: 600 !important;
+}
+
+.admin-page a:hover,
+.admin-page .jobs-muted a:hover{
+  color: #ffb347 !important;
+  text-decoration: underline !important;
+  text-underline-offset: 3px;
 }

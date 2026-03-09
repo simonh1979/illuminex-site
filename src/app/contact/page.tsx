@@ -40,7 +40,7 @@ export default function ContactPage() {
             <div className="sector-card" style={{ gridColumn: "span 6" }}>
               <h3>Clients</h3>
               <p>
-                Share the role scope, location (UK-wide if relevant) and timeline. If the hire is retained or confidential,
+                Share the role scope, location (UK wide if relevant) and timeline. If the hire is retained or confidential,
                 simply flag it and we will handle it properly.
               </p>
               <div className="sector-tag">Hiring</div>

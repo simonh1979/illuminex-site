@@ -1,12 +1,18 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import RecaptchaClient, { executeRecaptchaV3, RecaptchaDisclosure } from "@/components/RecaptchaClient";
+import { useSearchParams } from "next/navigation";
+import RecaptchaClient, {
+  executeRecaptchaV3,
+  RecaptchaDisclosure,
+} from "@/components/RecaptchaClient";
 
 type Props = {
   jobId: string;
   jobTitle: string;
   jobAdId?: number;
+  sector?: string;
+  location?: string;
 };
 
 type FormState = {
@@ -21,7 +27,27 @@ type FormState = {
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/i;
 
-export default function ApplyFormClient({ jobId, jobTitle, jobAdId }: Props) {
+export default function ApplyFormClient({
+  jobId,
+  jobTitle,
+  jobAdId,
+  sector = "",
+  location = "",
+}: Props) {
+  const searchParams = useSearchParams();
+
+  const effectiveJobId =
+    searchParams.get("jobId")?.trim() || jobId || "";
+
+  const effectiveJobTitle =
+    searchParams.get("jobTitle")?.trim() || jobTitle || "";
+
+  const effectiveSector =
+    searchParams.get("sector")?.trim() || sector || "";
+
+  const effectiveLocation =
+    searchParams.get("location")?.trim() || location || "";
+
   const [form, setForm] = useState<FormState>({
     fullName: "",
     email: "",
@@ -47,11 +73,36 @@ export default function ApplyFormClient({ jobId, jobTitle, jobAdId }: Props) {
 
   function validate(): string | null {
     if (!form.fullName.trim()) return "Please enter your full name.";
-    if (!form.email.trim() || !EMAIL_RE.test(form.email)) return "Please enter a valid email address.";
+    if (!form.email.trim() || !EMAIL_RE.test(form.email)) {
+      return "Please enter a valid email address.";
+    }
     if (!form.phone.trim()) return "Please enter a phone number.";
     if (!form.cvFile) return "Please upload your CV (PDF/DOC/DOCX).";
-    if (!form.terms) return "Please confirm acceptance of the Terms & Conditions.";
+    if (!form.terms) {
+      return "Please confirm acceptance of the Terms & Conditions.";
+    }
     return null;
+  }
+
+  async function trackApplicationSubmit() {
+    try {
+      await fetch("/api/admin/track/application-submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          jobId: effectiveJobId,
+          title: effectiveJobTitle,
+          slug: `${effectiveJobTitle}-${effectiveJobId}`,
+          sector: effectiveSector,
+          location: effectiveLocation,
+        }),
+        keepalive: true,
+      });
+    } catch {
+      // fail silently
+    }
   }
 
   async function onSubmit(e: React.FormEvent) {
@@ -71,9 +122,14 @@ export default function ApplyFormClient({ jobId, jobTitle, jobAdId }: Props) {
 
       const fd = new FormData();
 
-      fd.append("jobId", jobId);
-      fd.append("jobTitle", jobTitle);
-      if (typeof jobAdId === "number") fd.append("jobAdId", String(jobAdId));
+      fd.append("jobId", effectiveJobId);
+      fd.append("jobTitle", effectiveJobTitle);
+      fd.append("sector", effectiveSector);
+      fd.append("location", effectiveLocation);
+
+      if (typeof jobAdId === "number") {
+        fd.append("jobAdId", String(jobAdId));
+      }
 
       fd.append("fullName", form.fullName);
       fd.append("email", form.email);
@@ -82,7 +138,9 @@ export default function ApplyFormClient({ jobId, jobTitle, jobAdId }: Props) {
       fd.append("message", form.message);
       fd.append("terms", String(form.terms));
 
-      if (form.cvFile) fd.append("cv", form.cvFile);
+      if (form.cvFile) {
+        fd.append("cv", form.cvFile);
+      }
 
       fd.append("recaptchaToken", token);
 
@@ -93,9 +151,12 @@ export default function ApplyFormClient({ jobId, jobTitle, jobAdId }: Props) {
         throw new Error(json?.error || `Request failed (${res.status})`);
       }
 
+      await trackApplicationSubmit();
       setSubmitted(true);
     } catch (error: any) {
-      setSubmitError(error?.message || "Something went wrong. Please try again.");
+      setSubmitError(
+        error?.message || "Something went wrong. Please try again."
+      );
     } finally {
       setSubmitting(false);
     }
@@ -106,13 +167,14 @@ export default function ApplyFormClient({ jobId, jobTitle, jobAdId }: Props) {
       <div className="apply-state is-submitted" aria-live="polite">
         <h3 style={{ marginBottom: 10 }}>Application received</h3>
         <p className="jobs-muted" style={{ marginBottom: 14 }}>
-          Thank you, we’ve received your application and will respond quickly and discreetly.
+          Thank you, we’ve received your application and will respond quickly
+          and discreetly.
         </p>
 
         <div className="apply-success-card">
           <div className="apply-success-row">
             <span>Role</span>
-            <strong>{jobTitle}</strong>
+            <strong>{effectiveJobTitle}</strong>
           </div>
           <div className="apply-success-row">
             <span>Candidate</span>
@@ -124,11 +186,18 @@ export default function ApplyFormClient({ jobId, jobTitle, jobAdId }: Props) {
           </div>
         </div>
 
-        <div className="apply-success-actions" style={{ marginTop: 14, display: "flex", gap: 10, flexWrap: "wrap" }}>
+        <div
+          className="apply-success-actions"
+          style={{ marginTop: 14, display: "flex", gap: 10, flexWrap: "wrap" }}
+        >
           <a className="jobs-clear" href="/live-jobs">
             View all roles
           </a>
-          <button type="button" className="jobs-clear" onClick={() => window.history.back()}>
+          <button
+            type="button"
+            className="jobs-clear"
+            onClick={() => window.history.back()}
+          >
             Back to role
           </button>
         </div>
@@ -138,7 +207,6 @@ export default function ApplyFormClient({ jobId, jobTitle, jobAdId }: Props) {
 
   return (
     <div className="apply-state is-form">
-      {/* preload v3 script */}
       <RecaptchaClient />
 
       <form className="apply-form" onSubmit={onSubmit}>
@@ -198,7 +266,8 @@ export default function ApplyFormClient({ jobId, jobTitle, jobAdId }: Props) {
 
           <div className="apply-field apply-field--wide">
             <label htmlFor="cv">
-              CV <span className="apply-req">*</span> <span className="apply-hint">(PDF/DOC/DOCX)</span>
+              CV <span className="apply-req">*</span>{" "}
+              <span className="apply-hint">(PDF/DOC/DOCX)</span>
             </label>
 
             <div className="apply-file">
@@ -206,7 +275,9 @@ export default function ApplyFormClient({ jobId, jobTitle, jobAdId }: Props) {
                 id="cv"
                 type="file"
                 accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                onChange={(e) => setField("cvFile", e.target.files?.[0] ?? null)}
+                onChange={(e) =>
+                  setField("cvFile", e.target.files?.[0] ?? null)
+                }
               />
               <div className="apply-file-ui">
                 <span className="apply-file-btn">Choose file</span>
@@ -229,9 +300,14 @@ export default function ApplyFormClient({ jobId, jobTitle, jobAdId }: Props) {
 
         <div className="apply-foot">
           <label className="apply-check">
-            <input type="checkbox" checked={form.terms} onChange={(e) => setField("terms", e.target.checked)} />
+            <input
+              type="checkbox"
+              checked={form.terms}
+              onChange={(e) => setField("terms", e.target.checked)}
+            />
             <span>
-              I confirm I have read and accept the T&amp;Cs and consent to being contacted about this role.{" "}
+              I confirm I have read and accept the T&amp;Cs and consent to being
+              contacted about this role.{" "}
               <span className="apply-req">*</span>
             </span>
           </label>
@@ -241,7 +317,11 @@ export default function ApplyFormClient({ jobId, jobTitle, jobAdId }: Props) {
           <div className="apply-actions">
             {submitError ? <div className="apply-error">{submitError}</div> : null}
 
-            <button className="apply-submit" type="submit" disabled={submitting}>
+            <button
+              className="apply-submit"
+              type="submit"
+              disabled={submitting}
+            >
               {submitting ? "Submitting…" : "Submit application"}
             </button>
           </div>

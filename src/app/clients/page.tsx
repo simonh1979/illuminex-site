@@ -79,7 +79,7 @@ export default function ClientsPage() {
             <div className="sector-card" style={{ gridColumn: "span 4" }}>
   <h3>Exclusive retained executive search</h3>
   <p>
-    Used for senior, confidential and business-critical appointments where the cost of getting it wrong is high.
+    Used for senior, confidential and business critical appointments where the cost of getting it wrong is high.
     We commit exclusively to the search, map the market properly and approach selectively.
     Assessment is structured, referencing is thorough and the shortlist is deliberate, not inflated.
   </p>

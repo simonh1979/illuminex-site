@@ -36,6 +36,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.className}>
       <body className="antialiased">
+
+        <a href="#main-content" className="skip-link">
+        Skip to main content
+        </a>
+
         <TermsFeedConsent />
         <GoogleAnalytics measurementId="G-ZTZ6KJ6GMT" />
         <LinkedInInsight partnerId="" />
@@ -43,7 +48,9 @@ export default function RootLayout({
         <MetaPixel pixelId="" />
         <SiteHeader />
 
-        {children}
+        <div id="main-content">
+          {children}
+        </div>
 
         <footer className="site-footer">
           <div className="footer-inner">

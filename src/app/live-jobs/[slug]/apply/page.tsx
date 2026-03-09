@@ -6,7 +6,13 @@ import ApplyFormClient from "@/components/ApplyFormClient";
 
 type Props = {
   params: Promise<{ slug: string }>;
-  searchParams?: Promise<{ from?: string }>;
+  searchParams?: Promise<{
+    from?: string;
+    sector?: string;
+    location?: string;
+    jobTitle?: string;
+    jobId?: string;
+  }>;
 };
 
 export const metadata: Metadata = {
@@ -15,26 +21,54 @@ export const metadata: Metadata = {
     "Submit your application confidentially. Executive search and specialist recruitment across UK professional and technical sectors.",
 };
 
-export default async function ApplyPage({ params, searchParams }: Props) {
-  const { slug } = await params;
-  const sp = (await searchParams) ?? {};
-  const from = typeof sp.from === "string" && sp.from.trim() ? sp.from : "/live-jobs";
+function getFallbackJobIdFromSlug(slug: string) {
+  if (!slug) return "Unknown";
 
-  // Extract jobId from slug (last part after final dash)
+  const endMatch = slug.match(/(ILX-\d+)$/i);
+  if (endMatch) return endMatch[1].toUpperCase();
+
+  const anyMatch = slug.match(/(ILX-\d+)/i);
+  if (anyMatch) return anyMatch[1].toUpperCase();
+
   const slugParts = slug.split("-");
-  const jobId = slugParts[slugParts.length - 1] || "Unknown";
+  return slugParts[slugParts.length - 1] || "Unknown";
+}
 
-  // Convert slug back to readable title (optional)
-  const jobTitle = slugParts
+function getFallbackTitleFromSlug(slug: string) {
+  const slugParts = slug.split("-");
+  return slugParts
     .slice(0, -1)
     .join(" ")
     .replace(/\b\w/g, (l) => l.toUpperCase());
+}
+
+export default async function ApplyPage({ params, searchParams }: Props) {
+  const { slug } = await params;
+  const sp = (await searchParams) ?? {};
+
+  const from =
+    typeof sp.from === "string" && sp.from.trim() ? sp.from : "/live-jobs";
+
+  const jobId =
+    typeof sp.jobId === "string" && sp.jobId.trim()
+      ? sp.jobId
+      : getFallbackJobIdFromSlug(slug);
+
+  const jobTitle =
+    typeof sp.jobTitle === "string" && sp.jobTitle.trim()
+      ? sp.jobTitle
+      : getFallbackTitleFromSlug(slug);
+
+  const sector =
+    typeof sp.sector === "string" && sp.sector.trim() ? sp.sector : "";
+
+  const location =
+    typeof sp.location === "string" && sp.location.trim() ? sp.location : "";
 
   return (
     <main className="page page-apply">
       <section className="page-hero">
         <div className="page-hero-inner">
-          {/* Orange pill back button */}
           <div style={{ marginBottom: 18 }}>
             <Link className="sector-cta" href={from}>
               ← Back to results
@@ -61,7 +95,8 @@ export default async function ApplyPage({ params, searchParams }: Props) {
               opacity: 0.92,
             }}
           >
-            Your application will be handled discreetly and in line with our Privacy Policy.
+            Your application will be handled discreetly and in line with our
+            Privacy Policy.
           </p>
 
           <div
@@ -72,8 +107,16 @@ export default async function ApplyPage({ params, searchParams }: Props) {
               gap: 18,
             }}
           >
-            <div className="sector-card sector-card--cta" style={{ gridColumn: "span 12" }}>
-              <ApplyFormClient jobId={jobId} jobTitle={jobTitle} />
+            <div
+              className="sector-card sector-card--cta"
+              style={{ gridColumn: "span 12" }}
+            >
+              <ApplyFormClient
+                jobId={jobId}
+                jobTitle={jobTitle}
+                sector={sector}
+                location={location}
+              />
             </div>
           </div>
         </div>

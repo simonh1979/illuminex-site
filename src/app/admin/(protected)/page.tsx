@@ -1208,7 +1208,7 @@ function SectorPerformanceChart({
 
       <p className="jobs-muted" style={{ margin: 0, fontSize: 13 }}>
         This compares sector-level apply clicks against submitted applications
-        and shows which sectors are converting into real candidate action.
+to s    how which markets are generating real candidate action.
       </p>
     </div>
   );
@@ -1588,8 +1588,8 @@ export default function AdminDashboardPage() {
         <strong>Operations</strong>
 
         <p className="jobs-muted" style={{ margin: 0 }}>
-          Safe admin operation placeholder. This doesn’t change production data
-          yet — it simply records an audit event so the pipeline is proven.
+          Safe admin operation. This triggers a controlled refresh and records
+          the action in the audit log for operational tracking.
         </p>
 
         <button className="sector-cta" onClick={refreshJobs} disabled={busy}>

@@ -36,15 +36,6 @@ type DashboardStats = {
   topApplyClicks: { jobId: string; title: string; count: number }[];
   topSubmittedApplications: { jobId: string; title: string; count: number }[];
   repeatJobInterest: { jobId: string; title: string; count: number }[];
-  conversionSummary: {
-    jobId: string;
-    title: string;
-    views: number;
-    applyClicks: number;
-    submitted: number;
-    applyRate: number;
-    submitRate: number;
-  }[];
   jobPerformanceTable: {
     jobId: string;
     title: string;
@@ -54,7 +45,7 @@ type DashboardStats = {
     applyRate: number;
     submitRate: number;
   }[];
-  highIntentJobs: {
+   highIntentJobs: {
     jobId: string;
     title: string;
     views: number;
@@ -81,7 +72,16 @@ type DashboardStats = {
     applyRate: number;
     submitRate: number;
   }[];
-  sectorConversionLeaders: {
+  conversionSummary: {
+    jobId: string;
+    title: string;
+    views: number;
+    applyClicks: number;
+    submitted: number;
+    applyRate: number;
+    submitRate: number;
+  }[];
+    sectorConversionLeaders: {
     sector: string;
     views: number;
     applyClicks: number;
@@ -1538,9 +1538,9 @@ export default function AdminDashboardPage() {
         />
       </div>
 
-      <ConversionSummaryCard items={stats?.conversionSummary ?? []} />
-
       <JobPerformanceTable items={stats?.jobPerformanceTable ?? []} />
+
+      <ConversionSummaryCard items={stats?.conversionSummary ?? []} />
 
       <HighIntentJobsCard items={stats?.highIntentJobs ?? []} />
 
@@ -1548,6 +1548,7 @@ export default function AdminDashboardPage() {
 
       <HighConversionJobsCard items={stats?.highConversionJobs ?? []} />
 
+      <MarketHeatScoresCard items={stats?.marketHeatScores ?? []} />
 
       <SectorConversionLeadersCard
         items={stats?.sectorConversionLeaders ?? []}
@@ -1558,9 +1559,6 @@ export default function AdminDashboardPage() {
       />
 
       <MultiSectorInterestCard items={stats?.multiSectorInterest ?? []} />
-
-      <MarketHeatScoresCard items={stats?.marketHeatScores ?? []} />
-      
 
       <div style={{ width: "100%" }}>
         <MetricListCard

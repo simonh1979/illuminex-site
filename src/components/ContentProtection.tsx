@@ -6,7 +6,9 @@ export default function ContentProtection() {
   useEffect(() => {
     function handleContextMenu(e: MouseEvent) {
       const target = e.target as HTMLElement | null;
-      if (target?.closest(".protect-content, .protect-image, .no-context-menu")) {
+      if (
+        target?.closest(".protect-content, .protect-image, .no-context-menu")
+      ) {
         e.preventDefault();
       }
     }
@@ -42,8 +44,11 @@ export default function ContentProtection() {
     }
 
     function handleKeyDown(e: KeyboardEvent) {
+      if (typeof e.key !== "string" || !e.key) return;
+
       const key = e.key.toLowerCase();
-      const isCopyShortcut = (e.ctrlKey || e.metaKey) && (key === "c" || key === "x");
+      const isCopyShortcut =
+        (e.ctrlKey || e.metaKey) && (key === "c" || key === "x");
 
       if (!isCopyShortcut) return;
 

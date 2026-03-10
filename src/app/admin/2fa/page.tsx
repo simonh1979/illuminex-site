@@ -2,15 +2,13 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
-export default function Admin2FAPage({
-  searchParams,
-}: {
-  searchParams?: { error?: string };
-}) {
-  const showError = Boolean(searchParams?.error);
+export default function Admin2FAPage() {
+  const searchParams = useSearchParams();
+  const showError = Boolean(searchParams.get("error"));
   const [capsOn, setCapsOn] = useState(false);
 
   function handleKeyEvent(e: React.KeyboardEvent<HTMLInputElement>) {
@@ -42,6 +40,7 @@ export default function Admin2FAPage({
       <form
         action="/api/admin/2fa/verify"
         method="post"
+        autoComplete="off"
         style={{ display: "grid", gap: 12, maxWidth: 420 }}
       >
         <div className="apply-field">
@@ -49,8 +48,14 @@ export default function Admin2FAPage({
           <input
             id="code"
             name="code"
+            type="text"
             inputMode="numeric"
             pattern="[0-9]{6}"
+            maxLength={6}
+            autoComplete="off"
+            autoCorrect="off"
+            autoCapitalize="off"
+            spellCheck={false}
             required
             onKeyUp={handleKeyEvent}
             onKeyDown={handleKeyEvent}

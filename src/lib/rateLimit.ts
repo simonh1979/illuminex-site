@@ -8,12 +8,8 @@ type LimitResult = {
   reset: number; // ms timestamp
 };
 
-/**
- * In-memory fallback limiter (dev-safe)
- * NOTE: This resets when the server restarts and is per-instance only.
- */
 function createInMemorySlidingWindow(limit: number, windowMs: number) {
-  const store = new Map<string, number[]>(); // key -> timestamps
+  const store = new Map<string, number[]>();
 
   return {
     async limit(key: string): Promise<LimitResult> {
@@ -24,7 +20,6 @@ function createInMemorySlidingWindow(limit: number, windowMs: number) {
       const fresh = hits.filter((t) => t > windowStart);
 
       if (fresh.length >= limit) {
-        // reset is when the oldest hit drops out of the window
         const oldest = fresh[0];
         const reset = oldest + windowMs;
         store.set(key, fresh);
@@ -35,7 +30,6 @@ function createInMemorySlidingWindow(limit: number, windowMs: number) {
       store.set(key, fresh);
 
       const remaining = Math.max(0, limit - fresh.length);
-      // reset is when the oldest hit drops out; if only 1 hit, same logic
       const reset = fresh[0] + windowMs;
 
       return { success: true, limit, remaining, reset };
@@ -43,17 +37,39 @@ function createInMemorySlidingWindow(limit: number, windowMs: number) {
   };
 }
 
-/**
- * APPLY rate limit
- * - Production: Upstash (distributed + persistent)
- * - Dev without env: In-memory fallback (no crashes)
- */
-export const applyRateLimit =
-  redis
+function createSlidingWindowLimiter(
+  prefix: string,
+  limit: number,
+  duration: `${number} s` | `${number} m` | `${number} h`,
+  windowMs: number
+) {
+  return redis
     ? new Ratelimit({
         redis,
-        limiter: Ratelimit.slidingWindow(5, "1 m"), // 5 submits per minute per IP
+        limiter: Ratelimit.slidingWindow(limit, duration),
         analytics: true,
-        prefix: "ratelimit:apply",
+        prefix,
       })
-    : createInMemorySlidingWindow(5, 60_000);
+    : createInMemorySlidingWindow(limit, windowMs);
+}
+
+export const contactRateLimit = createSlidingWindowLimiter(
+  "ratelimit:contact",
+  6,
+  "1 m",
+  60_000
+);
+
+export const candidateRateLimit = createSlidingWindowLimiter(
+  "ratelimit:candidate",
+  4,
+  "1 m",
+  60_000
+);
+
+export const applyRateLimit = createSlidingWindowLimiter(
+  "ratelimit:apply",
+  5,
+  "1 m",
+  60_000
+);

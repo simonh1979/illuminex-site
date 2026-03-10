@@ -1,10 +1,15 @@
 import { NextResponse } from "next/server";
+import { applyRateLimit } from "@/lib/rateLimit";
+import {
+  cleanText,
+  getClientIp,
+  isEmail,
+  isMultipartRequest,
+  isSafeUploadFilename,
+  looksLikeSuspiciousUrlSpam,
+} from "@/lib/validation";
 
 export const runtime = "nodejs";
-
-/* =========================================================
-   Upload rules
-========================================================= */
 
 const MAX_FILE_MB = 8;
 const ALLOWED_MIME = new Set([
@@ -12,14 +17,6 @@ const ALLOWED_MIME = new Set([
   "application/msword",
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
 ]);
-
-/* =========================================================
-   Utilities
-========================================================= */
-
-function isEmail(v: string) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
-}
 
 type RecaptchaV3Response = {
   success?: boolean;
@@ -72,26 +69,40 @@ async function verifyRecaptchaV3(token: string, expectedAction: string) {
   }
 }
 
-/* =========================================================
-   POST handler (mock mode)
-========================================================= */
-
 export async function POST(req: Request) {
   try {
+    if (!isMultipartRequest(req)) {
+      return NextResponse.json(
+        { ok: false, error: "Invalid content type." },
+        { status: 400 }
+      );
+    }
+
+    const ip = getClientIp(req);
+
+    const rate = await applyRateLimit.limit(`apply:${ip}`);
+    if (!rate.success) {
+      return NextResponse.json(
+        { ok: false, error: "Too many requests. Try again shortly." },
+        {
+          status: 429,
+          headers: {
+            "Retry-After": String(
+              Math.max(1, Math.ceil((rate.reset - Date.now()) / 1000))
+            ),
+          },
+        }
+      );
+    }
+
     const form = await req.formData();
 
-    /* =========================
-       Honeypot (keep empty)
-    ========================= */
-    const website = String(form.get("website") || "");
-    if (website.trim().length > 0) {
+    const website = cleanText(form.get("website"), 200);
+    if (website.length > 0) {
       return NextResponse.json({ ok: true });
     }
 
-    /* =========================
-       reCAPTCHA v3 (required)
-    ========================= */
-    const recaptchaToken = String(form.get("recaptchaToken") || "");
+    const recaptchaToken = cleanText(form.get("recaptchaToken"), 4000);
     if (!recaptchaToken) {
       return NextResponse.json(
         { ok: false, error: "Please complete reCAPTCHA." },
@@ -101,20 +112,17 @@ export async function POST(req: Request) {
 
     await verifyRecaptchaV3(recaptchaToken, "apply_submit");
 
-    /* =========================
-       Fields
-    ========================= */
-    const jobId = String(form.get("jobId") || "").trim();
-    const jobTitle = String(form.get("jobTitle") || "").trim();
-    const jobAdId = String(form.get("jobAdId") || "").trim();
-    const sector = String(form.get("sector") || "").trim();
-    const location = String(form.get("location") || "").trim();
+    const jobId = cleanText(form.get("jobId"), 80);
+    const jobTitle = cleanText(form.get("jobTitle"), 220);
+    const jobAdId = cleanText(form.get("jobAdId"), 80);
+    const sector = cleanText(form.get("sector"), 160);
+    const location = cleanText(form.get("location"), 160);
 
-    const fullName = String(form.get("fullName") || "").trim();
-    const email = String(form.get("email") || "").trim();
-    const phone = String(form.get("phone") || "").trim();
-    const linkedin = String(form.get("linkedin") || "").trim();
-    const message = String(form.get("message") || "").trim();
+    const fullName = cleanText(form.get("fullName"), 120);
+    const email = cleanText(form.get("email"), 160);
+    const phone = cleanText(form.get("phone"), 50);
+    const linkedin = cleanText(form.get("linkedin"), 300);
+    const message = cleanText(form.get("message"), 3000);
     const terms = String(form.get("terms") || "") === "true";
 
     if (fullName.length < 2) {
@@ -148,13 +156,24 @@ export async function POST(req: Request) {
       );
     }
 
-    /* =========================
-       CV (required)
-    ========================= */
+    if (looksLikeSuspiciousUrlSpam(fullName)) {
+      return NextResponse.json(
+        { ok: false, error: "Invalid submission." },
+        { status: 400 }
+      );
+    }
+
     const file = form.get("cv");
     if (!(file instanceof File)) {
       return NextResponse.json(
         { ok: false, error: "Please attach your CV." },
+        { status: 400 }
+      );
+    }
+
+    if (!isSafeUploadFilename(file.name)) {
+      return NextResponse.json(
+        { ok: false, error: "Invalid CV file name." },
         { status: 400 }
       );
     }
@@ -174,9 +193,6 @@ export async function POST(req: Request) {
       );
     }
 
-    /* =========================
-       MOCK MODE (no mailbox yet)
-    ========================= */
     return NextResponse.json({
       ok: true,
       mode: "mock",

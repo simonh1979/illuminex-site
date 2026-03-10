@@ -3,15 +3,20 @@
 import { NextResponse } from "next/server";
 import { getTransport, fromAddress } from "@/lib/mailer";
 import { logAdminEvent } from "@/lib/adminAudit";
+import { candidateRateLimit } from "@/lib/rateLimit";
+import {
+  cleanText,
+  getClientIp,
+  isEmail,
+  isMultipartRequest,
+  isSafeUploadFilename,
+  looksLikeSuspiciousUrlSpam,
+} from "@/lib/validation";
 
 export const runtime = "nodejs";
 
-/* =========================================================
-   Config
-========================================================= */
-
-const RECAPTCHA_ACTION = "candidate_submit"; // ✅ MUST match the client action
-const MIN_SCORE = 0.5; // tune later (0.3–0.7 common)
+const RECAPTCHA_ACTION = "candidate_submit";
+const MIN_SCORE = 0.5;
 
 const MAX_FILE_MB = 8;
 const ALLOWED_MIME = new Set([
@@ -19,14 +24,6 @@ const ALLOWED_MIME = new Set([
   "application/msword",
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
 ]);
-
-/* =========================================================
-   Utilities
-========================================================= */
-
-function isEmail(v: string) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
-}
 
 async function verifyRecaptcha(token: string, expectedAction: string) {
   const secret = process.env.RECAPTCHA_SECRET_KEY;
@@ -44,10 +41,12 @@ async function verifyRecaptcha(token: string, expectedAction: string) {
 
   const data = await res.json().catch(() => null);
 
-  if (!res.ok) throw new Error(`reCAPTCHA verification request failed (${res.status}).`);
-  if (!data?.success) throw new Error("reCAPTCHA verification failed.");
-
-  // v3 action check (only if Google returns an action)
+  if (!res.ok) {
+    throw new Error(`reCAPTCHA verification request failed (${res.status}).`);
+  }
+  if (!data?.success) {
+    throw new Error("reCAPTCHA verification failed.");
+  }
   if (typeof data.action === "string" && data.action !== expectedAction) {
     throw new Error("Invalid reCAPTCHA action.");
   }
@@ -58,26 +57,40 @@ async function verifyRecaptcha(token: string, expectedAction: string) {
   }
 }
 
-/* =========================================================
-   POST handler
-========================================================= */
-
 export async function POST(req: Request) {
   try {
+    if (!isMultipartRequest(req)) {
+      return NextResponse.json(
+        { ok: false, error: "Invalid content type." },
+        { status: 400 }
+      );
+    }
+
+    const ip = getClientIp(req);
+
+    const rate = await candidateRateLimit.limit(`candidate:${ip}`);
+    if (!rate.success) {
+      return NextResponse.json(
+        { ok: false, error: "Too many requests. Try again shortly." },
+        {
+          status: 429,
+          headers: {
+            "Retry-After": String(
+              Math.max(1, Math.ceil((rate.reset - Date.now()) / 1000))
+            ),
+          },
+        }
+      );
+    }
+
     const form = await req.formData();
 
-    /* =========================
-       Honeypot (keep empty)
-    ========================= */
-    const website = String(form.get("website") || "");
-    if (website.trim().length > 0) {
+    const website = cleanText(form.get("website"), 200);
+    if (website.length > 0) {
       return NextResponse.json({ ok: true });
     }
 
-    /* =========================
-       reCAPTCHA v3 token (required)
-    ========================= */
-    const recaptchaToken = String(form.get("recaptchaToken") || "").trim();
+    const recaptchaToken = cleanText(form.get("recaptchaToken"), 4000);
     if (!recaptchaToken) {
       return NextResponse.json(
         { ok: false, error: "Verification missing. Please try again." },
@@ -87,34 +100,37 @@ export async function POST(req: Request) {
 
     await verifyRecaptcha(recaptchaToken, RECAPTCHA_ACTION);
 
-    /* =========================
-       Fields
-    ========================= */
-    const fullName = String(form.get("fullName") || "").trim();
-    const email = String(form.get("email") || "").trim();
-    const phone = String(form.get("phone") || "").trim();
-    const linkedin = String(form.get("linkedin") || "").trim();
-    const message = String(form.get("message") || "").trim();
+    const fullName = cleanText(form.get("fullName"), 120);
+    const email = cleanText(form.get("email"), 160);
+    const phone = cleanText(form.get("phone"), 50);
+    const linkedin = cleanText(form.get("linkedin"), 300);
+    const message = cleanText(form.get("message"), 3000);
 
     const terms = String(form.get("terms") || "") === "true";
     const privacy = String(form.get("privacy") || "") === "true";
     const cookies = String(form.get("cookies") || "") === "true";
 
     if (fullName.length < 2) {
-      return NextResponse.json({ ok: false, error: "Name is too short." }, { status: 400 });
+      return NextResponse.json(
+        { ok: false, error: "Name is too short." },
+        { status: 400 }
+      );
     }
+
     if (!isEmail(email)) {
       return NextResponse.json(
         { ok: false, error: "Enter a valid email address." },
         { status: 400 }
       );
     }
+
     if (!phone) {
       return NextResponse.json(
         { ok: false, error: "Please enter a phone number." },
         { status: 400 }
       );
     }
+
     if (!terms || !privacy || !cookies) {
       return NextResponse.json(
         { ok: false, error: "Please accept Terms, Privacy and Cookies." },
@@ -122,12 +138,26 @@ export async function POST(req: Request) {
       );
     }
 
-    /* =========================
-       CV (required)
-    ========================= */
+    if (looksLikeSuspiciousUrlSpam(fullName)) {
+      return NextResponse.json(
+        { ok: false, error: "Invalid submission." },
+        { status: 400 }
+      );
+    }
+
     const file = form.get("cv");
     if (!(file instanceof File)) {
-      return NextResponse.json({ ok: false, error: "Please attach your CV." }, { status: 400 });
+      return NextResponse.json(
+        { ok: false, error: "Please attach your CV." },
+        { status: 400 }
+      );
+    }
+
+    if (!isSafeUploadFilename(file.name)) {
+      return NextResponse.json(
+        { ok: false, error: "Invalid CV file name." },
+        { status: 400 }
+      );
     }
 
     if (!ALLOWED_MIME.has(file.type)) {
@@ -145,42 +175,39 @@ export async function POST(req: Request) {
       );
     }
 
-    /* =========================
-       MOCK MODE / Email transport
-    ========================= */
     const to = process.env.CANDIDATE_TO;
 
-    // If no mailbox yet, keep mock testing safe:
     if (!to) {
-  await logAdminEvent({
-    action: "candidate.register",
-    actorEmail: email,
-    actor: fullName,
-    meta: {
-      phone,
-      linkedin: linkedin || null,
-      cvName: file.name,
-      cvType: file.type,
-      cvSizeMb: Math.round(sizeMb * 10) / 10,
-      mode: "mock",
-    },
-  });
+      await logAdminEvent({
+        action: "candidate.register",
+        actorEmail: email,
+        actor: fullName,
+        ip,
+        meta: {
+          phone,
+          linkedin: linkedin || null,
+          cvName: file.name,
+          cvType: file.type,
+          cvSizeMb: Math.round(sizeMb * 10) / 10,
+          mode: "mock",
+        },
+      });
 
-  return NextResponse.json({
-    ok: true,
-    mode: "mock",
-    received: {
-      fullName,
-      email,
-      phone,
-      linkedin: linkedin || "-",
-      message: message || "-",
-      cvName: file.name,
-      cvType: file.type,
-      cvSizeMb: Math.round(sizeMb * 10) / 10,
-    },
-  });
-}
+      return NextResponse.json({
+        ok: true,
+        mode: "mock",
+        received: {
+          fullName,
+          email,
+          phone,
+          linkedin: linkedin || "-",
+          message: message || "-",
+          cvName: file.name,
+          cvType: file.type,
+          cvSizeMb: Math.round(sizeMb * 10) / 10,
+        },
+      });
+    }
 
     const bytes = Buffer.from(await file.arrayBuffer());
     const transport = getTransport();
@@ -211,19 +238,20 @@ Attached: ${file.name} (${file.type}, ${Math.round(sizeMb * 10) / 10}MB)
       ],
     });
 
-      await logAdminEvent({
-        action: "candidate.register",
-        actorEmail: email,
-        actor: fullName,
-        meta: {
-          phone,
-          linkedin: linkedin || null,
-          cvName: file.name,
-          cvType: file.type,
-          cvSizeMb: Math.round(sizeMb * 10) / 10,
-          mode: "live",
-        },
-      });
+    await logAdminEvent({
+      action: "candidate.register",
+      actorEmail: email,
+      actor: fullName,
+      ip,
+      meta: {
+        phone,
+        linkedin: linkedin || null,
+        cvName: file.name,
+        cvType: file.type,
+        cvSizeMb: Math.round(sizeMb * 10) / 10,
+        mode: "live",
+      },
+    });
 
     return NextResponse.json({ ok: true });
   } catch (err: any) {

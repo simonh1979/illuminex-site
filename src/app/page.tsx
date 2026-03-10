@@ -9,10 +9,10 @@ export default function Home() {
     <main className="page-home">
       {/* ================= HERO ================= */}
       <section className="hero">
-        <div className="hero-texture" />
+        <div className="hero-texture protect-image no-context-menu" />
 
         <div className="hero-inner">
-          <div className="hero-left">
+          <div className="hero-left protect-content no-context-menu">
             <h1>
               Strategic talent, delivered with clarity and precision. Partner
               with the people shaping tomorrow.
@@ -37,7 +37,7 @@ export default function Home() {
       {/* ================= OUR SECTORS ================= */}
       <section className="sectors">
         <div className="sectors-inner">
-          <div className="sectors-head">
+          <div className="sectors-head protect-content no-context-menu">
             <div className="kicker">OUR SECTORS</div>
 
             <h2>Specialist markets. Senior appointments.</h2>
@@ -61,7 +61,9 @@ export default function Home() {
                 Leadership and commercial hiring across manufacturers,
                 distribution, merchants and the wider built environment.
               </p>
-              <span className="sector-tag">UK-wide • Mid to Senior • Executive</span>
+              <span className="sector-tag">
+                UK-wide • Mid to Senior • Executive
+              </span>
               <span className="sector-cta-mini">
                 Explore Construction &amp; Building Materials
               </span>

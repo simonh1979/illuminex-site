@@ -133,7 +133,7 @@ export default function PrivacyPage() {
             <p>
               Candidate and client information may be stored and processed within
               specialist third-party recruitment CRM or applicant tracking systems,
-              including JobAdder or equivalent platforms used by Illuminex Ltd from
+              used by Illuminex Ltd from
               time to time.
             </p>
             <p>

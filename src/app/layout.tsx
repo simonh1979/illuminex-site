@@ -11,6 +11,7 @@ import CookiePreferencesButton from "../components/CookiePreferencesButton";
 import MobileFooterNav from "../components/MobileFooterNav";
 import LinkedInInsight from "../components/LinkedInInsight";
 import MetaPixel from "../components/MetaPixel";
+import ContentProtection from "@/components/ContentProtection";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.illuminex.co.uk"),
@@ -20,6 +21,30 @@ export const metadata: Metadata = {
   },
   description:
     "Illuminex Consultancy delivers executive search and specialist recruitment across defined UK markets, with a focused, professional approach.",
+  manifest: "/site.webmanifest",
+  icons: {
+    icon: [
+      {
+        url: "/illuminex-favicon-32x32.png",
+        sizes: "32x32",
+        type: "image/png",
+      },
+      {
+        url: "/illuminex-favicon-16x16.png",
+        sizes: "16x16",
+        type: "image/png",
+      },
+      {
+        url: "/favicon.ico",
+      },
+    ],
+    apple: [
+      {
+        url: "/illuminex-apple-touch-icon.png",
+        sizes: "180x180",
+      },
+    ],
+  },
 };
 
 const inter = Inter({
@@ -36,30 +61,30 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.className}>
       <body className="antialiased">
+        <ContentProtection />
 
         <a href="#main-content" className="skip-link">
-        Skip to main content
+          Skip to main content
         </a>
 
         <TermsFeedConsent />
         <GoogleAnalytics measurementId="G-ZTZ6KJ6GMT" />
         <LinkedInInsight partnerId="" />
-        {/* Meta Pixel (loads only after consent) */}
         <MetaPixel pixelId="" />
+
         <SiteHeader />
 
-        <div id="main-content">
-          {children}
-        </div>
+        <div id="main-content">{children}</div>
 
         <footer className="site-footer">
           <div className="footer-inner">
             {/* LEFT EMBLEM */}
-            <div className="footer-emblem-wrap footer-emblem-wrap--left">
+            <div className="footer-emblem-wrap footer-emblem-wrap--left protect-image no-context-menu">
               <img
                 className="footer-emblem"
                 src="/Illuminex-logo-emblem-transparent-background-high-res.png"
                 alt="Illuminex emblem"
+                draggable={false}
               />
             </div>
 
@@ -68,13 +93,14 @@ export default function RootLayout({
               <div className="footer-mobile-only">
                 <Link
                   href="/"
-                  className="footer-main-logo-link"
+                  className="footer-main-logo-link protect-image no-context-menu"
                   aria-label="Go to homepage"
                 >
                   <img
                     className="footer-main-logo"
                     src="/illuminex-logo-flat-transparent-background.png"
                     alt="Illuminex Consultancy"
+                    draggable={false}
                   />
                 </Link>
 
@@ -130,13 +156,14 @@ export default function RootLayout({
 
                   <div className="footer-mobile-socials">
                     <span
-                      className="footer-mobile-linkedin"
+                      className="footer-mobile-linkedin protect-image no-context-menu"
                       aria-label="LinkedIn page coming soon"
                     >
                       <img
                         src="/linkedin-square-white-icon-transparent.png"
                         alt="LinkedIn"
                         className="footer-linkedin-icon"
+                        draggable={false}
                       />
                     </span>
 
@@ -149,12 +176,12 @@ export default function RootLayout({
                 <div className="footer-mobile-bottom">
                   <p>© 2026 Illuminex Ltd.</p>
                   <p>Registered in England &amp; Wales.</p>
-                    <p>Company No. 16961631.</p>
+                  <p>Company No. 16961631.</p>
                   <p>All Rights Reserved.</p>
                 </div>
               </div>
 
-              {/* EXISTING DESKTOP FOOTER CONTENT */}
+              {/* DESKTOP FOOTER CONTENT */}
               <p className="footer-legal">
                 © 2026 Illuminex Ltd. Registered in England &amp; Wales. Company
                 No. 16961631. All Rights Reserved.
@@ -199,7 +226,6 @@ export default function RootLayout({
                 </span>
               </div>
 
-      
               <div className="footer-desktop-bottom">
                 <nav className="footer-links" aria-label="Footer links">
                   <Link href="/privacy">Privacy</Link>
@@ -209,13 +235,14 @@ export default function RootLayout({
 
                 <a
                   href="#"
-                  className="footer-desktop-linkedin"
+                  className="footer-desktop-linkedin protect-image no-context-menu"
                   aria-label="LinkedIn page coming soon"
                 >
                   <img
                     src="/linkedin-square-white-icon-transparent.png"
                     alt="LinkedIn"
                     className="footer-desktop-linkedin-icon"
+                    draggable={false}
                   />
                 </a>
               </div>
@@ -224,11 +251,12 @@ export default function RootLayout({
             <CookiePreferencesButton />
 
             {/* RIGHT EMBLEM */}
-            <div className="footer-emblem-wrap footer-emblem-wrap--right">
+            <div className="footer-emblem-wrap footer-emblem-wrap--right protect-image no-context-menu">
               <img
                 className="footer-emblem footer-emblem--right"
                 src="/Illuminex-logo-emblem-transparent-background-high-res.png"
                 alt="Illuminex emblem"
+                draggable={false}
               />
             </div>
           </div>

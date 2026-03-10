@@ -26,7 +26,7 @@ function EyeIcon({ open }: { open: boolean }) {
 
 export default function AdminLoginPage() {
   const searchParams = useSearchParams();
-  const showError = Boolean(searchParams.get("error"));
+  const error = searchParams.get("error");
 
   const [capsOn, setCapsOn] = useState(false);
   const [showPw, setShowPw] = useState(false);
@@ -34,6 +34,24 @@ export default function AdminLoginPage() {
   function handleKeyEvent(e: React.KeyboardEvent<HTMLInputElement>) {
     setCapsOn(e.getModifierState("CapsLock"));
   }
+
+  function getErrorMessage(code: string | null) {
+    if (code === "2fa") {
+      return "Authentication service unavailable. Please try again.";
+    }
+
+    if (code === "server") {
+      return "Server error. Please try again.";
+    }
+
+    if (code === "1") {
+      return "Invalid email or password.";
+    }
+
+    return null;
+  }
+
+  const errorMessage = getErrorMessage(error);
 
   return (
     <div style={{ display: "grid", gap: 16 }}>
@@ -44,7 +62,7 @@ export default function AdminLoginPage() {
         </p>
       </div>
 
-      {showError && (
+      {errorMessage && (
         <div
           style={{
             padding: 12,
@@ -53,13 +71,14 @@ export default function AdminLoginPage() {
             background: "rgba(255,50,50,0.12)",
           }}
         >
-          ❌ Invalid email or password.
+          ❌ {errorMessage}
         </div>
       )}
 
       <form
         action="/api/admin/login"
         method="post"
+        autoComplete="off"
         style={{ display: "grid", gap: 12, maxWidth: 520 }}
       >
         <div className="apply-field">

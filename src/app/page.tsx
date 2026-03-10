@@ -221,29 +221,33 @@ export default function Home() {
   </p>
 
   <div
-    className="sector-card-actions sector-card-actions--center candidate-register-cta__actions"
+  className="sector-card-actions sector-card-actions--center candidate-register-cta__actions"
+  style={{
+    justifyContent: "center",
+    width: "100%",
+  }}
+>
+  <Link
+    href="/candidates"
+    className="sector-cta candidate-register-cta__button"
     style={{
-      justifyContent: "center",
-      width: "100%",
+      fontSize: 14,
+      padding: "14px 22px",
+      lineHeight: 1.3,
+      textAlign: "center",
+      display: "inline-block",
+      maxWidth: "100%",
+      boxSizing: "border-box",
+      whiteSpace: "normal",
     }}
   >
-    <Link
-      href="/candidates"
-      className="sector-cta candidate-register-cta__button"
-      style={{
-        fontSize: 14,
-        padding: "14px 22px",
-        lineHeight: 1.3,
-        textAlign: "center",
-        display: "inline-block",
-        maxWidth: "100%",
-        boxSizing: "border-box",
-        whiteSpace: "normal",
-      }}
-    >
-      Register Your CV
-    </Link>
-  </div>
+    Register Your CV
+  </Link>
+</div>
+
+<p className="candidate-register-trust">
+  100% confidential. No CVs are shared without your permission.
+</p>
 </div>
 
 </div>

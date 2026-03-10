@@ -3792,6 +3792,12 @@ img.protect-image {
 
 }
 
+.candidate-register-trust {
+  font-size: 14px;
+  color: rgba(255,255,255,0.65);
+  margin-top: 6px;
+}
+
 .candidate-register-cta h3 {
   font-size: 22px !important;
 }

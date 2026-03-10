@@ -26,13 +26,37 @@ export default function Home() {
           </div>
 
           <div className="hero-right">
-            <div className="search-card">
-              <h3>Search Live Opportunities</h3>
-              <HeroSearch />
-            </div>
-          </div>
-        </div>
-      </section>
+  <div className="search-card">
+    <h3>Search Live Opportunities</h3>
+
+    <HeroSearch />
+
+    <div
+  style={{
+    marginTop: 14,
+    display: "flex",
+    justifyContent: "center",
+  }}
+>
+      <Link
+  href="/candidates"
+  className="sector-cta"
+  style={{
+    fontSize: 14,
+    padding: "18px 28px",
+    lineHeight: 1.4,
+    textAlign: "center",
+  }}
+>
+      Not Seeing The Right Role?
+      <br />
+      Register Your CV
+    </Link>
+</div>
+  </div>
+</div>
+</div>
+</section>
 
       {/* ================= OUR SECTORS ================= */}
       <section className="sectors">
@@ -151,22 +175,79 @@ export default function Home() {
             </TrackedSectorLink>
 
             {/* 6) CTA */}
-            <div className="sector-card sector-card--cta">
-              <h3>Not sure where your role sits?</h3>
-              <p>
-                Tell us what you are hiring for and we will advise on the most
-                sensible route to market.
-              </p>
+<div className="sector-card sector-card--cta">
+  <h3>Not sure where your role sits?</h3>
+  <p>
+    Tell us what you are hiring for and we will advise on the most
+    sensible route to market.
+  </p>
 
-              <div className="sector-card-actions sector-card-actions--center">
-                <Link href="/contact" className="sector-cta">
-                  Speak with Illuminex
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-  );
+  <div className="sector-card-actions sector-card-actions--center">
+    <Link href="/contact" className="sector-cta">
+      Speak with Illuminex
+    </Link>
+  </div>
+</div>
+</div>
+
+{/* Candidate registration CTA */}
+<div
+  className="sector-card candidate-register-cta"
+  style={{
+    margin: "24px auto 0",
+    maxWidth: 980,
+    padding: "28px 24px",
+    display: "grid",
+    gap: 18,
+    justifyItems: "center",
+    textAlign: "center",
+    boxSizing: "border-box",
+  }}
+>
+  <div className="kicker">CANDIDATE REGISTRATION</div>
+
+  <h3 style={{ margin: 0 }}>Not seeing the right opportunity?</h3>
+
+  <p
+    className="candidate-register-cta__text"
+    style={{
+      margin: 0,
+      maxWidth: 880,
+      width: "100%",
+      lineHeight: 1.7,
+    }}
+  >
+    Many of our senior searches are confidential and may not appear on the live jobs page straight away. Register your CV with Illuminex and we can contact you when a relevant opportunity becomes available.
+  </p>
+
+  <div
+    className="sector-card-actions sector-card-actions--center candidate-register-cta__actions"
+    style={{
+      justifyContent: "center",
+      width: "100%",
+    }}
+  >
+    <Link
+      href="/candidates"
+      className="sector-cta candidate-register-cta__button"
+      style={{
+        fontSize: 14,
+        padding: "14px 22px",
+        lineHeight: 1.3,
+        textAlign: "center",
+        display: "inline-block",
+        maxWidth: "100%",
+        boxSizing: "border-box",
+        whiteSpace: "normal",
+      }}
+    >
+      Register Your CV
+    </Link>
+  </div>
+</div>
+
+</div>
+</section>
+</main>
+);
 }

@@ -137,6 +137,9 @@ export default function SiteHeader() {
           >
             Candidates
           </Link>
+          <Link href="/candidates" className="nav-drawer-register-cv">
+            Register CV
+          </Link>
           <Link
             href="/live-jobs"
             aria-current={pathname === "/live-jobs" ? "page" : undefined}

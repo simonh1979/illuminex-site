@@ -3748,3 +3748,59 @@ img.protect-image {
 .no-context-menu {
   -webkit-touch-callout: none;
 }
+
+@media (max-width: 768px) {
+  .candidate-register-cta {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 20px 0 0 !important;
+    padding: 24px 14px !important;
+    box-sizing: border-box !important;
+    justify-items: center !important;
+    text-align: center !important;
+    gap: 14px !important;
+  }
+
+  .candidate-register-cta__text {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    text-align: center !important;
+  }
+
+  .candidate-register-cta__actions {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+ .candidate-register-cta__button {
+  width: 100% !important;
+  max-width: 320px !important;
+  padding: 16px 22px !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  font-size: 16px !important;
+  font-weight: 850 !important;
+  text-align: center !important;
+
+  box-sizing: border-box !important;
+  white-space: nowrap !important;
+}
+
+}
+
+.candidate-register-cta h3 {
+  font-size: 22px !important;
+}
+
+.candidate-register-cta__text {
+  font-size: 16px !important;
+}
+
+.nav-drawer-register-cv {
+  color: #ff8c00 !important;
+  font-weight: 800 !important;
+}

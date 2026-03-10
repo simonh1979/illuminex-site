@@ -15,16 +15,19 @@ export type SessionPayload = {
 export const ADMIN_COOKIE_NAME = "admin_session";
 
 /**
- * ADMIN_USERS expected in .env.local:
- * ADMIN_USERS='[{"email":"director@illuminex.co.uk","passwordHash":"$2b$10$..."}]'
+ * ADMIN_USERS expected in env:
+ * [{"email":"director@illuminex.co.uk","passwordHash":"$2b$10$..."}]
  */
 function getUsers(): AdminUser[] {
   let raw = process.env.ADMIN_USERS;
-  if (!raw) return [];
+
+  if (!raw) {
+    console.log("[adminAuth] ADMIN_USERS missing");
+    return [];
+  }
 
   raw = raw.trim();
 
-  // allow wrapping quotes
   if (
     (raw.startsWith("'") && raw.endsWith("'")) ||
     (raw.startsWith('"') && raw.endsWith('"'))
@@ -34,9 +37,13 @@ function getUsers(): AdminUser[] {
 
   try {
     const parsed = JSON.parse(raw);
-    if (!Array.isArray(parsed)) return [];
 
-    return parsed
+    if (!Array.isArray(parsed)) {
+      console.log("[adminAuth] ADMIN_USERS parsed but is not an array");
+      return [];
+    }
+
+    const users = parsed
       .filter(
         (u) =>
           u &&
@@ -47,7 +54,18 @@ function getUsers(): AdminUser[] {
         email: u.email.toLowerCase().trim(),
         passwordHash: u.passwordHash.trim(),
       }));
-  } catch {
+
+    console.log(
+      "[adminAuth] Parsed users:",
+      users.map((u) => ({
+        email: u.email,
+        hashPrefix: u.passwordHash.slice(0, 7),
+      }))
+    );
+
+    return users;
+  } catch (err: any) {
+    console.log("[adminAuth] Failed to parse ADMIN_USERS:", err?.message);
     return [];
   }
 }
@@ -101,13 +119,23 @@ export async function verifyAdminCredentials(
 ): Promise<boolean> {
   const users = getUsers();
   const e = (email || "").toLowerCase().trim();
-  const u = users.find((x) => x.email === e);
-  if (!u) return false;
 
-  // Debug (safe): proves server is using the hash you think it is
+  console.log("[adminAuth] Login attempt email:", e);
+  console.log("[adminAuth] Parsed user count:", users.length);
+
+  const u = users.find((x) => x.email === e);
+
+  if (!u) {
+    console.log("[adminAuth] No matching user found for:", e);
+    return false;
+  }
+
   console.log("[adminAuth] Using hash prefix:", u.passwordHash.slice(0, 7));
 
-  return bcrypt.compare(password, u.passwordHash);
+  const ok = await bcrypt.compare(password, u.passwordHash);
+  console.log("[adminAuth] bcrypt.compare result:", ok);
+
+  return ok;
 }
 
 /**
@@ -134,7 +162,7 @@ export async function setAdminSession(email: string) {
     sameSite: "lax",
     secure: isProd,
     path: "/",
-    maxAge: 60 * 60 * 8, // 8 hours
+    maxAge: 60 * 60 * 8,
   });
 }
 

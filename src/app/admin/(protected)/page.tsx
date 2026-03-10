@@ -533,7 +533,7 @@ function ApplyDropOffJobsCard({
         width: "100%",
       }}
     >
-      <strong>Apply click drop-off</strong>
+      <strong>Apply drop-off signals</strong>
 
       {items.length === 0 ? (
         <p className="jobs-muted" style={{ margin: 0 }}>
@@ -1367,7 +1367,7 @@ export default function AdminDashboardPage() {
         <StatCard
           title="Recent audit events"
           value={stats ? stats.auditRecentCount : "—"}
-          sub="Latest stored events"
+          sub="Latest recorded activity"
         />
 
         <StatCard
@@ -1383,7 +1383,7 @@ export default function AdminDashboardPage() {
         />
 
         <StatCard
-          title="Jobs refreshes"
+          title="Job cache refreshes"
           value={stats ? stats.jobsRefreshTotal : "—"}
           sub={
             stats
@@ -1562,8 +1562,8 @@ export default function AdminDashboardPage() {
 
       <div style={{ width: "100%" }}>
         <MetricListCard
-          title="Passive candidate signals"
-          emptyText="No repeat live job interest detected yet."
+          title="Repeat job interest"
+          emptyText="No repeat job interest detected yet."
           items={
             stats?.repeatJobInterest?.map((item) => ({
               label: item.title,

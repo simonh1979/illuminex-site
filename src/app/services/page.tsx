@@ -23,7 +23,7 @@ export default function ServicesPage() {
               opacity: 0.92,
             }}
           >
-            Illuminex is established as an executive search and specialist recruitment consultancy. Over time, the platform will extend to
+             <span className="brand-font">Illuminex</span> is established as an executive search and specialist recruitment consultancy. Over time, the platform will extend to
             include carefully selected partner services across HR, Payroll and Health &amp; Safety. Introductions will be relationship led and
             value driven,{" "}
             <span style={{ whiteSpace: "nowrap" }}> not directory listings.</span>

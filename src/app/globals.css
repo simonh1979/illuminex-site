@@ -30,6 +30,112 @@
 }
 
 
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  font-family: var(--font-body), sans-serif;
+  font-weight: var(--type-body);
+  letter-spacing: var(--track-body);
+  line-height: var(--lh-body);
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+
+  background: var(--primary-blue);
+  color: var(--white);
+}
+
+/* ==========================
+   Two-font system
+   Inter = headings / UI
+   IBM Plex Sans = body copy
+========================== */
+
+h1,
+h2,
+h3,
+.main-nav a,
+.nav-drawer-links a,
+.search-cta,
+.sector-tag,
+.jobs-clear,
+.apply-submit,
+.apply-field label,
+.contact-field label,
+.contact-panel-label,
+.page-kicker,
+.kicker,
+.footer-mobile-title,
+.footer-links a,
+.footer-legal strong,
+strong {
+  font-family: var(--font-heading), sans-serif !important;
+  letter-spacing: -0.015em;
+}
+
+p,
+.hero-left p,
+.page-subtitle,
+.sectors-head .sub,
+.sector-card p,
+.jobs-muted,
+.job-summary,
+.contact-panel-value,
+.contact-panel-sub,
+.footer-legal,
+.footer-registered,
+.footer-mobile-textblock,
+.footer-mobile-bottom,
+.apply-check,
+.apply-hint,
+.apply-error,
+.apply-success-row,
+.apply-panel-row,
+.contact-panel-link,
+.footer-contact,
+.footer-mobile-rec
+.nav-drawer-brand {
+  font-family: var(--font-body), sans-serif !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.01em !important;
+  text-transform: none !important;
+  
+}
+ 
+
+/* CTA pills use IBM Plex Sans but slightly stronger weight */
+
+/* CTA / pill typography — consistent across desktop + mobile */
+
+
+.sector-cta,
+.sector-cta-secondary,
+.sector-cta-mini,
+.footer-mobile-pill,
+.footer-mobile-nav a,
+.footer-mobile-links a,
+.mobile-pill,
+.nav-pill {
+  font-family: var(--font-body), sans-serif !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em !important;
+  text-transform: none !important;
+}
+
+/* Improve font rendering on mobile */
+
+.sector-cta,
+.sector-cta-secondary,
+.sector-cta-mini,
+.footer-mobile-pill,
+.footer-mobile-nav a {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
 /* ==========================
    GLOBAL RESET
 ========================== */
@@ -43,6 +149,10 @@
 html,
 body {
   overflow-x: hidden;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body{
@@ -643,11 +753,11 @@ h3 {
 }
 
 /* Desktop: keep the sectors intro reading as a single thought, without forcing nowrap */
-@media (min-width: 1200px) {
+@media (min-width: 1280px) {
   .sectors-head .sub {
-    max-width: 1180px;      /* match your global text width */
+    max-width: 1280px;      /* match your global text width */
     white-space: normal;     /* IMPORTANT: allow wrapping naturally */
-    text-wrap: balance;      /* modern browsers: better line breaks */
+    text-wrap: normal;      /* modern browsers: better line breaks */
   }
 }
 
@@ -1379,10 +1489,12 @@ main.page .page-hero::after {
 }
 
 .nav-drawer-brand {
-  font-weight: 950;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  opacity: 0.95;
+  font-family: var(--font-body), sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 24px;
+  line-height: 1.2;
+  text-transform: none !important;
+  letter-spacing: 0.01em;
 }
 
 .nav-drawer-close {
@@ -2560,15 +2672,15 @@ h3 { letter-spacing: 0.035em !important; }
 
 .contact-panel-kicker{
   font-size: 0.95rem;
-  opacity: 0.82;
+  opacity: 0.89;
   margin-bottom: 4px;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 0.04em;
 }
 
 .contact-panel-title{
   font-size: 1.32rem;
-  font-weight: 600;
+  font-weight: 800;
   letter-spacing: 0.04em;
   margin-top: 4px;
 }
@@ -3062,6 +3174,7 @@ box-shadow:
 
   margin-bottom: 12px !important;
 }
+
 
 /* ========================================
    TermsFeed spacing fix (text → buttons gap)
@@ -3749,6 +3862,39 @@ img.protect-image {
   -webkit-touch-callout: none;
 }
 
+/* ==========================
+   Illuminex brand typography
+   Premium treatment without mixing fonts
+========================== */
+
+@media (max-width: 768px) {
+  p,
+  .hero-left p,
+  .page-subtitle,
+  .sectors-head .sub,
+  .sector-card p,
+  .jobs-muted,
+  .job-summary,
+  .contact-panel-value,
+  .contact-panel-sub,
+  .footer-legal,
+  .footer-registered,
+  .footer-mobile-textblock,
+  .footer-mobile-bottom,
+  .apply-check,
+  .apply-hint,
+  .apply-error,
+  .apply-success-row,
+  .apply-panel-row,
+  .contact-panel-link,
+  .footer-contact,
+  .footer-mobile-rec,
+  .nav-drawer-note {
+    font-size: 1.1rem !important;
+  }
+}
+
+
 @media (max-width: 768px) {
   .candidate-register-cta {
     width: 100% !important;
@@ -3809,5 +3955,77 @@ img.protect-image {
 
 .nav-drawer-register-cv {
   color: #ff8c00 !important;
-  font-weight: 800 !important;
+  font-weight: 700 !important;
 }
+
+.nav-drawer-register-cv[aria-current="page"] {
+  background: rgba(255, 255, 255, 0.14) !important;
+  border-color: rgba(255, 255, 255, 0.22) !important;
+  color: rgba(255, 255, 255, 0.96) !important;
+}
+
+@media (max-width: 768px) {
+  .contact-panel {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
+
+  .contact-panel-inner {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 18px 14px !important;
+    box-sizing: border-box !important;
+  }
+
+  .contact-panel-head {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+    align-items: start !important;
+    
+  }
+
+  .contact-linkedin {
+    margin-top: 6px;
+    margin-bottom: 6px;
+    justify-self: start !important;
+  }
+
+  .contact-panel-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+    width: 100% !important;
+  }
+
+  .contact-panel-item {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 16px 12px !important;
+    box-sizing: border-box !important;
+  }
+
+  .contact-panel-value {
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+  }
+
+  .contact-panel-link {
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+  }
+
+  .contact-panel-grid { gap: 18px !important; }
+  .contact-panel-value { font-size: 1.05rem; }
+
+  .contact-panel-sub {
+    font-size: 0.99rem;
+    color: rgba(255, 255, 255, 0.849);
+    margin-top: 6px;
+    font-weight: 500 !important;
+}
+
+}
+

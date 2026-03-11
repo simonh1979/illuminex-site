@@ -6,11 +6,26 @@ import { usePathname } from "next/navigation";
 
 export default function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const [hash, setHash] = useState("");
   const pathname = usePathname();
 
   useEffect(() => {
     setOpen(false);
+
+    if (typeof window !== "undefined") {
+      setHash(window.location.hash);
+    }
   }, [pathname]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const syncHash = () => setHash(window.location.hash);
+
+    syncHash();
+    window.addEventListener("hashchange", syncHash);
+    return () => window.removeEventListener("hashchange", syncHash);
+  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -20,6 +35,10 @@ export default function SiteHeader() {
       document.body.style.overflow = prev;
     };
   }, [open]);
+
+  const onCandidatesPage = pathname === "/candidates";
+  const onRegisterCvSection =
+    pathname === "/candidates" && hash === "#register";
 
   return (
     <header className="site-header">
@@ -55,7 +74,7 @@ export default function SiteHeader() {
           </Link>
           <Link
             href="/candidates"
-            aria-current={pathname === "/candidates" ? "page" : undefined}
+            aria-current={onCandidatesPage ? "page" : undefined}
           >
             Candidates
           </Link>
@@ -101,7 +120,10 @@ export default function SiteHeader() {
         aria-hidden={!open}
       />
 
-      <aside className={`nav-drawer ${open ? "is-open" : ""}`} aria-label="Menu">
+      <aside
+        className={`nav-drawer ${open ? "is-open" : ""}`}
+        aria-label="Menu"
+      >
         <div className="nav-drawer-head">
           <div className="nav-drawer-brand">Illuminex</div>
 
@@ -133,11 +155,17 @@ export default function SiteHeader() {
           </Link>
           <Link
             href="/candidates"
-            aria-current={pathname === "/candidates" ? "page" : undefined}
+            aria-current={
+              onCandidatesPage && !onRegisterCvSection ? "page" : undefined
+            }
           >
             Candidates
           </Link>
-          <Link href="/candidates" className="nav-drawer-register-cv">
+          <Link
+            href="/candidates#register"
+            className="nav-drawer-register-cv"
+            aria-current={onRegisterCvSection ? "page" : undefined}
+          >
             Register CV
           </Link>
           <Link
@@ -162,7 +190,8 @@ export default function SiteHeader() {
 
         <div className="nav-drawer-foot">
           <div className="nav-drawer-note">
-            Premium executive search &amp; specialist recruitment.
+            <span className="brand-font">Illuminex</span> delivers premium
+            executive search &amp; specialist recruitment.
           </div>
         </div>
       </aside>

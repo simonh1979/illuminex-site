@@ -67,6 +67,9 @@ export default function ContactPage() {
                     <div>
                       <div className="contact-panel-kicker">Contact details</div>
                       <div className="contact-panel-title">Illuminex Ltd</div>
+                      <div className="contact-panel-sub">
+                        Executive Search & Specialist Recruitment
+                      </div>
                     </div>
 
                     <span

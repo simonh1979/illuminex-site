@@ -3,7 +3,7 @@ import "./globals.css";
 import SiteHeader from "../components/SiteHeader";
 import TermsFeedConsent from "../components/TermsFeedConsent";
 import GoogleAnalytics from "../components/GoogleAnalytics";
-import { Inter } from "next/font/google";
+import { Inter, IBM_Plex_Sans } from "next/font/google";
 import type { Metadata } from "next";
 import Link from "next/link";
 import type React from "react";
@@ -51,6 +51,14 @@ const inter = Inter({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800", "900"],
   display: "swap",
+  variable: "--font-heading",
+});
+
+const brandFont = IBM_Plex_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+  variable: "--font-body",
 });
 
 export default function RootLayout({
@@ -59,8 +67,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={inter.className}>
-      <body className="antialiased">
+    <html lang="en" className={`${inter.variable} ${brandFont.variable}`}>
+
+      <body id="top" className="antialiased">
         <ContentProtection />
 
         <a href="#main-content" className="skip-link">
@@ -92,10 +101,11 @@ export default function RootLayout({
               {/* MOBILE-ONLY PREMIUM FOOTER CONTENT */}
               <div className="footer-mobile-only">
                 <Link
-                  href="/"
-                  className="footer-main-logo-link protect-image no-context-menu"
-                  aria-label="Go to homepage"
-                >
+                    href="/#top"
+                    className="footer-main-logo-link protect-image no-context-menu"
+                    aria-label="Go to homepage"
+                  >
+
                   <img
                     className="footer-main-logo"
                     src="/illuminex-logo-flat-transparent-background.png"
@@ -174,18 +184,19 @@ export default function RootLayout({
                 <MobileFooterNav />
 
                 <div className="footer-mobile-bottom">
-                  <p>© 2026 Illuminex Ltd.</p>
+                  <p>
+                    © 2026 Illuminex Ltd.
+                  </p>
                   <p>Registered in England &amp; Wales.</p>
                   <p>Company No. 16961631.</p>
                   <p>All Rights Reserved.</p>
                 </div>
-              </div>
+                </div>
 
-              {/* DESKTOP FOOTER CONTENT */}
-              <p className="footer-legal">
-                © 2026 Illuminex Ltd. Registered in England &amp; Wales. Company
-                No. 16961631. All Rights Reserved.
-              </p>
+                  {/* DESKTOP FOOTER CONTENT */}
+                  <p className="footer-legal">
+                  © 2026 Illuminex Ltd. Registered in England &amp; Wales. Company No. 16961631. All Rights Reserved.
+                </p>
 
               <div className="footer-contact-row" aria-label="Footer contact">
                 <a

@@ -2641,6 +2641,7 @@ h3 { letter-spacing: 0.035em !important; }
    - gradient border wrapper + glass inner
 ========================= */
 
+
 .contact-panel{
   margin-top: 26px;
   border-radius: 20px;
@@ -4029,3 +4030,12 @@ img.protect-image {
 
 }
 
+/* Final contact panel font override */
+.contact-panel-kicker,
+.contact-panel-title,
+.contact-panel-sub,
+.contact-panel-label,
+.contact-panel-value,
+.contact-panel-link {
+  font-family: var(--font-body), sans-serif !important;
+}

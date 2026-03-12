@@ -22,7 +22,7 @@ export default function EducationSectorPage() {
         <div className="page-hero-inner">
           <div className="page-kicker">OUR SECTORS</div>
 
-          <h1 className="page-title">Education</h1>
+          <h1 className="page-title">Education Recruitment</h1>
 
           <p style={{ marginTop: 10, opacity: 0.9 }}>
             <Link href="/" style={{ color: "inherit", textDecoration: "none" }}>

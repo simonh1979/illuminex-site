@@ -26,9 +26,9 @@ export default function LiveJobsPage() {
               opacity: 0.92,
             }}
           >
-            Search current opportunities across the UK and filter by sector, location, job type and experience level.
-            Once your JobAdder connection is live, this page will pull roles directly via the JobAdder Open API.
-          </p>
+            Illuminex works on retained and confidential mandates across defined sectors.
+            Some appointments may not be advertised publicly. Search current opportunities across the UK and filter by sector, location, job type and experience level.
+           </p>
         </div>
       </section>
 

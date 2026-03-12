@@ -1,7 +1,10 @@
 "use client";
 
 import { useRef, useState } from "react";
-import RecaptchaClient, { executeRecaptchaV3, RecaptchaDisclosure } from "@/components/RecaptchaClient";
+import RecaptchaClient, {
+  executeRecaptchaV3,
+  RecaptchaDisclosure,
+} from "@/components/RecaptchaClient";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
@@ -54,8 +57,24 @@ export default function ContactForm() {
     }
   }
 
+  if (status === "sent") {
+    return (
+      <div className="contact-success">
+        <strong>Message sent successfully.</strong>
+        <br />
+        Thank you for contacting Illuminex. We will review your message and
+        respond shortly.
+      </div>
+    );
+  }
+
   return (
-    <form ref={formRef} onSubmit={onSubmit} className="contact-form" noValidate>
+    <form
+      ref={formRef}
+      onSubmit={onSubmit}
+      className="contact-form"
+      noValidate
+    >
       {/* preload v3 script */}
       <RecaptchaClient />
 
@@ -77,7 +96,12 @@ export default function ContactForm() {
 
         <div className="contact-field">
           <label>Email</label>
-          <input name="email" type="email" required placeholder="you@company.com" />
+          <input
+            name="email"
+            type="email"
+            required
+            placeholder="you@company.com"
+          />
         </div>
 
         <div className="contact-field">
@@ -92,20 +116,23 @@ export default function ContactForm() {
 
         <div className="contact-field contact-field--wide">
           <label>Message</label>
-          <textarea name="message" required placeholder="Tell us what you need…" />
+          <textarea
+            name="message"
+            required
+            placeholder="Tell us what you need…"
+          />
         </div>
       </div>
 
       <RecaptchaDisclosure />
 
       {status === "error" && <div className="apply-error">{error}</div>}
-      {status === "sent" && (
-        <div className="apply-success-card">
-          <strong>Sent.</strong> We’ll respond shortly.
-        </div>
-      )}
 
-      <button className="apply-submit" type="submit" disabled={status === "sending"}>
+      <button
+        className="apply-submit"
+        type="submit"
+        disabled={status === "sending"}
+      >
         {status === "sending" ? "Sending…" : "Send message"}
       </button>
     </form>

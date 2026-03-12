@@ -23,9 +23,9 @@ export default function ServicesPage() {
               opacity: 0.92,
             }}
           >
-             <span className="brand-font">Illuminex</span> is established as an executive search and specialist recruitment consultancy. Over time, the platform will extend to
-            include carefully selected partner services across HR, Payroll and Health &amp; Safety. Introductions will be relationship led and
-            value driven,{" "}
+            Illuminex operates as an executive search and specialist recruitment consultancy within defined UK markets. Over time, the platform will extend to
+            include carefully selected specialist partners across HR, Payroll and Health & Safety. Introductions will be relationship led and
+            value driven,
             <span style={{ whiteSpace: "nowrap" }}> not directory listings.</span>
           </p>
 
@@ -49,7 +49,7 @@ export default function ServicesPage() {
             <div className="sector-card" style={{ gridColumn: "span 4" }}>
               <h3>Specialist recruitment</h3>
               <p>
-                Mid senior commercial and technical hires across defined sectors. Focused delivery with proper market mapping and brand
+                Mid-to-senior commercial and technical appointments across defined sectors. Focused delivery with proper market mapping and brand
                 protection.
               </p>
               <div className="sector-tag">Specialist</div>

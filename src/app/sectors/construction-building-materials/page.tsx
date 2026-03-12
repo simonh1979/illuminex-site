@@ -22,7 +22,7 @@ export default function ConstructionBuildingMaterialsPage() {
         <div className="page-hero-inner">
           <div className="page-kicker">SECTOR</div>
 
-          <h1 className="page-title">Construction &amp; Building Materials</h1>
+          <h1 className="page-title">Construction &amp; Building Materials Recruitment</h1>
 
           <p style={{ marginTop: 10, opacity: 0.9 }}>
             <Link href="/" style={{ color: "inherit", textDecoration: "none" }}>

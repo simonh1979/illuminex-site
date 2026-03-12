@@ -13,7 +13,7 @@ export default function ContactPage() {
               lineHeight: 1.12,
             }}
           >
-            Tell us what you need and we’ll take it from there.
+            Share the essentials and we’ll respond with the most sensible next step.
           </h1>
 
           <p
@@ -25,8 +25,8 @@ export default function ContactPage() {
               opacity: 0.92,
             }}
           >
-            Whether you are hiring or considering a move, share the essentials and we will come back to you promptly with
-            the most sensible next step. Discretion and integrity are standard.
+            Whether you are planning a senior appointment or considering your next move, outline the key details and we will respond promptly with clear, practical guidance.
+            Client enquiries and candidate discussions are handled with equal discretion and professional integrity.
           </p>
 
           <div
@@ -40,8 +40,8 @@ export default function ContactPage() {
             <div className="sector-card" style={{ gridColumn: "span 6" }}>
               <h3>Clients</h3>
               <p>
-                Share the role scope, location (UK wide if relevant) and timeline. If the hire is retained or confidential,
-                simply flag it and we will handle it properly.
+                Share the role scope, location (UK-wide if relevant) and expected timeline for the appointment.
+                If the mandate is retained or confidential, simply indicate this and it will be handled accordingly.
               </p>
               <div className="sector-tag">Hiring</div>
             </div>
@@ -49,8 +49,8 @@ export default function ContactPage() {
             <div className="sector-card" style={{ gridColumn: "span 6" }}>
               <h3>Candidates</h3>
               <p>
-                Tell us your sector, leadership level and preferred geography. If your search needs to remain confidential,
-                we will treat it that way from the outset.
+                Outline your sector background, leadership level and preferred geography.
+                If your search needs to remain confidential, it will be treated that way from the outset.
               </p>
               <div className="sector-tag">Career</div>
             </div>

@@ -66,7 +66,7 @@ export default function CandidatesPage() {
             <div className="sector-card" style={{ gridColumn: "span 6" }}>
               <h3>Confidential representation</h3>
               <p>
-                For senior moves, discretion matters. We handle approaches carefully and never trade on names. Your information stays confidential.
+                For senior moves, discretion matters. We handle approaches carefully and never trade on names. Candidate discussions are handled with discretion and without unsolicited CV circulation.
               </p>
               <div className="sector-tag">Discretion</div>
             </div>

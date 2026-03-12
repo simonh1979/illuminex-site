@@ -96,13 +96,40 @@ p,
 .apply-panel-row,
 .contact-panel-link,
 .footer-contact,
-.footer-mobile-rec
+.footer-mobile-rec,
+.nav-drawer-note {
+  font-family: var(--font-body), sans-serif !important;
+  font-weight: 500 !important;
+}
+
 .nav-drawer-brand {
   font-family: var(--font-body), sans-serif !important;
   font-weight: 500 !important;
   letter-spacing: 0.01em !important;
   text-transform: none !important;
-  
+}
+
+.nav-drawer-note {
+  font-family: var(--font-body), sans-serif !important;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  font-weight: 500;
+  opacity: 0.9;
+  margin-top: -4px;
+}
+
+@media (max-width: 700px) {
+  .nav-drawer-foot {
+    margin-top: 0;
+    padding-top: 8px;
+  }
+
+  .nav-drawer-note {
+    font-size: 0.92rem;
+    line-height: 1.5;
+    margin-top: -6px;
+    padding-bottom: 10px;
+  }
 }
  
 
@@ -912,7 +939,7 @@ main.page.page-sector .sector-card p {
 
 @media (max-width: 1100px) {
   .sector-card { grid-column: span 6; }
-  .sector-card--cta { grid-column: span 12; }
+  .sector-card--cta { grid-column: span 6; }
 }
 
 @media (max-width: 700px) {
@@ -3722,13 +3749,18 @@ box-shadow:
 }
 
 /* Cookie preferences cog — make subtle */
+/* Cookie button fade-in animation */
 #open_preferences_center{
 
   opacity: 0.6;
-  filter: saturate(0.6);
+  filter: saturate(0.8);
 
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  animation: cookieFadeIn 0.3s ease forwards;
+  animation-delay: 0.2s;
 
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  
+  
 }
 
 /* Slightly clearer on hover so users still notice it */
@@ -3745,8 +3777,8 @@ box-shadow:
 }
 
 #open_preferences_center{
-  width: 44px !important;
-  height: 44px !important;
+  width: 36px !important;
+  height: 36px !important;
   padding: 0 !important;
 
   background: transparent !important;
@@ -3767,11 +3799,9 @@ box-shadow:
 
 /* Cookie button fade-in animation */
 
-#open_preferences_center{
-  opacity: 0;
-  animation: cookieFadeIn 0.8s ease forwards;
-  animation-delay: 1.25s;
-}
+
+
+
 
 @keyframes cookieFadeIn{
   from{
@@ -3785,18 +3815,48 @@ box-shadow:
   }
 }
 
-/* Smaller cookie button on mobile */
-@media (max-width:700px){
-
-  #open_preferences_center{
-    width:36px !important;
-    height:36px !important;
-
-    background-size:34px !important;
+/* Move cookie icon further left / lower on mobile + tablet */
+@media (max-width: 900px) {
+  #open_preferences_center {
+    left: 4px !important;
+    bottom: 10px !important;
   }
-
 }
 
+/* Smaller cookie button on mobile / tablet */
+@media (max-width: 900px) {
+  #open_preferences_center {
+    width: 34px !important;
+    height: 34px !important;
+    background-size: 32px !important;
+
+    left: 4px !important;
+    bottom: 10px !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .grecaptcha-badge {
+    right: 3px !important;
+    bottom: 8px !important;
+    width: 70px !important;
+    overflow: hidden !important;
+    border-radius: 8px !important;
+    transform: scale(0.92) !important;
+    transform-origin: bottom right !important;
+    opacity: 0.6;
+  }
+
+  .grecaptcha-badge:hover,
+  .grecaptcha-badge:focus-within {
+    width: 256px !important;
+    opacity: 1;
+  }
+}
+
+
+
+  
 /* Accessibility: skip navigation link */
 .skip-link{
   position:absolute;
@@ -4039,3 +4099,4 @@ img.protect-image {
 .contact-panel-link {
   font-family: var(--font-body), sans-serif !important;
 }
+

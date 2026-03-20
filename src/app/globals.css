@@ -3803,8 +3803,8 @@ box-shadow:
 /* Cookie button fade-in animation */
 #open_preferences_center{
 
-  opacity: 0.6;
-  filter: saturate(0.8);
+  opacity: 0.8;
+  filter: saturate(0.9);
 
   animation: cookieFadeIn 0.3s ease forwards;
   animation-delay: 0.2s;
@@ -3817,7 +3817,7 @@ box-shadow:
 /* Slightly clearer on hover so users still notice it */
 #open_preferences_center:hover{
 
-  opacity: 0.85;
+  opacity: 0.9;
   transform: translateY(-1px);
 
 }
@@ -3861,7 +3861,7 @@ box-shadow:
   }
 
   to{
-    opacity:0.6;
+    opacity:0.7;
     transform:translateY(0);
   }
 }
@@ -4149,6 +4149,28 @@ img.protect-image {
 .contact-panel-value,
 .contact-panel-link {
   font-family: var(--font-body), sans-serif !important;
+}
+
+/* Footer must be the positioning parent */
+.site-footer {
+  position: relative;
+}
+
+/* Cookie icon stays inside footer only */
+#open_preferences_center {
+  position: absolute !important;
+  left: 20px !important;
+  bottom: 20px !important;
+  top: auto !important;
+  right: auto !important;
+  z-index: 20 !important;
+}
+
+@media (max-width: 900px) {
+  #open_preferences_center {
+    left: 14px !important;
+    bottom: 14px !important;
+  }
 }
 
 

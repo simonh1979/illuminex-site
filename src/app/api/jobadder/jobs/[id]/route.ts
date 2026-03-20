@@ -1,17 +1,18 @@
-// C:\Users\simon\Documents\illuminex-site\src\app\api\jobadder\jobs\[id]\route.ts
+// src/app/api/jobadder/jobs/[id]/route.ts
 
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { getJobAdderBoardId } from "@/lib/jobadderBoard";
+import { jobadderFetch } from "@/lib/jobadderClient";
 
-type JobAdderJob = Record<string, unknown>;
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 function jsonError(message: string, status = 500) {
   return NextResponse.json({ ok: false, message }, { status });
 }
 
-// IMPORTANT:
-// Next.js (current types) expects `context.params` to be a Promise in Route Handlers.
-// This signature prevents the Vercel TypeScript build failure you’re seeing.
+// Keep this signature because your current Next.js setup expects params as a Promise
 export async function GET(
   _req: NextRequest,
   context: { params: Promise<{ id: string }> }
@@ -20,50 +21,36 @@ export async function GET(
     const { id } = await context.params;
 
     if (!id) {
-      return jsonError("Missing job id", 400);
+      return jsonError("Missing job id.", 400);
     }
 
-    const token = process.env.JOBADDER_API_KEY || process.env.JOBADDER_TOKEN;
-    const baseUrl =
-      process.env.JOBADDER_BASE_URL ||
-      "https://api.jobadder.com/v2"; // safe default
+    const boardId = await getJobAdderBoardId();
 
-    if (!token) {
-      return jsonError("JobAdder API token is not configured", 500);
-    }
-
-    // Fetch the job from JobAdder
-    const res = await fetch(`${baseUrl}/jobs/${encodeURIComponent(id)}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: "application/json",
-      },
-      cache: "no-store",
+    const res = await jobadderFetch(`/jobboards/${boardId}/ads/${encodeURIComponent(id)}`, {
+      method: "GET",
     });
 
     if (!res.ok) {
       const text = await res.text().catch(() => "");
       return jsonError(
-        `JobAdder request failed (${res.status}) ${text ? `- ${text}` : ""}`,
+        text || `JobAdder request failed (${res.status}).`,
         res.status
       );
     }
 
-    const rawJob = (await res.json()) as JobAdderJob;
+    const ad = await res.json().catch(() => null);
 
-    // ✅ If you already have a WebsiteJob mapping, keep it here.
-    // For now we return the raw job payload so the route works and deploys cleanly.
-    const job = rawJob;
+    if (!ad) {
+      return jsonError("Job not found.", 404);
+    }
 
     return NextResponse.json({
       ok: true,
       source: "jobadder",
-      job,
+      boardId,
+      job: ad,
     });
-  } catch (err: unknown) {
-    return NextResponse.json(
-      { ok: false, message: err instanceof Error ? err.message : err },
-      { status: 500 }
-    );
+  } catch (err: any) {
+    return jsonError(err?.message || "JobAdder job detail error.", 500);
   }
 }

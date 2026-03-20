@@ -1,3 +1,5 @@
+import CookiePreferencesLink from "@/components/CookiePreferencesLink";
+
 export default function CookiesPage() {
   return (
     <main className="page page-cookies">
@@ -138,15 +140,18 @@ export default function CookiesPage() {
 
           <div style={{ marginTop: 18 }} className="sector-card">
             <h3>8. Managing Your Cookie Preferences</h3>
+
             <p>
               You can accept, reject or amend your preferences for non-essential
-              cookies through the cookie preferences tool made available on this
-              website.
+              cookies using the cookie preferences tool available on this website.
+              You may update your preferences at any time by{" "}
+              <CookiePreferencesLink />.
             </p>
+
             <p style={{ marginBottom: 0 }}>
-              You can also control cookies through your browser settings.
-              However, restricting certain cookies may affect website
-              functionality or your experience of using the site.
+              You can also control cookies through your browser settings. Please
+              note that restricting certain cookies may affect website
+              functionality and your experience of using the site.
             </p>
           </div>
 
@@ -181,10 +186,12 @@ export default function CookiesPage() {
               technologies, please contact us at hello@illuminex.co.uk.
             </p>
             <p style={{ marginBottom: 0 }}>
-              Further information about how we handle personal data is available in our{" "}
+              Further information about how we handle personal data is available
+              in our{" "}
               <a href="/privacy" className="text-link">
                 Privacy Policy
-              </a>.
+              </a>
+              .
             </p>
           </div>
         </div>

@@ -119,7 +119,7 @@ export default function RootLayout({
 
                   <div className="footer-mobile-textblock">
                     <strong>Registered Office:</strong>
-                    <div>112 Main Street, Unknown Location, City, Postcode</div>
+                    <div>First Floor, Embsay Mill, Embsay, Skipton, BD23 6QR</div>
                   </div>
 
                   <div className="footer-mobile-contact-stack">

@@ -149,7 +149,7 @@ export default function ContactPage() {
                         </span>
                         Registered office
                       </div>
-                      <div className="contact-panel-value">To be confirmed</div>
+                      <div className="contact-panel-value">First Floor, Embsay Mill, Embsay, Skipton, BD23 6QR</div>
                     </div>
 
                     <div className="contact-panel-item">

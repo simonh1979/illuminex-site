@@ -46,7 +46,7 @@ export default function PrivacyPage() {
               <br />
               Company Number: 16961631
               <br />
-              Registered Office: To be confirmed
+              Registered Office: First Floor, Embsay Mill, Embsay, Skipton, BD23 6QR
               <br />
               Email: hello@illuminex.co.uk
               <br />

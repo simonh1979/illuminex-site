@@ -36,7 +36,7 @@ export default function TermsPage() {
               England and Wales under company number 16961631.
             </p>
             <p style={{ marginBottom: 0 }}>
-              Registered Office: To be confirmed prior to launch
+              Registered Office: First Floor, Embsay Mill, Embsay, Skipton, BD23 6QR
               <br />
               Email: hello@illuminex.co.uk
             </p>

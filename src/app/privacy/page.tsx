@@ -50,7 +50,7 @@ export default function PrivacyPage() {
               <br />
               Email: hello@illuminex.co.uk
               <br />
-              ICO Registration Number: To be inserted prior to launch
+              ICO Registration Number: ZC161884
             </p>
           </div>
 

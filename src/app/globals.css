@@ -601,7 +601,6 @@ main.page-home::before {
   width: auto;
   object-fit: contain;
   display: block;
-  image-rendering: crisp-edges;
   transform: translateZ(0);
 }
 

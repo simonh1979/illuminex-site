@@ -177,7 +177,7 @@ export default function RootLayout({
                       />
                     </span>
 
-                    <span className="footer-mobile-rec">REC Member Logo</span>
+                    
                   </div>
                 </section>
 

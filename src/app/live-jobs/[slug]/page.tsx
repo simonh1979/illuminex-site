@@ -20,11 +20,17 @@ type Job = {
 function getJobIdFromSlug(slug: string) {
   if (!slug) return null;
 
-  const endMatch = slug.match(/(ILX-\d+)$/i);
-  if (endMatch) return endMatch[1].toUpperCase();
+  const firefishEndMatch = slug.match(/(FF-\d+)$/i);
+  if (firefishEndMatch) return firefishEndMatch[1].toUpperCase();
 
-  const anyMatch = slug.match(/(ILX-\d+)/i);
-  if (anyMatch) return anyMatch[1].toUpperCase();
+  const firefishAnyMatch = slug.match(/(FF-\d+)/i);
+  if (firefishAnyMatch) return firefishAnyMatch[1].toUpperCase();
+
+  const illuminexEndMatch = slug.match(/(ILX-\d+)$/i);
+  if (illuminexEndMatch) return illuminexEndMatch[1].toUpperCase();
+
+  const illuminexAnyMatch = slug.match(/(ILX-\d+)/i);
+  if (illuminexAnyMatch) return illuminexAnyMatch[1].toUpperCase();
 
   return null;
 }
@@ -97,31 +103,31 @@ export default function LiveJobDetailPage() {
   }, [jobId]);
 
   useEffect(() => {
-  if (!job) return;
+    if (!job) return;
 
-  async function trackView() {
-    try {
-      await fetch("/api/admin/track/job-view", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          jobId: job!.id,
-          title: job!.title,
-          slug,
-          sector: job!.sector,
-          location: job!.location,
-        }),
-        keepalive: true,
-      });
-    } catch {
-      // fail silently — job page must never break
+    async function trackView() {
+      try {
+        await fetch("/api/admin/track/job-view", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            jobId: job!.id,
+            title: job!.title,
+            slug,
+            sector: job!.sector,
+            location: job!.location,
+          }),
+          keepalive: true,
+        });
+      } catch {
+        // fail silently — job page must never break
+      }
     }
-  }
 
-  trackView();
-}, [job, slug]);
+    trackView();
+  }, [job, slug]);
 
   async function trackApplyClick() {
     if (!job) return;
@@ -211,12 +217,12 @@ export default function LiveJobDetailPage() {
   }
 
   const applyHref =
-  `/live-jobs/${encodeURIComponent(slug)}/apply` +
-  `?from=${encodedFrom}` +
-  `&sector=${encodeURIComponent(job.sector || "")}` +
-  `&location=${encodeURIComponent(job.location || "")}` +
-  `&jobTitle=${encodeURIComponent(job.title || "")}` +
-  `&jobId=${encodeURIComponent(job.id || "")}`;
+    `/live-jobs/${encodeURIComponent(slug)}/apply` +
+    `?from=${encodedFrom}` +
+    `&sector=${encodeURIComponent(job.sector || "")}` +
+    `&location=${encodeURIComponent(job.location || "")}` +
+    `&jobTitle=${encodeURIComponent(job.title || "")}` +
+    `&jobId=${encodeURIComponent(job.id || "")}`;
 
   return (
     <main className="page">
@@ -250,9 +256,7 @@ export default function LiveJobDetailPage() {
                 </div>
               </div>
 
-              <p className="job-summary">{job.summary}</p>
-
-              <div style={{ marginTop: 16, opacity: 0.96, lineHeight: 1.75 }}>
+                      <div style={{ marginTop: 16, opacity: 0.96, lineHeight: 1.75 }}>
                 {job.description ? (
                   <div dangerouslySetInnerHTML={{ __html: job.description }} />
                 ) : (

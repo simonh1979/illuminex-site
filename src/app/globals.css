@@ -1417,7 +1417,20 @@ main.page .page-hero::after {
 }
 
 .job-detail-main { padding: 26px 24px 22px; }
+.job-detail-main p {
+  margin: 0 0 16px;
+  line-height: 1.85;
+}
 
+.job-detail-main ul {
+  margin: 18px 0 22px;
+  padding-left: 24px;
+}
+
+.job-detail-main li {
+  margin-bottom: 10px;
+  line-height: 1.75;
+}
 .job-detail-aside {
   padding: 22px 22px 18px;
   position: sticky;
@@ -2594,14 +2607,13 @@ h3 { letter-spacing: 0.035em !important; }
     overflow: hidden;
   }
 
-  /* Summary clamp (max 4 lines, premium spacing) */
-  .job-summary {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 4;
-    overflow: hidden;
-    max-width: none;
-  }
+  /* Job summary — show full Firefish summary text */
+.job-summary {
+  display: block;
+  overflow: visible;
+  max-width: none;
+  white-space: normal;
+}
 
   /* Prevent right-side meta (ILX/date) stealing width */
   .job-side {

@@ -72,16 +72,19 @@ export default function ContactPage() {
                       </div>
                     </div>
 
-                    <span
+                    <a
                       className="contact-linkedin"
-                      aria-label="LinkedIn page coming soon"
-                    >
-                      <img
-                        src="/linkedin-blue-white-logo.png"
-                        alt="LinkedIn"
-                        className="contact-linkedin-icon"
-                      />
-                    </span>
+                      href="https://www.linkedin.com/company/illuminexconsultancy"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Visit Illuminex Consultancy on LinkedIn"
+                  >
+                    <img
+                      src="/linkedin-blue-white-logo.png"
+                      alt="LinkedIn"
+                      className="contact-linkedin-icon"
+                    />
+                  </a>
                   </div>
 
                   <div className="contact-panel-grid">

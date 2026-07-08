@@ -165,20 +165,21 @@ export default function RootLayout({
                   </div>
 
                   <div className="footer-mobile-socials">
-                    <span
-                      className="footer-mobile-linkedin protect-image no-context-menu"
-                      aria-label="LinkedIn page coming soon"
-                    >
-                      <img
-                        src="/linkedin-square-white-icon-transparent.png"
-                        alt="LinkedIn"
-                        className="footer-linkedin-icon"
-                        draggable={false}
-                      />
-                    </span>
-
-                    
-                  </div>
+                  <a
+                    className="footer-mobile-linkedin protect-image no-context-menu"
+                    href="https://www.linkedin.com/company/illuminexconsultancy"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Visit Illuminex Consultancy on LinkedIn"
+                  >
+                    <img
+                      src="/linkedin-square-white-icon-transparent.png"
+                      alt="LinkedIn"
+                      className="footer-linkedin-icon"
+                      draggable={false}
+                    />
+                  </a>
+                </div>
                 </section>
 
                 <MobileFooterNav />
@@ -245,9 +246,11 @@ export default function RootLayout({
                 </nav>
 
                 <a
-                  href="#"
+                  href="https://www.linkedin.com/company/illuminexconsultancy"
                   className="footer-desktop-linkedin protect-image no-context-menu"
-                  aria-label="LinkedIn page coming soon"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Visit Illuminex Consultancy on LinkedIn"
                 >
                   <img
                     src="/linkedin-square-white-icon-transparent.png"

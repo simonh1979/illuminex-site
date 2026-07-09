@@ -256,10 +256,17 @@ export default function LiveJobDetailPage() {
                 </div>
               </div>
 
-                      <div style={{ marginTop: 16, opacity: 0.96, lineHeight: 1.75 }}>
-                {job.description ? (
-                  <div dangerouslySetInnerHTML={{ __html: job.description }} />
-                ) : (
+              <div className="job-description-content" style={{ marginTop: 16, opacity: 0.96, lineHeight: 1.75 }}>  
+              {job.description ? (
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: job.description.replace(
+                      "</h2>",
+                      '</h2><div style="height: 8px;"></div>'
+                    ),
+                  }}
+                />
+              ) : (
                   <>
                     <h4 style={{ marginTop: 18, marginBottom: 10 }}>Overview</h4>
                     <p className="jobs-muted" style={{ opacity: 0.95 }}>

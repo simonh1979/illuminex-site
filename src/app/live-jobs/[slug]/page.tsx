@@ -35,6 +35,18 @@ function getJobIdFromSlug(slug: string) {
   return null;
 }
 
+function getFirefishAdvertRef(jobId: string): number | null {
+  const match = jobId.match(/^FF-(\d+)$/i);
+
+  if (!match) {
+    return null;
+  }
+
+  const advertRef = Number(match[1]);
+
+  return Number.isInteger(advertRef) && advertRef > 0 ? advertRef : null;
+}
+
 function formatDate(iso: string) {
   try {
     return new Date(iso).toLocaleDateString("en-GB", {
@@ -215,6 +227,7 @@ export default function LiveJobDetailPage() {
       </main>
     );
   }
+  const firefishAdvertRef = getFirefishAdvertRef(job.id);
 
   const applyHref =
     `/live-jobs/${encodeURIComponent(slug)}/apply` +
@@ -222,7 +235,10 @@ export default function LiveJobDetailPage() {
     `&sector=${encodeURIComponent(job.sector || "")}` +
     `&location=${encodeURIComponent(job.location || "")}` +
     `&jobTitle=${encodeURIComponent(job.title || "")}` +
-    `&jobId=${encodeURIComponent(job.id || "")}`;
+    `&jobId=${encodeURIComponent(job.id || "")}` +
+    (firefishAdvertRef
+      ? `&jobAdId=${encodeURIComponent(String(firefishAdvertRef))}`
+      : "");
 
   return (
     <main className="page">

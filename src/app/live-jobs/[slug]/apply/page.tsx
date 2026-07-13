@@ -12,6 +12,7 @@ type Props = {
     location?: string;
     jobTitle?: string;
     jobId?: string;
+    jobAdId?: string;
   }>;
 };
 
@@ -36,10 +37,11 @@ function getFallbackJobIdFromSlug(slug: string) {
 
 function getFallbackTitleFromSlug(slug: string) {
   const slugParts = slug.split("-");
+
   return slugParts
     .slice(0, -1)
     .join(" ")
-    .replace(/\b\w/g, (l) => l.toUpperCase());
+    .replace(/\b\w/g, (letter) => letter.toUpperCase());
 }
 
 export default async function ApplyPage({ params, searchParams }: Props) {
@@ -47,12 +49,21 @@ export default async function ApplyPage({ params, searchParams }: Props) {
   const sp = (await searchParams) ?? {};
 
   const from =
-    typeof sp.from === "string" && sp.from.trim() ? sp.from : "/live-jobs";
+    typeof sp.from === "string" && sp.from.trim()
+      ? sp.from
+      : "/live-jobs";
 
   const jobId =
     typeof sp.jobId === "string" && sp.jobId.trim()
       ? sp.jobId
       : getFallbackJobIdFromSlug(slug);
+
+  const jobAdId =
+    typeof sp.jobAdId === "string" &&
+    Number.isInteger(Number(sp.jobAdId)) &&
+    Number(sp.jobAdId) > 0
+      ? Number(sp.jobAdId)
+      : undefined;
 
   const jobTitle =
     typeof sp.jobTitle === "string" && sp.jobTitle.trim()
@@ -60,10 +71,14 @@ export default async function ApplyPage({ params, searchParams }: Props) {
       : getFallbackTitleFromSlug(slug);
 
   const sector =
-    typeof sp.sector === "string" && sp.sector.trim() ? sp.sector : "";
+    typeof sp.sector === "string" && sp.sector.trim()
+      ? sp.sector
+      : "";
 
   const location =
-    typeof sp.location === "string" && sp.location.trim() ? sp.location : "";
+    typeof sp.location === "string" && sp.location.trim()
+      ? sp.location
+      : "";
 
   return (
     <main className="page page-apply">
@@ -114,6 +129,7 @@ export default async function ApplyPage({ params, searchParams }: Props) {
               <ApplyFormClient
                 jobId={jobId}
                 jobTitle={jobTitle}
+                jobAdId={jobAdId}
                 sector={sector}
                 location={location}
               />

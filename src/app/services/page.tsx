@@ -23,10 +23,16 @@ export default function ServicesPage() {
               opacity: 0.92,
             }}
           >
-            Illuminex operates as an executive search and specialist recruitment consultancy within defined UK markets. Over time, the platform will extend to
-            include carefully selected specialist partners across HR, Payroll and Health & Safety. Introductions will be relationship led and
-            value driven,
-            <span style={{ whiteSpace: "nowrap" }}> not directory listings.</span>
+            Illuminex operates as an executive search and specialist recruitment
+            consultancy within defined UK markets. Over time, the platform will
+            extend to include carefully selected specialist partners across HR,
+            Payroll and Health &amp; Safety. Introductions will always be
+            relationship-led, carefully considered and focused on delivering
+            genuine value,
+            <span style={{ whiteSpace: "nowrap" }}>
+              {" "}
+              never simply referrals for the sake of it.
+            </span>
           </p>
 
           <div
@@ -40,7 +46,8 @@ export default function ServicesPage() {
             <div className="sector-card" style={{ gridColumn: "span 4" }}>
               <h3>Executive search</h3>
               <p>
-                Senior and board level appointments where discretion, structure and disciplined assessment are essential. Retained mandates
+                Senior and board level appointments where discretion, structure
+                and disciplined assessment are essential. Retained mandates
                 managed with clarity and pace.
               </p>
               <div className="sector-tag">Retained search</div>
@@ -49,8 +56,9 @@ export default function ServicesPage() {
             <div className="sector-card" style={{ gridColumn: "span 4" }}>
               <h3>Specialist recruitment</h3>
               <p>
-                Mid-to-senior commercial and technical appointments across defined sectors. Focused delivery with proper market mapping and brand
-                protection.
+                Mid-to-senior commercial and technical appointments across
+                defined sectors. Focused delivery with proper market mapping and
+                brand protection.
               </p>
               <div className="sector-tag">Specialist</div>
             </div>
@@ -58,22 +66,30 @@ export default function ServicesPage() {
             <div className="sector-card" style={{ gridColumn: "span 4" }}>
               <h3>Partner services</h3>
               <p>
-                HR, Payroll and Health &amp; Safety support via trusted specialist partners. Formal relationships will be introduced selectively
-                where it strengthens client outcomes.
+                HR, Payroll and Health &amp; Safety support delivered through
+                trusted specialist partners. Relationships will be introduced
+                selectively where they strengthen client outcomes and provide
+                genuine additional value.
               </p>
               <div className="sector-tag">Consultancy network</div>
             </div>
 
-            <div className="sector-card sector-card--cta" style={{ gridColumn: "span 12" }}>
+            <div
+              className="sector-card sector-card--cta"
+              style={{ gridColumn: "span 12" }}
+            >
               <h3>Discuss your requirements</h3>
               <p>
-                Whether you are hiring now or planning wider organisational support, we will advise on the appropriate structure and introduce
-                the right expertise where required.
+                Whether you are hiring now or planning wider organisational
+                support, we will advise on the appropriate structure and
+                introduce the right expertise where required.
               </p>
+
               <div className="sector-cta-row">
                 <a className="sector-cta" href="/contact">
                   Speak with Illuminex
                 </a>
+
                 <a className="sector-cta-secondary" href="/clients">
                   Client overview
                 </a>

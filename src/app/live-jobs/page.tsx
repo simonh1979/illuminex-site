@@ -27,8 +27,10 @@ export default function LiveJobsPage() {
             }}
           >
             Illuminex works on retained and confidential mandates across defined sectors.
-            Some appointments may not be advertised publicly. Search current opportunities across the UK and filter by sector, location, job type and experience level.
-           </p>
+            Some appointments may not be advertised publicly. Search current
+            opportunities across the UK or refine your search by sector, location, job
+            type and experience level.
+          </p>
         </div>
       </section>
 

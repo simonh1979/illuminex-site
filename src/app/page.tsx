@@ -17,9 +17,9 @@ export default function Home() {
             </h1>
 
             <p>
-              Illuminex Consultancy provides premium executive and specialist
-              recruitment across professional sectors, delivering exceptional mid
-              to senior talent solutions with integrity and focus.
+              Illuminex Consultancy provides premium executive search and specialist
+              recruitment across defined professional sectors, delivering exceptional
+              mid-to-senior and executive talent with integrity and focus.
             </p>
           </div>
 

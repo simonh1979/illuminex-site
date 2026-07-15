@@ -57,7 +57,8 @@ export default function AboutPage() {
             <div className="sector-card" style={{ gridColumn: "span 6" }}>
               <h3>Search, not CV sifting</h3>
               <p>
-                We lead with market intelligence, mapping and targeted outreach, then validate fit, motivation and delivery history before you ever meet.
+                We lead with market intelligence, mapping and targeted outreach, then assess
+                capability, motivation and long-term fit before you ever meet.
               </p>
               <div className="sector-tag">Executive &amp; Specialist</div>
             </div>
@@ -81,7 +82,8 @@ export default function AboutPage() {
             <div className="sector-card" style={{ gridColumn: "span 6" }}>
               <h3>UK wide coverage</h3>
               <p>
-                National, regional and remote roles across the UK. We move with urgency, but quality and integrity remain the benchmark.
+                Supporting national, regional and remote appointments across the UK, we move
+                with urgency while ensuring quality and integrity remain the benchmark.
               </p>
               <div className="sector-tag">UK wide</div>
             </div>

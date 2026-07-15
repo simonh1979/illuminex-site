@@ -4,12 +4,14 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Clients | Executive Search & Specialist Recruitment | Illuminex Consultancy (UK)",
+  title:
+    "Clients | Executive Search & Specialist Recruitment | Illuminex Consultancy (UK)",
   description:
     "Retained executive search and specialist recruitment for senior commercial and leadership appointments. Clear process, disciplined assessment, and decision-ready shortlists built on evidence.",
   alternates: { canonical: "/clients" },
   openGraph: {
-    title: "Clients | Executive Search & Specialist Recruitment | Illuminex Consultancy (UK)",
+    title:
+      "Clients | Executive Search & Specialist Recruitment | Illuminex Consultancy (UK)",
     description:
       "Retained executive search and specialist recruitment for senior commercial and leadership appointments. Clear process and evidence-led shortlists.",
     url: "/clients",
@@ -79,7 +81,7 @@ export default function ClientsPage() {
             <div className="sector-card" style={{ gridColumn: "span 4" }}>
   <h3>Exclusive retained executive search</h3>
   <p>
-    Used for senior, confidential and business critical appointments where the cost of getting it wrong is high.
+    Used for senior, confidential and business-critical appointments where the cost of getting it wrong is high.
     We commit exclusively to the search, map the market properly and approach selectively.
     Assessment is structured, referencing is thorough and the shortlist is deliberate, not inflated.
   </p>
@@ -93,7 +95,7 @@ export default function ClientsPage() {
             <div className="sector-card" style={{ gridColumn: "span 4" }}>
               <h3>Specialist strategic recruitment</h3>
               <p>
-                For mid to senior hires where speed and precision both matter.
+                For mid-to-senior hires where speed and precision both matter.
                 The commercial structure is different, but the standards are not.
                 You still get a disciplined search and a shortlist you can trust.
               </p>

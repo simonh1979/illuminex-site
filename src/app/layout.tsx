@@ -15,13 +15,61 @@ import ContentProtection from "@/components/ContentProtection";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.illuminex.co.uk"),
+
+  applicationName: "Illuminex Consultancy",
+
   title: {
-    default: "Illuminex Consultancy",
+    default:
+      "Executive Search & Specialist Recruitment | Illuminex Consultancy",
     template: "%s | Illuminex Consultancy",
   },
+
   description:
-    "Illuminex Consultancy delivers executive search and specialist recruitment across defined UK markets, with a focused, professional approach.",
+    "Illuminex Consultancy is a specialist executive search and recruitment consultancy connecting exceptional talent with leading employers across the UK. Experts in executive, commercial and specialist recruitment solutions.",
+
+  authors: [
+    {
+      name: "Illuminex Consultancy",
+      url: "https://www.illuminex.co.uk",
+    },
+  ],
+
+  creator: "Illuminex Consultancy",
+  publisher: "Illuminex Consultancy",
+
+  openGraph: {
+    type: "website",
+    locale: "en_GB",
+    url: "https://www.illuminex.co.uk",
+    siteName: "Illuminex Consultancy",
+    title:
+      "Executive Search & Specialist Recruitment | Illuminex Consultancy",
+    description:
+      "Illuminex Consultancy is a specialist executive search and recruitment consultancy connecting exceptional talent with leading employers across the UK.",
+    images: [
+      {
+        url: "/og-image.jpg",
+        alt: "Illuminex Consultancy",
+      },
+    ],
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title:
+      "Executive Search & Specialist Recruitment | Illuminex Consultancy",
+    description:
+      "Illuminex Consultancy is a specialist executive search and recruitment consultancy connecting exceptional talent with leading employers across the UK.",
+    images: ["/og-image.jpg"],
+  },
+
+  robots: {
+  index: true,
+  follow: true,
+},
+
   manifest: "/site.webmanifest",
+
   icons: {
     icon: [
       {

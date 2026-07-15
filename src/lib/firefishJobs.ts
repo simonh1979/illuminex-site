@@ -7,9 +7,17 @@ export type FirefishJob = Job & {
   closingDate?: string;
 };
 
-const DEFAULT_FIREFISH_RSS_URL =
-  "https://illuminex.current.jobs/rss/adverts/latest.aspx";
+const DEFAULT_FIREFISH_JOB_BOARD_BASE_URL =
+  "https://illuminex.current.jobs";
 
+const FIREFISH_JOB_BOARD_BASE_URL = (
+  process.env.FIREFISH_JOB_BOARD_BASE_URL ||
+  DEFAULT_FIREFISH_JOB_BOARD_BASE_URL
+).replace(/\/+$/, "");
+
+const DEFAULT_FIREFISH_RSS_URL =
+  `${FIREFISH_JOB_BOARD_BASE_URL}/rss/adverts/latest.aspx`;
+  
 function asArray<T>(value: T | T[] | undefined): T[] {
   if (!value) return [];
   return Array.isArray(value) ? value : [value];

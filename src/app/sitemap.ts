@@ -1,17 +1,26 @@
 import type { MetadataRoute } from "next";
+import { firefishListJobs } from "@/lib/firefishJobs";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+function slugify(input: string): string {
+  return input
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)+/g, "")
+    .slice(0, 80);
+}
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://www.illuminex.co.uk";
   const now = new Date();
 
-  return [
+  const staticPages: MetadataRoute.Sitemap = [
     {
       url: `${baseUrl}/`,
       lastModified: now,
       changeFrequency: "weekly",
       priority: 1,
     },
-
     {
       url: `${baseUrl}/about`,
       lastModified: now,
@@ -45,10 +54,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: `${baseUrl}/live-jobs`,
       lastModified: now,
-      changeFrequency: "weekly",
-      priority: 0.8,
+      changeFrequency: "daily",
+      priority: 0.9,
     },
-
     {
       url: `${baseUrl}/sectors/construction-building-materials`,
       lastModified: now,
@@ -79,7 +87,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
     },
-
     {
       url: `${baseUrl}/privacy`,
       lastModified: now,
@@ -99,4 +106,23 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.3,
     },
   ];
+
+  let jobPages: MetadataRoute.Sitemap = [];
+
+  try {
+  const { jobs } = await firefishListJobs();
+
+  jobPages = jobs
+    .filter((job) => job.id && job.title)
+    .map((job) => ({
+      url: `${baseUrl}/live-jobs/${slugify(job.title)}-${job.id}`,
+      lastModified: job.postedAt ? new Date(job.postedAt) : now,
+      changeFrequency: "daily" as const,
+      priority: 0.8,
+    }));
+} catch {
+  // Keep the static sitemap available if Firefish is temporarily unavailable.
+}
+
+  return [...staticPages, ...jobPages];
 }

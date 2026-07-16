@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function HeroSearch() {
   const router = useRouter();
@@ -10,7 +10,7 @@ export default function HeroSearch() {
   const [sector, setSector] = useState("");
   const [location, setLocation] = useState("");
   const [jobType, setJobType] = useState("");
-  const [experience, setExperience] = useState("");
+  const [experienceLevel, setExperienceLevel] = useState("");
 
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [activeIndex, setActiveIndex] = useState<number>(-1);
@@ -21,19 +21,26 @@ export default function HeroSearch() {
   /*
   ===============================
   Load filter dropdown values
-  (using API facets)
+  using API facets
   ===============================
   */
   useEffect(() => {
     const fetchFilters = async () => {
       try {
-        const res = await fetch("/api/jobs");
-        const data = await res.json();
+        const response = await fetch("/api/jobs");
+
+        if (!response.ok) {
+          throw new Error(
+            `Filter request failed (${response.status})`
+          );
+        }
+
+        const data = await response.json();
 
         setSectors(data.facets?.sectors || []);
         setLocations(data.facets?.locations || []);
-      } catch (err) {
-        console.error("Failed loading filters", err);
+      } catch (error) {
+        console.error("Failed loading filters", error);
       }
     };
 
@@ -46,7 +53,7 @@ export default function HeroSearch() {
   ===============================
   */
   useEffect(() => {
-    if (keyword.length < 2) {
+    if (keyword.trim().length < 2) {
       setSuggestions([]);
       setActiveIndex(-1);
       return;
@@ -54,12 +61,25 @@ export default function HeroSearch() {
 
     const fetchSuggestions = async () => {
       try {
-        const res = await fetch(`/api/jobs/suggest?keyword=${keyword}`);
-        const data = await res.json();
-        setSuggestions(data || []);
+        const response = await fetch(
+          `/api/jobs/suggest?keyword=${encodeURIComponent(
+            keyword.trim()
+          )}`
+        );
+
+        if (!response.ok) {
+          throw new Error(
+            `Suggestion request failed (${response.status})`
+          );
+        }
+
+        const data = await response.json();
+
+        setSuggestions(Array.isArray(data) ? data : []);
         setActiveIndex(-1);
       } catch {
         setSuggestions([]);
+        setActiveIndex(-1);
       }
     };
 
@@ -71,52 +91,134 @@ export default function HeroSearch() {
   Run search
   ===============================
   */
-  const handleSearch = () => {
+  const handleSearch = (
+    keywordOverride?: string
+  ) => {
     const params = new URLSearchParams();
 
-    if (keyword) params.append("keyword", keyword);
-    if (sector) params.append("sector", sector);
-    if (location) params.append("location", location);
-    if (jobType) params.append("jobType", jobType);
-    if (experience) params.append("experience", experience);
+    const finalKeyword =
+      keywordOverride !== undefined
+        ? keywordOverride.trim()
+        : keyword.trim();
 
-    router.push(`/live-jobs?${params.toString()}`);
+    if (finalKeyword) {
+      params.set("keyword", finalKeyword);
+    }
+
+    if (sector) {
+      params.set("sector", sector);
+    }
+
+    if (location) {
+      params.set("location", location);
+    }
+
+    if (jobType) {
+      params.set("jobType", jobType);
+    }
+
+    if (experienceLevel) {
+      params.set("experienceLevel", experienceLevel);
+    }
+
+    const queryString = params.toString();
+
+    router.push(
+      queryString
+        ? `/live-jobs?${queryString}`
+        : "/live-jobs"
+    );
   };
 
   /*
   ===============================
-  Keyboard navigation
+  Keyword keyboard navigation
   ===============================
   */
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (suggestions.length === 0) return;
+  const handleKeywordKeyDown = (
+    event: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (
+      event.key === "ArrowDown" &&
+      suggestions.length > 0
+    ) {
+      event.preventDefault();
 
-    if (e.key === "ArrowDown") {
-      e.preventDefault();
-      setActiveIndex((prev) =>
-        prev < suggestions.length - 1 ? prev + 1 : 0
+      setActiveIndex((previousIndex) =>
+        previousIndex < suggestions.length - 1
+          ? previousIndex + 1
+          : 0
       );
+
+      return;
     }
 
-    if (e.key === "ArrowUp") {
-      e.preventDefault();
-      setActiveIndex((prev) =>
-        prev > 0 ? prev - 1 : suggestions.length - 1
+    if (
+      event.key === "ArrowUp" &&
+      suggestions.length > 0
+    ) {
+      event.preventDefault();
+
+      setActiveIndex((previousIndex) =>
+        previousIndex > 0
+          ? previousIndex - 1
+          : suggestions.length - 1
       );
+
+      return;
     }
 
-    if (e.key === "Enter" && activeIndex >= 0) {
-      e.preventDefault();
-      setKeyword(suggestions[activeIndex]);
+    if (event.key === "Escape") {
       setSuggestions([]);
+      setActiveIndex(-1);
+      return;
     }
+
+    if (event.key === "Enter") {
+      event.preventDefault();
+
+      if (
+        activeIndex >= 0 &&
+        activeIndex < suggestions.length
+      ) {
+        const selectedSuggestion =
+          suggestions[activeIndex];
+
+        setKeyword(selectedSuggestion);
+        setSuggestions([]);
+        setActiveIndex(-1);
+
+        handleSearch(selectedSuggestion);
+        return;
+      }
+
+      setSuggestions([]);
+      setActiveIndex(-1);
+      handleSearch();
+    }
+  };
+
+  /*
+  ===============================
+  Search from dropdowns with Enter
+  ===============================
+  */
+  const handleSelectKeyDown = (
+    event: React.KeyboardEvent<HTMLSelectElement>
+  ) => {
+    if (event.key !== "Enter") {
+      return;
+    }
+
+    event.preventDefault();
+    handleSearch();
   };
 
   return (
     <form
       className="search-fields"
-      onSubmit={(e) => {
-        e.preventDefault();
+      onSubmit={(event) => {
+        event.preventDefault();
         handleSearch();
       }}
     >
@@ -126,19 +228,27 @@ export default function HeroSearch() {
           type="text"
           placeholder="Keyword or Job Title"
           value={keyword}
-          onChange={(e) => setKeyword(e.target.value)}
-          onKeyDown={handleKeyDown}
+          onChange={(event) =>
+            setKeyword(event.target.value)
+          }
+          onKeyDown={handleKeywordKeyDown}
+          autoComplete="off"
         />
 
         {suggestions.length > 0 && (
           <ul className="suggestions-dropdown">
             {suggestions.map((item, index) => (
               <li
-                key={index}
-                className={index === activeIndex ? "active" : ""}
-                onClick={() => {
+                key={`${item}-${index}`}
+                className={
+                  index === activeIndex ? "active" : ""
+                }
+                onMouseDown={(event) => {
+                  event.preventDefault();
+
                   setKeyword(item);
                   setSuggestions([]);
+                  setActiveIndex(-1);
                 }}
               >
                 {item}
@@ -149,38 +259,77 @@ export default function HeroSearch() {
       </div>
 
       {/* Sector */}
-      <select value={sector} onChange={(e) => setSector(e.target.value)}>
+      <select
+        value={sector}
+        onChange={(event) =>
+          setSector(event.target.value)
+        }
+        onKeyDown={handleSelectKeyDown}
+      >
         <option value="">Sector</option>
-        {sectors.map((s) => (
-          <option key={s}>{s}</option>
+
+        {sectors.map((sectorOption) => (
+          <option
+            key={sectorOption}
+            value={sectorOption}
+          >
+            {sectorOption}
+          </option>
         ))}
       </select>
 
       {/* Location */}
-      <select value={location} onChange={(e) => setLocation(e.target.value)}>
+      <select
+        value={location}
+        onChange={(event) =>
+          setLocation(event.target.value)
+        }
+        onKeyDown={handleSelectKeyDown}
+      >
         <option value="">Location</option>
-        {locations.map((l) => (
-          <option key={l}>{l}</option>
+
+        {locations.map((locationOption) => (
+          <option
+            key={locationOption}
+            value={locationOption}
+          >
+            {locationOption}
+          </option>
         ))}
       </select>
 
-      {/* Job Type (still manual until JobAdder provides data) */}
-      <select value={jobType} onChange={(e) => setJobType(e.target.value)}>
+      {/* Job Type */}
+      <select
+        value={jobType}
+        onChange={(event) =>
+          setJobType(event.target.value)
+        }
+        onKeyDown={handleSelectKeyDown}
+      >
         <option value="">Job Type</option>
-        <option>Permanent</option>
-        <option>Contract</option>
+        <option value="Permanent">Permanent</option>
+        <option value="Contract">Contract</option>
       </select>
 
-      {/* Experience (still manual) */}
-      <select value={experience} onChange={(e) => setExperience(e.target.value)}>
+      {/* Experience Level */}
+      <select
+        value={experienceLevel}
+        onChange={(event) =>
+          setExperienceLevel(event.target.value)
+        }
+        onKeyDown={handleSelectKeyDown}
+      >
         <option value="">Experience Level</option>
-        <option>Mid Level</option>
-        <option>Senior</option>
-        <option>Executive</option>
+        <option value="Mid">Mid Level</option>
+        <option value="Senior">Senior</option>
+        <option value="Executive">Executive</option>
       </select>
 
       {/* Submit */}
-      <button type="submit" className="search-cta">
+      <button
+        type="submit"
+        className="search-cta"
+      >
         Find Your Next Job
       </button>
     </form>

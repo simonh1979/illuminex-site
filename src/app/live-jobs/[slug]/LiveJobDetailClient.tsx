@@ -8,6 +8,11 @@ const FIREFISH_JOB_BOARD_BASE_URL = (
   "https://illuminex.current.jobs"
 ).replace(/\/+$/, "");
 
+type JobPackageItem = {
+  label: string;
+  value: string;
+};
+
 type Job = {
   id: string;
   title: string;
@@ -18,29 +23,35 @@ type Job = {
   experienceLevel: "Mid" | "Senior" | "Executive";
   salary?: string;
   postedAt: string;
+  closingDate?: string;
   summary: string;
   description?: string;
+  packageItems?: JobPackageItem[];
 };
 
 function getJobIdFromSlug(slug: string): string | null {
   if (!slug) return null;
 
   const firefishEndMatch = slug.match(/(FF-\d+)$/i);
+
   if (firefishEndMatch) {
     return firefishEndMatch[1].toUpperCase();
   }
 
   const firefishAnyMatch = slug.match(/(FF-\d+)/i);
+
   if (firefishAnyMatch) {
     return firefishAnyMatch[1].toUpperCase();
   }
 
   const illuminexEndMatch = slug.match(/(ILX-\d+)$/i);
+
   if (illuminexEndMatch) {
     return illuminexEndMatch[1].toUpperCase();
   }
 
   const illuminexAnyMatch = slug.match(/(ILX-\d+)/i);
+
   if (illuminexAnyMatch) {
     return illuminexAnyMatch[1].toUpperCase();
   }
@@ -125,15 +136,17 @@ function safelyDecodeFrom(value: string | null): string {
 }
 
 function formatDate(iso: string): string {
-  try {
-    return new Date(iso).toLocaleDateString("en-GB", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-    });
-  } catch {
+  const date = new Date(iso);
+
+  if (Number.isNaN(date.getTime())) {
     return "";
   }
+
+  return date.toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
 }
 
 export default function LiveJobDetailClient() {
@@ -348,6 +361,14 @@ export default function LiveJobDetailClient() {
 
   const applyHref = firefishDirectApplyUrl ?? illuminexApplyHref;
 
+  const salaryDisplay =
+    job.salary?.trim() ||
+    "Competitive salary and package, dependent on experience";
+
+  const closingDateDisplay = job.closingDate
+    ? formatDate(job.closingDate)
+    : "";
+
   return (
     <main className="page">
       <section className="page-hero">
@@ -384,6 +405,161 @@ export default function LiveJobDetailClient() {
                 </div>
               </div>
 
+              <div
+                style={{
+                  marginTop: 22,
+                  marginBottom: 26,
+                  padding: "22px 24px",
+                  borderRadius: 12,
+                  background: "rgba(255,255,255,0.06)",
+                  border: "1px solid rgba(255,255,255,0.12)",
+                }}
+              >
+                <h3 style={{ marginBottom: 18 }}>
+                  Vacancy at a glance
+                </h3>
+
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns:
+                      "repeat(auto-fit, minmax(180px, 1fr))",
+                    gap: 18,
+                  }}
+                >
+                  <div>
+                    <div
+                      className="jobs-muted"
+                      style={{
+                        marginBottom: 4,
+                        fontSize: "0.88rem",
+                      }}
+                    >
+                      Salary and package
+                    </div>
+
+                    <strong>{salaryDisplay}</strong>
+                  </div>
+
+                  <div>
+                    <div
+                      className="jobs-muted"
+                      style={{
+                        marginBottom: 4,
+                        fontSize: "0.88rem",
+                      }}
+                    >
+                      Location
+                    </div>
+
+                    <strong>{job.location}</strong>
+                  </div>
+
+                  <div>
+                    <div
+                      className="jobs-muted"
+                      style={{
+                        marginBottom: 4,
+                        fontSize: "0.88rem",
+                      }}
+                    >
+                      Sector
+                    </div>
+
+                    <strong>{job.sector}</strong>
+                  </div>
+
+                  <div>
+                    <div
+                      className="jobs-muted"
+                      style={{
+                        marginBottom: 4,
+                        fontSize: "0.88rem",
+                      }}
+                    >
+                      Employment type
+                    </div>
+
+                    <strong>{job.jobType}</strong>
+                  </div>
+
+                  <div>
+                    <div
+                      className="jobs-muted"
+                      style={{
+                        marginBottom: 4,
+                        fontSize: "0.88rem",
+                      }}
+                    >
+                      Experience level
+                    </div>
+
+                    <strong>{job.experienceLevel}</strong>
+                  </div>
+
+                  {closingDateDisplay && (
+                    <div>
+                      <div
+                        className="jobs-muted"
+                        style={{
+                          marginBottom: 4,
+                          fontSize: "0.88rem",
+                        }}
+                      >
+                        Closing date
+                      </div>
+
+                      <strong>{closingDateDisplay}</strong>
+                    </div>
+                  )}
+                </div>
+                  {job.packageItems && job.packageItems.length > 0 && (
+                  <>
+                    <hr
+                      style={{
+                        margin: "22px 0",
+                        border: 0,
+                        borderTop: "1px solid rgba(255,255,255,0.15)",
+                      }}
+                    />
+
+                    <h4 style={{ marginBottom: 14 }}>Package &amp; benefits</h4>
+
+                    <div
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns:
+                          "repeat(auto-fit, minmax(220px, 1fr))",
+                        gap: 12,
+                      }}
+                    >
+                      {job.packageItems.map((item) => (
+                        <div
+                          key={`${item.label}-${item.value}`}
+                          style={{
+                            padding: "12px 14px",
+                            borderRadius: 12,
+                            background: "rgba(255,255,255,0.05)",
+                            border: "1px solid rgba(255,255,255,0.08)",
+                          }}
+                        >
+                          <div
+                            className="jobs-muted"
+                            style={{
+                              marginBottom: 4,
+                              fontSize: "0.8rem",
+                            }}
+                          >
+                            {item.label}
+                          </div>
+
+                          <strong>{item.value}</strong>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                )}
+                </div>
               <div
                 className="job-description-content"
                 style={{
@@ -469,15 +645,6 @@ export default function LiveJobDetailClient() {
                 )}
               </p>
 
-              <div
-                className="job-salary"
-                style={{
-                  marginBottom: 12,
-                }}
-              >
-                {job.salary ?? "Salary: DOE"}
-              </div>
-
               <a
                 className="sector-cta"
                 href={applyHref}
@@ -539,24 +706,6 @@ export default function LiveJobDetailClient() {
                   Recruitment Consultant.
                 </p>
               )}
-
-              <div
-                style={{
-                  marginTop: 16,
-                  opacity: 0.9,
-                }}
-              >
-                <div
-                  className="job-meta"
-                  style={{
-                    gap: 8,
-                  }}
-                >
-                  <span>Location: {job.location}</span>
-                  <span className="job-dot">•</span>
-                  <span>Sector: {job.sector}</span>
-                </div>
-              </div>
             </aside>
           </div>
         </div>

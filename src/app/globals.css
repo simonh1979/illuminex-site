@@ -1416,7 +1416,10 @@ main.page .page-hero::after {
   grid-column: auto !important;
 }
 
-.job-detail-main { padding: 26px 24px 22px; }
+.job-detail-main {
+  padding: 26px 24px 22px;
+}
+
 .job-detail-main p {
   margin: 0 0 16px;
   line-height: 1.85;
@@ -1430,21 +1433,22 @@ main.page .page-hero::after {
 .job-detail-main li {
   margin-bottom: 10px;
   line-height: 1.75;
+}
 
-  .job-description-content h2 {
+.job-description-content h2 {
   display: block;
-  margin: 0 0 24px 0 !important;
+  margin: 0 0 24px !important;
   line-height: 1.3;
 }
 
 .job-description-content h3 {
   display: block;
-  margin: 34px 0 18px 0 !important;
+  margin: 34px 0 18px !important;
   line-height: 1.3;
 }
 
 .job-description-content p {
-  margin: 0 0 22px 0 !important;
+  margin: 0 0 22px !important;
   line-height: 1.85;
 }
 
@@ -1453,11 +1457,11 @@ main.page .page-hero::after {
   margin-bottom: 26px;
 }
 
-}
 .job-detail-aside {
   padding: 22px 22px 18px;
   position: sticky;
-  top: 150px;
+  top: 140px;
+  align-self: start;
   height: fit-content;
 }
 
@@ -1483,8 +1487,8 @@ main.page .page-hero::after {
   gap: 10px;
   padding: 10px 12px;
   border-radius: 14px;
-  background: rgba(255,255,255,0.07);
-  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .job-detail-fact span {
@@ -1495,14 +1499,22 @@ main.page .page-hero::after {
   font-size: 0.72rem;
 }
 
-.job-detail-fact strong { font-weight: 900; letter-spacing: 0.01em; }
+.job-detail-fact strong {
+  font-weight: 900;
+  letter-spacing: 0.01em;
+}
 
 @media (max-width: 1100px) {
   .job-detail-grid {
     padding: 0 24px 40px;
     grid-template-columns: 1fr;
   }
-  .job-detail-aside { position: static; top: auto; }
+
+  .job-detail-aside {
+    position: static;
+    top: auto;
+    align-self: auto;
+  }
 }
 
 /* ==========================
@@ -2623,12 +2635,16 @@ h3 { letter-spacing: 0.035em !important; }
   }
 
   /* Title clamp (max 2 lines) */
-  .job-title {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    overflow: hidden;
-  }
+.job-title {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+
+  font-size: 2rem;
+  font-weight: 750;
+  line-height: 1.15;
+}
 
   /* Job summary — show full Firefish summary text */
 .job-summary {
@@ -4225,4 +4241,134 @@ img.protect-image {
   margin-bottom: 20px !important;
 }
 
+/* ==================================================
+   JOB DETAIL — STICKY APPLICATION PANEL FIX
+================================================== */
 
+/*
+  overflow-x: hidden on html/body prevents sticky positioning.
+  clip hides horizontal overflow without creating a scroll container.
+*/
+html:has(.job-detail-grid),
+body:has(.job-detail-grid) {
+  overflow-x: clip !important;
+}
+
+@media (min-width: 1101px) {
+  main.page .page-hero:has(.job-detail-grid),
+  main.page .page-hero:has(.job-detail-grid) .page-hero-inner,
+  main.page .page-hero:has(.job-detail-grid) .job-detail-grid {
+    overflow: visible !important;
+  }
+
+  main.page
+    .page-hero:has(.job-detail-grid)
+    .job-detail-aside {
+    position: sticky !important;
+    top: 140px !important;
+    align-self: start !important;
+    height: fit-content !important;
+    max-height: none !important;
+    overflow: hidden !important;
+  }
+}
+
+@media (max-width: 1100px) {
+  main.page
+    .page-hero:has(.job-detail-grid)
+    .job-detail-aside {
+    position: static !important;
+    top: auto !important;
+    align-self: auto !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: hidden !important;
+  }
+}
+
+/* ==========================================================
+   LIVE JOBS — PREMIUM VISUAL HIERARCHY
+========================================================== */
+
+/* ----------------------------------------------------------
+   Metadata under job titles
+   UK Wide • Construction • Permanent • Senior
+---------------------------------------------------------- */
+
+.job-meta,
+.job-meta span,
+.job-meta .job-dot {
+  color: var(--kingfisher-orange) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em;
+}
+
+.job-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.job-meta .job-dot {
+  opacity: 0.9;
+}
+
+/* ----------------------------------------------------------
+   Vacancy at a glance labels
+   Package & Benefits labels
+---------------------------------------------------------- */
+
+.job-detail-main .jobs-muted {
+  color: var(--kingfisher-orange) !important;
+  opacity: 1 !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em;
+}
+
+/* ----------------------------------------------------------
+   Live Jobs card pills
+---------------------------------------------------------- */
+
+.job-card .sector-tag {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 8px 14px;
+
+  color: var(--kingfisher-orange) !important;
+  font-weight: 700 !important;
+
+  background: rgba(255,255,255,0.04);
+
+  border: 2px solid #ffffff !important;
+
+  border-radius: 999px;
+
+  transition: all 0.2s ease;
+}
+
+.job-card:hover .sector-tag {
+  background: rgba(255,255,255,0.08);
+  border-color: #ffffff !important;
+}
+
+/* ----------------------------------------------------------
+   Package cards on Job Detail page
+---------------------------------------------------------- */
+
+.job-detail-main
+  [style*="background: rgba(255,255,255,0.05)"]
+  .jobs-muted {
+  color: var(--kingfisher-orange) !important;
+  font-weight: 700 !important;
+}
+
+/* ----------------------------------------------------------
+   Orange bullets inside descriptions
+---------------------------------------------------------- */
+
+.job-description-content li::marker {
+  color: var(--kingfisher-orange);
+}

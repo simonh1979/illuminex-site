@@ -3,6 +3,7 @@ const FIREFISH_SCOPES = [
   "candidatesAPI-write",
   "contactsAPI-read",
   "advertsAPI-read",
+  "jobsAPI-read",
   "jobsAPI-write",
 ].join(" ");
 

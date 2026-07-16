@@ -77,7 +77,10 @@ function shortenSummary(summary: string, maximumLength = 260): string {
   const shortened = cleanSummary.slice(0, maximumLength);
   const finalSpace = shortened.lastIndexOf(" ");
 
-  return `${shortened.slice(0, finalSpace > 0 ? finalSpace : maximumLength)}…`;
+  return `${shortened.slice(
+    0,
+    finalSpace > 0 ? finalSpace : maximumLength
+  )}…`;
 }
 
 function LiveJobsClientInner() {
@@ -363,14 +366,70 @@ function LiveJobsClientInner() {
         </div>
       </div>
 
-      <div className="jobs-results">
-        <div className="jobs-results-head">
-          <div className="jobs-count">
-            {loading
-              ? "Loading…"
-              : `${data?.total ?? 0} role(s) found`}
-          </div>
+      < div
+          className="sector-card jobs-register-banner"
+          style={{
+          gridColumn: "span 12",
+          marginTop: 18,
+          marginBottom: 24,
+          padding: "18px 26px",
+          display: "grid",
+          gridTemplateColumns: "minmax(0, 1fr) auto",
+          alignItems: "center",
+          columnGap: 32,
+          borderRadius: 24,
+        }}
+      >
+        <div
+          style={{
+            minWidth: 0,
+          }}
+        >
+          <h3
+            style={{
+              margin: 0,
+              marginBottom: 8,
+              fontSize: "1.55rem",
+              lineHeight: 1.25,
+            }}
+          >
+            Not Seeing The Right Role?
+          </h3>
+
+          <p
+            className="jobs-muted"
+            style={{
+              margin: 0,
+              lineHeight: 1.5,
+              fontSize: "0.98rem",
+              whiteSpace: "nowrap",
+            }}
+          >
+            Register your CV with Illuminex and we’ll contact you when suitable
+            opportunities become available. Your details will always be handled
+            confidentially.
+          </p>
         </div>
+
+        <a
+          className="sector-cta"
+          href="/candidates"
+          style={{
+            whiteSpace: "nowrap",
+          }}
+        >
+          Register Your CV
+        </a>
+      </div> 
+
+            <div className="jobs-results">
+              <div className="jobs-results-head">
+                <div className="jobs-count">
+                  {loading
+                    ? "Loading…"
+                    : `${data?.total ?? 0} role(s) found`}
+                </div>
+              </div>
 
         {error ? (
           <div className="jobs-error sector-card">

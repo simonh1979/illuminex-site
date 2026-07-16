@@ -30,7 +30,9 @@ type Job = {
 };
 
 function getJobIdFromSlug(slug: string): string | null {
-  if (!slug) return null;
+  if (!slug) {
+    return null;
+  }
 
   const firefishEndMatch = slug.match(/(FF-\d+)$/i);
 
@@ -78,7 +80,7 @@ function getFirefishAdvertRef(jobId: string): number | null {
 /**
  * Builds the exact Firefish native application URL for an FF vacancy.
  *
- * Example slug:
+ * Example:
  *
  * national-account-manager-building-materials-FF-3
  *
@@ -86,9 +88,6 @@ function getFirefishAdvertRef(jobId: string): number | null {
  *
  * {FIREFISH_JOB_BOARD_BASE_URL}/job/
  * national-account-manager-building-materials-3/apply.aspx
- *
- * The base domain is controlled by:
- * NEXT_PUBLIC_FIREFISH_JOB_BOARD_BASE_URL
  */
 function getFirefishDirectApplyUrl(
   slug: string,
@@ -105,7 +104,7 @@ function getFirefishDirectApplyUrl(
   try {
     decodedSlug = decodeURIComponent(slug);
   } catch {
-    // Continue with the original slug when it is already decoded.
+    // Continue with the original slug when already decoded.
   }
 
   const firefishSlug = decodedSlug
@@ -222,7 +221,9 @@ export default function LiveJobDetailClient() {
   }, [jobId]);
 
   useEffect(() => {
-    if (!job) return;
+    if (!job) {
+      return;
+    }
 
     const currentJob = job;
 
@@ -251,7 +252,9 @@ export default function LiveJobDetailClient() {
   }, [job, slug]);
 
   async function trackApplyClick() {
-    if (!job) return;
+    if (!job) {
+      return;
+    }
 
     try {
       await fetch("/api/admin/track/job-apply-click", {
@@ -513,7 +516,8 @@ export default function LiveJobDetailClient() {
                     </div>
                   )}
                 </div>
-                  {job.packageItems && job.packageItems.length > 0 && (
+
+                {job.packageItems && job.packageItems.length > 0 && (
                   <>
                     <hr
                       style={{
@@ -523,7 +527,9 @@ export default function LiveJobDetailClient() {
                       }}
                     />
 
-                    <h4 style={{ marginBottom: 14 }}>Package &amp; benefits</h4>
+                    <h4 style={{ marginBottom: 14 }}>
+                      Package &amp; benefits
+                    </h4>
 
                     <div
                       style={{
@@ -559,7 +565,8 @@ export default function LiveJobDetailClient() {
                     </div>
                   </>
                 )}
-                </div>
+              </div>
+
               <div
                 className="job-description-content"
                 style={{
@@ -604,109 +611,69 @@ export default function LiveJobDetailClient() {
             </div>
 
             <aside className="sector-card job-detail-aside">
-              <h3 style={{ marginBottom: 10 }}>
-                Start your application
-              </h3>
+            <h3 style={{ marginBottom: 10 }}>
+              Start your application
+            </h3>
 
-              <p
-                className="jobs-muted"
+            <p
+              className="jobs-muted"
+              style={{
+                marginBottom: 16,
+                lineHeight: 1.55,
+              }}
+            >
+              <strong>
+                Apply securely through the official Illuminex Candidate Portal.
+              </strong>
+
+              <br />
+              <br />
+
+              Your application, CV and supporting information are submitted directly into
+              our recruitment system, where every application is personally reviewed by
+              an Illuminex Recruitment Consultant.
+
+              <br />
+              <br />
+
+              Existing candidates can simply sign in to continue their application. New
+              applicants can create an account in less than a minute.
+            </p>
+
+            <a
+              className="sector-cta"
+              href={applyHref}
+              onClick={trackApplyClick}
+            >
+              Apply Securely
+            </a>
+
+            <p
+              className="jobs-muted"
+              style={{
+                marginTop: 18,
+                marginBottom: 0,
+                paddingTop: 14,
+                borderTop: "1px solid rgba(255,255,255,0.12)",
+                fontSize: "0.84rem",
+                lineHeight: 1.45,
+              }}
+            >
+              🔒 Your CV and personal information are handled confidentially in accordance
+              with our{" "}
+              <a
+                href="/privacy"
                 style={{
-                  marginBottom: 14,
-                  lineHeight: 1.7,
+                  color: "inherit",
+                  textDecoration: "underline",
+                  textUnderlineOffset: 3,
                 }}
               >
-                {isUsingFirefishPortal ? (
-                  <>
-                    <strong>
-                      Apply securely through the official Illuminex Candidate
-                      Portal.
-                    </strong>
-
-                    <br />
-                    <br />
-
-                    Your application, CV and supporting information will be
-                    submitted directly into our recruitment system, where every
-                    application is personally reviewed by an Illuminex
-                    Recruitment Consultant.
-
-                    <br />
-                    <br />
-
-                    Existing candidates can simply sign in to continue their
-                    application. New applicants can create an account in less
-                    than a minute.
-                  </>
-                ) : (
-                  <>
-                    Register your interest and we’ll respond quickly and
-                    discreetly.
-                  </>
-                )}
-              </p>
-
-              <a
-                className="sector-cta"
-                href={applyHref}
-                onClick={trackApplyClick}
-              >
-                Apply Securely
+                Privacy Policy
               </a>
-
-              {isUsingFirefishPortal ? (
-                <div
-                  style={{
-                    marginTop: 18,
-                    padding: "14px 16px",
-                    borderRadius: 10,
-                    background: "rgba(255,255,255,0.06)",
-                    border: "1px solid rgba(255,255,255,0.10)",
-                  }}
-                >
-                  <p
-                    className="jobs-muted"
-                    style={{
-                      margin: 0,
-                      fontSize: "0.92rem",
-                      lineHeight: 1.6,
-                    }}
-                  >
-                    <strong>🔒 Your information matters</strong>
-
-                    <br />
-                    <br />
-
-                    Applications submitted through the official Illuminex
-                    Candidate Portal are transferred directly into our
-                    recruitment system. Your CV and personal information are
-                    handled confidentially and in accordance with our{" "}
-                    <a
-                      href="/privacy"
-                      style={{
-                        color: "inherit",
-                        textDecoration: "underline",
-                        textUnderlineOffset: 3,
-                      }}
-                    >
-                      Privacy Policy
-                    </a>
-                    .
-                  </p>
-                </div>
-              ) : (
-                <p
-                  className="jobs-muted"
-                  style={{
-                    marginTop: 14,
-                    lineHeight: 1.6,
-                  }}
-                >
-                  The next step includes CV upload, acceptance of our Terms
-                  &amp; Conditions and submission directly to an Illuminex
-                  Recruitment Consultant.
-                </p>
-              )}
-            </aside>
+              .
+            </p>
+          </aside>
           </div>
         </div>
       </section>

@@ -233,32 +233,92 @@ export default function CandidateRegisterFormClient() {
 
         <div className="apply-foot">
           <label className="apply-check">
-            <input type="checkbox" checked={form.terms} onChange={(e) => setField("terms", e.target.checked)} />
+            <input
+              type="checkbox"
+              checked={form.terms}
+              onChange={(e) => setField("terms", e.target.checked)}
+            />
             <span>
-              I accept the Terms &amp; Conditions <span className="apply-req">*</span>
+              I accept the{" "}
+              <a
+                href="/terms"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                style={{
+                  color: "inherit",
+                  textDecoration: "underline",
+                  textUnderlineOffset: 3,
+                }}
+              >
+                Terms &amp; Conditions
+              </a>{" "}
+              <span className="apply-req">*</span>
             </span>
           </label>
 
           <label className="apply-check">
-            <input type="checkbox" checked={form.privacy} onChange={(e) => setField("privacy", e.target.checked)} />
+            <input
+              type="checkbox"
+              checked={form.privacy}
+              onChange={(e) => setField("privacy", e.target.checked)}
+            />
             <span>
-              I have read the Privacy Policy <span className="apply-req">*</span>
+              I have read the{" "}
+              <a
+                href="/privacy"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                style={{
+                  color: "inherit",
+                  textDecoration: "underline",
+                  textUnderlineOffset: 3,
+                }}
+              >
+                Privacy Policy
+              </a>{" "}
+              <span className="apply-req">*</span>
             </span>
           </label>
 
           <label className="apply-check">
-            <input type="checkbox" checked={form.cookies} onChange={(e) => setField("cookies", e.target.checked)} />
+            <input
+              type="checkbox"
+              checked={form.cookies}
+              onChange={(e) => setField("cookies", e.target.checked)}
+            />
             <span>
-              I accept the Cookies Policy <span className="apply-req">*</span>
+              I accept the{" "}
+              <a
+                href="/cookies"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                style={{
+                  color: "inherit",
+                  textDecoration: "underline",
+                  textUnderlineOffset: 3,
+                }}
+              >
+                Cookies Policy
+              </a>{" "}
+              <span className="apply-req">*</span>
             </span>
           </label>
 
           <RecaptchaDisclosure />
 
           <div className="apply-actions" style={{ marginTop: 12 }}>
-            {submitError ? <div className="apply-error">{submitError}</div> : null}
+            {submitError ? (
+              <div className="apply-error">{submitError}</div>
+            ) : null}
 
-            <button className="apply-submit" type="submit" disabled={submitting}>
+            <button
+              className="apply-submit"
+              type="submit"
+              disabled={submitting}
+            >
               {submitting ? "Submitting…" : "Register & upload CV"}
             </button>
           </div>

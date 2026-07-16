@@ -1,3 +1,20 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Terms & Conditions | Illuminex Consultancy",
+  description:
+    "Read the Illuminex Consultancy Terms & Conditions governing the use of our website, services and content.",
+  alternates: {
+    canonical: "/terms",
+  },
+  openGraph: {
+    title: "Terms & Conditions | Illuminex Consultancy",
+    description:
+      "Read the Illuminex Consultancy Terms & Conditions governing the use of our website, services and content.",
+    url: "/terms",
+    type: "website",
+  },
+};
 export default function TermsPage() {
   return (
     <main className="page page-terms">
@@ -12,7 +29,7 @@ export default function TermsPage() {
               lineHeight: 1.12,
             }}
           >
-            Terms of Use
+            Terms & Conditions
           </h1>
 
           <p
@@ -24,7 +41,7 @@ export default function TermsPage() {
               opacity: 0.92,
             }}
           >
-            These Terms of Use govern access to and use of this website.
+            These Terms & Conditions govern access to and use of this website.
             By accessing or using this site, you agree to comply with these terms.
             If you do not agree with these terms, you should not use the website.
           </p>
@@ -127,7 +144,7 @@ export default function TermsPage() {
           <div style={{ marginTop: 18 }} className="sector-card">
             <h3>9. Governing Law</h3>
             <p style={{ marginBottom: 0 }}>
-              These Terms of Use are governed by and construed in accordance with
+              These Terms & Conditions are governed by and construed in accordance with
               the laws of England and Wales. Any disputes arising in connection
               with the website shall be subject to the exclusive jurisdiction of
               the courts of England and Wales.
@@ -137,7 +154,7 @@ export default function TermsPage() {
           <div style={{ marginTop: 18 }} className="sector-card">
             <h3>10. Changes to These Terms</h3>
             <p style={{ marginBottom: 0 }}>
-              We may update these Terms of Use from time to time. Continued use of
+              We may update these Terms & Conditions from time to time. Continued use of
               the website after changes are published constitutes acceptance of
               the revised terms.
             </p>

@@ -4372,3 +4372,34 @@ body:has(.job-detail-grid) {
 .job-description-content li::marker {
   color: var(--kingfisher-orange);
 }
+/* ==========================================================
+   LIVE JOBS - Register CV Banner Responsive
+========================================================== */
+
+@media (max-width: 900px) {
+
+  .jobs-register-banner{
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:flex-start !important;
+    gap:18px;
+    border-radius:24px !important;
+  }
+
+  .jobs-register-banner h3{
+    margin-bottom:10px !important;
+  }
+
+  .jobs-register-banner p{
+    white-space:normal !important;
+    width:100%;
+    line-height:1.6;
+  }
+
+  .jobs-register-banner .sector-cta{
+    width:100%;
+    text-align:center;
+    justify-content:center;
+  }
+
+}

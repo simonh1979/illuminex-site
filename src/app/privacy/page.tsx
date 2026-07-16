@@ -1,3 +1,20 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Privacy Policy | Illuminex Consultancy",
+  description:
+    "Read the Illuminex Consultancy Privacy Policy explaining how we collect, use and protect your personal information.",
+  alternates: {
+    canonical: "/privacy",
+  },
+  openGraph: {
+    title: "Privacy Policy | Illuminex Consultancy",
+    description:
+      "Read the Illuminex Consultancy Privacy Policy explaining how we collect, use and protect your personal information.",
+    url: "/privacy",
+    type: "website",
+  },
+};
 export default function PrivacyPage() {
   return (
     <main className="page page-privacy">

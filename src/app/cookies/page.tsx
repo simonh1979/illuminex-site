@@ -1,4 +1,21 @@
+import type { Metadata } from "next";
 import CookiePreferencesLink from "@/components/CookiePreferencesLink";
+
+export const metadata: Metadata = {
+  title: "Cookie Policy | Illuminex Consultancy",
+  description:
+    "Read the Illuminex Consultancy Cookie Policy explaining how cookies are used across our website and how you can manage your preferences.",
+  alternates: {
+    canonical: "/cookies",
+  },
+  openGraph: {
+    title: "Cookie Policy | Illuminex Consultancy",
+    description:
+      "Read the Illuminex Consultancy Cookie Policy explaining how cookies are used across our website and how you can manage your preferences.",
+    url: "/cookies",
+    type: "website",
+  },
+};
 
 export default function CookiesPage() {
   return (

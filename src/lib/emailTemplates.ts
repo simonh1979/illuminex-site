@@ -466,7 +466,7 @@ function buildEmailLayout(input: {
 
   const safePreheader = escapeHtml(
     input.preheader ??
-      `${input.heading} — ${EMAIL_BRAND.tradingName}`
+      `${input.heading} — ${EMAIL_BRAND.companyName}`
   );
 
   const eyebrowHtml = input.eyebrow

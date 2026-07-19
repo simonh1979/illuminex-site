@@ -210,6 +210,145 @@ function LiveJobsClientInner() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryString]);
 
+  useEffect(() => {
+  const banner = document.querySelector<HTMLElement>(
+    ".jobs-register-banner"
+  );
+
+  const copy = document.querySelector<HTMLElement>(
+    ".jobs-register-copy"
+  );
+
+  if (!banner || !copy) {
+    return;
+  }
+
+  const textContainer = copy.parentElement;
+
+  if (!textContainer) {
+    return;
+  }
+
+  let animationFrame = 0;
+
+  const updateRegisterBanner = () => {
+    window.cancelAnimationFrame(animationFrame);
+
+    animationFrame = window.requestAnimationFrame(() => {
+      const isMobile = window.innerWidth <= 768;
+
+      banner.style.setProperty("display", "grid", "important");
+
+      banner.style.setProperty(
+        "grid-template-columns",
+        isMobile
+          ? "minmax(0, 1fr)"
+          : "minmax(0, 1fr) auto",
+        "important"
+      );
+
+      banner.style.setProperty(
+        "column-gap",
+        isMobile ? "0" : "32px",
+        "important"
+      );
+
+      banner.style.setProperty(
+        "row-gap",
+        isMobile ? "20px" : "0",
+        "important"
+      );
+
+      banner.style.setProperty(
+        "text-align",
+        isMobile ? "center" : "left",
+        "important"
+      );
+
+      textContainer.style.setProperty(
+        "width",
+        "100%",
+        "important"
+      );
+
+      textContainer.style.setProperty(
+        "max-width",
+        "none",
+        "important"
+      );
+
+      textContainer.style.setProperty(
+        "min-width",
+        "0",
+        "important"
+      );
+
+      copy.style.setProperty(
+        "display",
+        "block",
+        "important"
+      );
+
+      copy.style.setProperty(
+        "width",
+        "100%",
+        "important"
+      );
+
+      copy.style.setProperty(
+        "max-width",
+        "none",
+        "important"
+      );
+
+      copy.style.setProperty(
+        "overflow-wrap",
+        "normal",
+        "important"
+      );
+
+      copy.style.setProperty(
+        "word-break",
+        "normal",
+        "important"
+      );
+
+      copy.style.setProperty(
+        "white-space",
+        isMobile ? "normal" : "nowrap",
+        "important"
+      );
+
+      if (
+        !isMobile &&
+        copy.scrollWidth > copy.clientWidth + 1
+      ) {
+        copy.style.setProperty(
+          "white-space",
+          "normal",
+          "important"
+        );
+      }
+    });
+  };
+
+  updateRegisterBanner();
+
+  window.addEventListener(
+    "resize",
+    updateRegisterBanner
+  );
+
+  return () => {
+    window.cancelAnimationFrame(animationFrame);
+
+    window.removeEventListener(
+      "resize",
+      updateRegisterBanner
+    );
+  };
+}, []);
+
   function clearAll() {
     setKeyword("");
     setSector("");
@@ -366,9 +505,9 @@ function LiveJobsClientInner() {
         </div>
       </div>
 
-      < div
-          className="sector-card jobs-register-banner"
-          style={{
+      <div
+        className="sector-card jobs-register-banner"
+        style={{
           gridColumn: "span 12",
           marginTop: 18,
           marginBottom: 24,
@@ -382,6 +521,8 @@ function LiveJobsClientInner() {
       >
         <div
           style={{
+            width: "100%",
+            maxWidth: "none",
             minWidth: 0,
           }}
         >
@@ -397,12 +538,13 @@ function LiveJobsClientInner() {
           </h3>
 
           <p
-            className="jobs-muted"
+            className="jobs-muted jobs-register-copy"
             style={{
               margin: 0,
+              width: "100%",
+              maxWidth: "none",
               lineHeight: 1.5,
               fontSize: "0.98rem",
-              whiteSpace: "nowrap",
             }}
           >
             Register your CV with Illuminex and we’ll contact you when suitable
@@ -420,16 +562,16 @@ function LiveJobsClientInner() {
         >
           Register Your CV
         </a>
-      </div> 
+      </div>
 
-            <div className="jobs-results">
-              <div className="jobs-results-head">
-                <div className="jobs-count">
-                  {loading
-                    ? "Loading…"
-                    : `${data?.total ?? 0} role(s) found`}
-                </div>
-              </div>
+      <div className="jobs-results">
+        <div className="jobs-results-head">
+          <div className="jobs-count">
+            {loading
+              ? "Loading…"
+              : `${data?.total ?? 0} role(s) found`}
+          </div>
+        </div>
 
         {error ? (
           <div className="jobs-error sector-card">

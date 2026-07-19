@@ -141,7 +141,7 @@ export default function RootLayout({
             <div className="footer-emblem-wrap footer-emblem-wrap--left protect-image no-context-menu">
               <img
                 className="footer-emblem"
-                src="/Illuminex-logo-emblem-transparent-background-high-res.png"
+                src="/illuminex-emblem-footer-lossless.webp"
                 alt="Illuminex emblem"
                 draggable={false}
               />
@@ -327,7 +327,7 @@ export default function RootLayout({
             <div className="footer-emblem-wrap footer-emblem-wrap--right protect-image no-context-menu">
               <img
                 className="footer-emblem footer-emblem--right"
-                src="/Illuminex-logo-emblem-transparent-background-high-res.png"
+                src="/illuminex-emblem-footer-lossless.webp"
                 alt="Illuminex emblem"
                 draggable={false}
               />

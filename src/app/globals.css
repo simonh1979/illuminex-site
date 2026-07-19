@@ -3585,7 +3585,7 @@ box-shadow:
     transform: translateY(-50%) !important;
     width: 80px !important;
     height: 80px !important;
-    background: url("/Illuminex-logo-emblem-transparent-background-high-res.png") center / contain no-repeat !important;
+    background: url("/illuminex-emblem-footer-lossless.webp") center / contain no-repeat !important;
     pointer-events: none !important;
   }
 
@@ -3713,7 +3713,7 @@ box-shadow:
     width: 98px !important;
     height: 98px !important;
 
-    background: url("/Illuminex-logo-emblem-transparent-background-high-res.png") center / contain no-repeat !important;
+    background: url("/illuminex-emblem-footer-lossless.webp") center / contain no-repeat !important;
     pointer-events: none !important;
   }
 }

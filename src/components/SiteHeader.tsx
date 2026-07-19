@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 export default function SiteHeader() {
@@ -48,12 +49,16 @@ export default function SiteHeader() {
           className="logo-wrap protect-image no-context-menu"
           aria-label="Illuminex Consultancy Home"
         >
-          <img
+          <Image
             src="/illuminex-logo-flat-transparent-background.png"
             alt="Illuminex Consultancy"
             className="site-logo"
+            width={132}
+            height={88}
+            sizes="132px"
+            priority
             draggable={false}
-          />
+        />
         </a>
 
         <nav className="main-nav nav-desktop" aria-label="Primary">

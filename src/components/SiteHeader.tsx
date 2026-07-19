@@ -56,6 +56,7 @@ export default function SiteHeader() {
             width={132}
             height={88}
             sizes="132px"
+            quality={100}
             priority
             draggable={false}
         />

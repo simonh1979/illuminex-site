@@ -12,6 +12,7 @@ import MobileFooterNav from "../components/MobileFooterNav";
 import LinkedInInsight from "../components/LinkedInInsight";
 import MetaPixel from "../components/MetaPixel";
 import ContentProtection from "@/components/ContentProtection";
+import GlobalEmailLinks from "@/components/GlobalEmailLinks";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.illuminex.co.uk"),
@@ -208,7 +209,7 @@ export default function RootLayout({
                           />
                         </svg>
                       </span>
-                      +44 (0)1234567890
+                      +44 (0) Available shortly
                     </a>
                   </div>
 
@@ -282,7 +283,7 @@ export default function RootLayout({
                       />
                     </svg>
                   </span>
-                  +44 (0)1234567890
+                  +44 (0) Available shortly
                 </span>
               </div>
 
@@ -323,6 +324,7 @@ export default function RootLayout({
             </div>
           </div>
         </footer>
+        <GlobalEmailLinks />
       </body>
     </html>
   );

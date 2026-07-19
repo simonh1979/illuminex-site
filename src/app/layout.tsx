@@ -6,6 +6,7 @@ import GoogleAnalytics from "../components/GoogleAnalytics";
 import { Inter, IBM_Plex_Sans } from "next/font/google";
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import type React from "react";
 import CookiePreferencesButton from "../components/CookiePreferencesButton";
 import MobileFooterNav from "../components/MobileFooterNav";
@@ -155,10 +156,13 @@ export default function RootLayout({
                     aria-label="Go to homepage"
                   >
 
-                  <img
+                  <Image
                     className="footer-main-logo"
                     src="/illuminex-logo-flat-transparent-background.png"
                     alt="Illuminex Consultancy"
+                    width={190}
+                    height={127}
+                    sizes="190px"
                     draggable={false}
                   />
                 </Link>
@@ -221,12 +225,15 @@ export default function RootLayout({
                     rel="noopener noreferrer"
                     aria-label="Visit Illuminex Consultancy on LinkedIn"
                   >
-                    <img
+                    <Image
                       src="/linkedin-square-white-icon-transparent.png"
                       alt="LinkedIn"
                       className="footer-linkedin-icon"
+                      width={36}
+                      height={36}
+                      sizes="36px"
                       draggable={false}
-                    />
+                  />
                   </a>
                 </div>
                 </section>
@@ -301,10 +308,13 @@ export default function RootLayout({
                   rel="noopener noreferrer"
                   aria-label="Visit Illuminex Consultancy on LinkedIn"
                 >
-                  <img
+                  <Image
                     src="/linkedin-square-white-icon-transparent.png"
                     alt="LinkedIn"
                     className="footer-desktop-linkedin-icon"
+                    width={46}
+                    height={46}
+                    sizes="46px"
                     draggable={false}
                   />
                 </a>

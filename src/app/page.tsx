@@ -25,7 +25,7 @@ export default function Home() {
 
           <div className="hero-right">
             <div className="search-card">
-              <h3>Search Live Opportunities</h3>
+              <h2>Search Live Opportunities</h2>
 
               <HeroSearch />
 

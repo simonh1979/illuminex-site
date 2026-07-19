@@ -224,7 +224,16 @@ export default function HeroSearch() {
     >
       {/* Keyword input */}
       <div className="autocomplete-wrapper">
+        <label
+          className="hero-search-label"
+          htmlFor="hero-search-keyword"
+        >
+          Keyword or job title
+        </label>
+
         <input
+          id="hero-search-keyword"
+          name="keyword"
           type="text"
           placeholder="Keyword or Job Title"
           value={keyword}
@@ -259,7 +268,16 @@ export default function HeroSearch() {
       </div>
 
       {/* Sector */}
+      <label
+        className="hero-search-label"
+        htmlFor="hero-search-sector"
+      >
+        Sector
+      </label>
+
       <select
+        id="hero-search-sector"
+        name="sector"
         value={sector}
         onChange={(event) =>
           setSector(event.target.value)
@@ -279,7 +297,16 @@ export default function HeroSearch() {
       </select>
 
       {/* Location */}
+      <label
+        className="hero-search-label"
+        htmlFor="hero-search-location"
+      >
+        Location
+      </label>
+
       <select
+        id="hero-search-location"
+        name="location"
         value={location}
         onChange={(event) =>
           setLocation(event.target.value)
@@ -293,13 +320,22 @@ export default function HeroSearch() {
             key={locationOption}
             value={locationOption}
           >
-            {locationOption}
-          </option>
-        ))}
-      </select>
+          {locationOption}
+        </option>
+      ))}
+    </select>
 
       {/* Job Type */}
+      <label
+        className="hero-search-label"
+        htmlFor="hero-search-job-type"
+      >
+        Job type
+      </label>
+
       <select
+        id="hero-search-job-type"
+        name="jobType"
         value={jobType}
         onChange={(event) =>
           setJobType(event.target.value)
@@ -312,18 +348,27 @@ export default function HeroSearch() {
       </select>
 
       {/* Experience Level */}
-      <select
-        value={experienceLevel}
-        onChange={(event) =>
-          setExperienceLevel(event.target.value)
-        }
-        onKeyDown={handleSelectKeyDown}
-      >
-        <option value="">Experience Level</option>
-        <option value="Mid">Mid Level</option>
-        <option value="Senior">Senior</option>
-        <option value="Executive">Executive</option>
-      </select>
+        <label
+          className="hero-search-label"
+          htmlFor="hero-search-experience-level"
+        >
+          Experience level
+        </label>
+
+        <select
+          id="hero-search-experience-level"
+          name="experienceLevel"
+          value={experienceLevel}
+          onChange={(event) =>
+            setExperienceLevel(event.target.value)
+          }
+          onKeyDown={handleSelectKeyDown}
+        >
+          <option value="">Experience Level</option>
+          <option value="Mid">Mid Level</option>
+          <option value="Senior">Senior</option>
+          <option value="Executive">Executive</option>
+        </select>
 
       {/* Submit */}
       <button

@@ -50,16 +50,16 @@ export default function SiteHeader() {
           aria-label="Illuminex Consultancy Home"
         >
           <Image
-            src="/illuminex-logo-flat-transparent-background.png"
+            src="/illuminex-logo-header-4x.png"
             alt="Illuminex Consultancy"
             className="site-logo"
             width={132}
             height={88}
             sizes="132px"
-            quality={100}
             priority
+            unoptimized
             draggable={false}
-        />
+          />
         </a>
 
         <nav className="main-nav nav-desktop" aria-label="Primary">

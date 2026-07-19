@@ -130,7 +130,7 @@ export default function ContactPage() {
                         </span>
                         Phone
                       </div>
-                      <div className="contact-panel-value">Available shortly</div>
+                      <div className="contact-panel-value">Available Shortly</div>
                     </div>
 
                     <div className="contact-panel-item">

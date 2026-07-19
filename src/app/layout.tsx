@@ -209,7 +209,7 @@ export default function RootLayout({
                           />
                         </svg>
                       </span>
-                      +44 (0) Available shortly
+                      +44 (0) Available Shortly
                     </a>
                   </div>
 
@@ -283,7 +283,7 @@ export default function RootLayout({
                       />
                     </svg>
                   </span>
-                  +44 (0) Available shortly
+                  +44 (0) Available Shortly
                 </span>
               </div>
 

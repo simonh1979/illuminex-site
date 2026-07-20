@@ -586,11 +586,12 @@ function LiveJobsClientInner() {
           </div>
         ) : (data?.jobs?.length ?? 0) === 0 ? (
           <div className="jobs-empty sector-card">
-            <h3>No matches</h3>
+            <h3>{queryString ? "No matches" : "No live vacancies currently available"}</h3>
 
             <p className="jobs-muted">
-              Try removing a filter, using a broader location, or
-              clearing keyword.
+              {queryString
+                ? "Try removing a filter, using a broader location, or clearing keyword."
+                : "We are always interested in hearing from talented professionals across our specialist sectors. Register your CV and we will contact you when a suitable opportunity becomes available."}
             </p>
           </div>
         ) : (

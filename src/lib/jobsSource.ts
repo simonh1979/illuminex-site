@@ -1,7 +1,6 @@
-import { mockJobs } from "@/lib/mockJobs";
 import { firefishGetJob, firefishListJobs } from "@/lib/firefishJobs";
 
-export type JobsSource = "firefish" | "mock";
+export type JobsSource = "firefish" | "unavailable";
 
 export async function getJobsList() {
   try {
@@ -13,11 +12,11 @@ export async function getJobsList() {
       source: "firefish" as JobsSource,
     };
   } catch {
-    // Firefish unavailable → safe fallback
+    // Never expose fictional fallback vacancies if Firefish is unavailable.
     return {
-      jobs: mockJobs,
-      total: mockJobs.length,
-      source: "mock" as JobsSource,
+      jobs: [],
+      total: 0,
+      source: "unavailable" as JobsSource,
     };
   }
 }
@@ -33,13 +32,11 @@ export async function getJobById(id: string) {
       };
     }
   } catch {
-    // ignore and fall back
+    // Return no vacancy if Firefish is unavailable.
   }
 
-  const fallback = mockJobs.find((j) => j.id === id) ?? null;
-
   return {
-    job: fallback,
-    source: "mock" as JobsSource,
+    job: null,
+    source: "unavailable" as JobsSource,
   };
 }

@@ -4491,3 +4491,24 @@ body:has(.job-detail-grid) {
   text-decoration: underline !important;
   text-underline-offset: 3px;
 }
+
+/* Live Jobs empty state: use available width and wrap responsively */
+.jobs-empty .jobs-muted {
+  width: 100%;
+  max-width: none;
+}
+
+/* Live Jobs: reduce gap between hero copy and filters */
+main.page.page-jobs .page-hero {
+  padding-bottom: 28px;
+}
+
+main.page.page-jobs .page-body {
+  padding-top: 0;
+}
+
+@media (max-width: 900px) {
+  main.page.page-jobs .page-hero {
+    padding-bottom: 22px;
+  }
+}

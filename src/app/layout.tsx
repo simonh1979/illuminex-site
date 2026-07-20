@@ -128,7 +128,9 @@ export default function RootLayout({
 
         <TermsFeedConsent />
         <GoogleAnalytics measurementId="G-ZTZ6KJ6GMT" />
-        <LinkedInInsight partnerId="" />
+        <LinkedInInsight
+          partnerId={process.env.NEXT_PUBLIC_LINKEDIN_PARTNER_ID}
+        />
         <MetaPixel pixelId="" />
 
         <SiteHeader />

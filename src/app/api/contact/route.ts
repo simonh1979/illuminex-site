@@ -171,7 +171,9 @@ export async function POST(req: Request) {
       });
     }
 
-    const to = process.env.CONTACT_TO;
+    const to = process.env.CONTACT_TO?.trim();
+    const cc = process.env.CONTACT_CC?.trim() || undefined;
+
     if (!to) {
       return NextResponse.json(
         { ok: false, error: "CONTACT_TO not set on server." },
@@ -184,6 +186,7 @@ export async function POST(req: Request) {
     await transport.sendMail({
       from: fromAddress(),
       to,
+      cc,
       replyTo: cleanEmail,
       subject: `New website enquiry — ${cleanName}`,
       text: `New enquiry from the website:

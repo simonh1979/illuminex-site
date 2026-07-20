@@ -22,12 +22,12 @@ export const metadata: Metadata = {
 
   title: {
     default:
-      "Executive Search & Specialist Recruitment | Illuminex Consultancy",
+      "Illuminex Consultancy | Executive Search, Specialist Recruitment and Strategic Business Consultancy",
     template: "%s | Illuminex Consultancy",
   },
 
   description:
-    "Illuminex Consultancy is a specialist executive search and recruitment consultancy connecting exceptional talent with leading employers across the UK. Experts in executive, commercial and specialist recruitment solutions.",
+    "Illuminex Consultancy provides executive search, specialist recruitment and strategic business consultancy, delivered with integrity and genuine sector expertise.",
 
   authors: [
     {
@@ -45,9 +45,9 @@ export const metadata: Metadata = {
     url: "https://www.illuminex.co.uk",
     siteName: "Illuminex Consultancy",
     title:
-      "Executive Search & Specialist Recruitment | Illuminex Consultancy",
+      "Illuminex Consultancy | Executive Search, Specialist Recruitment and Strategic Business Consultancy",
     description:
-      "Illuminex Consultancy is a specialist executive search and recruitment consultancy connecting exceptional talent with leading employers across the UK.",
+      "An independent UK consultancy helping organisations appoint the right people, strengthen leadership and make confident business decisions through executive search, specialist recruitment and strategic consultancy.",
     images: [
       {
         url: "/og-image.jpg",
@@ -59,9 +59,9 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title:
-      "Executive Search & Specialist Recruitment | Illuminex Consultancy",
+      "Illuminex Consultancy | Executive Search, Specialist Recruitment and Strategic Business Consultancy",
     description:
-      "Illuminex Consultancy is a specialist executive search and recruitment consultancy connecting exceptional talent with leading employers across the UK.",
+      "An independent UK consultancy helping organisations appoint the right people, strengthen leadership and make confident business decisions through executive search, specialist recruitment and strategic consultancy.",
     images: ["/og-image.jpg"],
   },
 
@@ -111,6 +111,44 @@ const brandFont = IBM_Plex_Sans({
   variable: "--font-body",
 });
 
+const illuminexStructuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://www.illuminex.co.uk/#organization",
+      name: "Illuminex Consultancy",
+      legalName: "Illuminex Ltd",
+      url: "https://www.illuminex.co.uk",
+      sameAs: [
+        "https://www.linkedin.com/company/illuminexconsultancy",
+      ],
+      description:
+        "Illuminex Consultancy is an independent UK business built on genuine industry experience, strong relationships and a clear understanding of what helps organisations and people succeed. We provide executive search, specialist recruitment and strategic business consultancy, working closely with clients to understand their objectives, culture and the challenges behind each brief. Our approach is personal, discreet and commercially grounded, combining honest conversations with careful judgement and genuine sector knowledge. Every assignment is handled with integrity, precision and insight.",
+      areaServed: {
+        "@type": "Country",
+        name: "United Kingdom",
+      },
+      knowsAbout: [
+        "Executive Search",
+        "Specialist Recruitment",
+        "Strategic Business Consultancy",
+        "Senior Appointments",
+        "Leadership Recruitment",
+      ],
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.illuminex.co.uk/#website",
+      url: "https://www.illuminex.co.uk",
+      name: "Illuminex Consultancy",
+      publisher: {
+        "@id": "https://www.illuminex.co.uk/#organization",
+      },
+      inLanguage: "en-GB",
+    },
+  ],
+} as const;
 export default function RootLayout({
   children,
 }: {
@@ -121,6 +159,16 @@ export default function RootLayout({
 
       <body id="top" className="antialiased">
         <ContentProtection />
+
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(illuminexStructuredData).replace(
+              /</g,
+              "\u003c"
+            ),
+          }}
+        />
 
         <a href="#main-content" className="skip-link">
           Skip to main content

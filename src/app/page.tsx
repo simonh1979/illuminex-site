@@ -1,6 +1,13 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import HeroSearch from "@/components/HeroSearch";
 import TrackedSectorLink from "@/components/TrackedSectorLink";
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: "/",
+  },
+};
 
 export default function Home() {
   return (

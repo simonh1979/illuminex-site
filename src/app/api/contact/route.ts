@@ -198,8 +198,6 @@ Phone: ${cleanPhone || "-"}
 
 Message:
 ${cleanMessage}
-
-IP: ${ip}
 `,
     });
 

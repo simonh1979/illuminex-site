@@ -51,7 +51,7 @@ export default async function ApplyPage({ params, searchParams }: Props) {
   const from =
     typeof sp.from === "string" && sp.from.trim()
       ? sp.from
-      : "/live-jobs";
+      : "/jobs";
 
   const jobId =
     typeof sp.jobId === "string" && sp.jobId.trim()

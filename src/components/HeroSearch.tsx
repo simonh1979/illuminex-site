@@ -125,8 +125,8 @@ export default function HeroSearch() {
 
     router.push(
       queryString
-        ? `/live-jobs?${queryString}`
-        : "/live-jobs"
+        ? `/jobs?${queryString}`
+        : "/jobs"
     );
   };
 

@@ -47,7 +47,7 @@ export default async function ProtectedAdminLayout({
                     JobAdder status
                   </Link>
 
-                  <Link className="jobs-clear" href="/live-jobs">
+                  <Link className="jobs-clear" href="/jobs">
                     Live Jobs
                   </Link>
 

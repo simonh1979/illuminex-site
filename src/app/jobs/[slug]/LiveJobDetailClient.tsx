@@ -5,7 +5,7 @@ import { useParams, useSearchParams } from "next/navigation";
 
 const FIREFISH_JOB_BOARD_BASE_URL = (
   process.env.NEXT_PUBLIC_FIREFISH_JOB_BOARD_BASE_URL ||
-  "https://illuminex.current.jobs"
+  "https://jobs.illuminex.co.uk"
 ).replace(/\/+$/, "");
 
 type JobPackageItem = {
@@ -124,13 +124,13 @@ function getFirefishDirectApplyUrl(
 
 function safelyDecodeFrom(value: string | null): string {
   if (!value?.trim()) {
-    return "/live-jobs";
+    return "/jobs";
   }
 
   try {
     return decodeURIComponent(value);
   } catch {
-    return "/live-jobs";
+    return "/jobs";
   }
 }
 
@@ -348,7 +348,7 @@ export default function LiveJobDetailClient() {
   const firefishAdvertRef = getFirefishAdvertRef(job.id);
 
   const illuminexApplyHref =
-    `/live-jobs/${encodeURIComponent(slug)}/apply` +
+    `/jobs/${encodeURIComponent(slug)}/apply` +
     `?from=${encodedFrom}` +
     `&sector=${encodeURIComponent(job.sector || "")}` +
     `&location=${encodeURIComponent(job.location || "")}` +

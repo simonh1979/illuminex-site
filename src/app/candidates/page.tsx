@@ -88,7 +88,7 @@ export default function CandidatesPage() {
               </p>
 
               <div className="sector-cta-row">
-                <Link className="sector-cta" href="/live-jobs">
+                <Link className="sector-cta" href="/jobs">
                   Search live jobs
                 </Link>
                 <Link className="sector-cta-secondary" href="/contact">

@@ -37,7 +37,7 @@ export default function TechnicalCommercialSalesSectorPage() {
           </p>
 
           <div style={{ marginTop: 22, display: "flex", gap: 12, flexWrap: "wrap" }}>
-            <Link className="sector-cta" href="/live-jobs">
+            <Link className="sector-cta" href="/jobs">
               View live roles
             </Link>
             <Link className="sector-cta-secondary" href="/contact">

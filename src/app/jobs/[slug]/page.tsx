@@ -124,7 +124,7 @@ export async function generateMetadata({
 
   const structuredJob = job as StructuredJob;
   const description = createMetadataDescription(structuredJob);
-  const canonicalUrl = `/live-jobs/${slug}`;
+  const canonicalUrl = `/jobs/${slug}`;
 
   return {
     title: structuredJob.title,
@@ -224,7 +224,7 @@ export default async function LiveJobDetailPage({
           },
         },
 
-        url: `https://www.illuminex.co.uk/live-jobs/${slug}`,
+        url: `https://www.illuminex.co.uk/jobs/${slug}`,
       };
     }
   }

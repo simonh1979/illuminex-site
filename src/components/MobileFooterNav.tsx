@@ -20,9 +20,9 @@ export default function MobileFooterNav() {
           </Link>
 
           <Link
-            href="/live-jobs"
+            href="/jobs"
             className="footer-mobile-pill"
-            aria-current={pathname === "/live-jobs" ? "page" : undefined}
+            aria-current={pathname === "/jobs" ? "page" : undefined}
           >
             Live Jobs
           </Link>

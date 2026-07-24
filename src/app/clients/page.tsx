@@ -64,7 +64,7 @@ export default function ClientsPage() {
             <Link className="sector-cta" href="/contact">
               Start a confidential brief
             </Link>
-            <Link className="sector-cta-secondary" href="/live-jobs">
+            <Link className="sector-cta-secondary" href="/jobs">
               View live roles
             </Link>
           </div>

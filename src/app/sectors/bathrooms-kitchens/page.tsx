@@ -47,7 +47,7 @@ export default function BathroomsKitchensSectorPage() {
               alignItems: "center",
             }}
           >
-            <Link className="sector-cta" href="/live-jobs">
+            <Link className="sector-cta" href="/jobs">
               View live roles
             </Link>
             <Link className="sector-cta-secondary" href="/contact">

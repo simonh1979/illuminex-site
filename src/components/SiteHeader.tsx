@@ -85,8 +85,8 @@ export default function SiteHeader() {
             Candidates
           </Link>
           <Link
-            href="/live-jobs"
-            aria-current={pathname === "/live-jobs" ? "page" : undefined}
+            href="/jobs"
+            aria-current={pathname === "/jobs" ? "page" : undefined}
           >
             Live Jobs
           </Link>
@@ -175,8 +175,8 @@ export default function SiteHeader() {
             Register CV
           </Link>
           <Link
-            href="/live-jobs"
-            aria-current={pathname === "/live-jobs" ? "page" : undefined}
+            href="/jobs"
+            aria-current={pathname === "/jobs" ? "page" : undefined}
           >
             Live Jobs
           </Link>

@@ -190,7 +190,7 @@ export default function ApplyFormClient({
           className="apply-success-actions"
           style={{ marginTop: 14, display: "flex", gap: 10, flexWrap: "wrap" }}
         >
-          <a className="jobs-clear" href="/live-jobs">
+          <a className="jobs-clear" href="/jobs">
             View all roles
           </a>
           <button

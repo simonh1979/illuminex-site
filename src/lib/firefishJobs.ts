@@ -16,7 +16,7 @@ export type FirefishJob = Job & {
 };
 
 const DEFAULT_FIREFISH_JOB_BOARD_BASE_URL =
-  "https://illuminex.current.jobs";
+  "https://jobs.illuminex.co.uk";
 
 const FIREFISH_JOB_BOARD_BASE_URL = (
   process.env.FIREFISH_JOB_BOARD_BASE_URL ||
@@ -24,7 +24,7 @@ const FIREFISH_JOB_BOARD_BASE_URL = (
 ).replace(/\/+$/, "");
 
 const DEFAULT_FIREFISH_RSS_URL =
-  `${FIREFISH_JOB_BOARD_BASE_URL}/rss/adverts/latest.aspx`;
+  "https://illuminex.current.jobs/rss/adverts/latest.aspx";
 
 const EXECUTIVE_ROLE_TERMS = [
   "managing director",

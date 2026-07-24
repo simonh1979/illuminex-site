@@ -596,7 +596,7 @@ Your details and CV have been received securely and will be personally reviewed 
 We will contact you discreetly when a suitable opportunity matches your experience and career direction.
 
 You can also view our current opportunities at:
-https://www.illuminex.co.uk/live-jobs
+https://www.illuminex.co.uk/jobs
 
 Your personal information will be handled confidentially in accordance with our Privacy Policy:
 https://www.illuminex.co.uk/privacy

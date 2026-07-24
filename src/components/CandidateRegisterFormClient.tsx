@@ -128,7 +128,7 @@ export default function CandidateRegisterFormClient() {
         </div>
 
         <div style={{ marginTop: 14, display: "flex", gap: 10, flexWrap: "wrap" }}>
-          <a className="jobs-clear" href="/live-jobs">
+          <a className="jobs-clear" href="/jobs">
             View roles
           </a>
           <button type="button" className="jobs-clear" onClick={() => window.location.reload()}>

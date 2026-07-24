@@ -63,6 +63,21 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   allowedDevOrigins: ["localhost", "127.0.0.1", "192.168.1.165"],
 
+  async redirects() {
+    return [
+      {
+        source: "/live-jobs",
+        destination: "/jobs",
+        permanent: true,
+      },
+      {
+        source: "/live-jobs/:path*",
+        destination: "/jobs/:path*",
+        permanent: true,
+      },
+    ];
+  },
+
   async headers() {
     return [{ source: "/(.*)", headers: securityHeaders }];
   },

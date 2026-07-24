@@ -52,7 +52,7 @@ const EMAIL_BRAND = {
 
   privacyUrl: "https://www.illuminex.co.uk/privacy",
   termsUrl: "https://www.illuminex.co.uk/terms",
-  liveJobsUrl: "https://www.illuminex.co.uk/live-jobs",
+  liveJobsUrl: "https://www.illuminex.co.uk/jobs",
 
   primaryBlue: "#0A4D8C",
   deepBlue: "#0A3F68",

@@ -713,7 +713,7 @@ function LiveJobsClientInner() {
                       <a
                         className="sector-cta"
                         href={
-                          `/live-jobs/${slugify(
+                          `/jobs/${slugify(
                             job.title
                           )}-${job.id}` +
                           `?from=${encodeURIComponent(

@@ -52,7 +52,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/live-jobs`,
+      url: `${baseUrl}/jobs`,
       lastModified: now,
       changeFrequency: "daily",
       priority: 0.9,
@@ -115,7 +115,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   jobPages = jobs
     .filter((job) => job.id && job.title)
     .map((job) => ({
-      url: `${baseUrl}/live-jobs/${slugify(job.title)}-${job.id}`,
+      url: `${baseUrl}/jobs/${slugify(job.title)}-${job.id}`,
       lastModified: job.postedAt ? new Date(job.postedAt) : now,
       changeFrequency: "daily" as const,
       priority: 0.8,

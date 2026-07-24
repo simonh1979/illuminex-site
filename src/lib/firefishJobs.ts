@@ -24,7 +24,7 @@ const FIREFISH_JOB_BOARD_BASE_URL = (
 ).replace(/\/+$/, "");
 
 const DEFAULT_FIREFISH_RSS_URL =
-  "https://illuminex.current.jobs/rss/adverts/latest.aspx";
+  "https://jobs.illuminex.co.uk/rss/adverts/latest.aspx";
 
 const EXECUTIVE_ROLE_TERMS = [
   "managing director",

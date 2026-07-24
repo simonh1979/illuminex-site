@@ -386,7 +386,7 @@ export default function LiveJobDetailClient() {
             <div className="sector-card job-detail-main">
               <div className="job-top">
                 <div>
-                  <h3 className="job-title">{job.title}</h3>
+                  <h1 className="job-title">{job.title}</h1>
 
                   <div className="job-meta">
                     <span>{job.location}</span>

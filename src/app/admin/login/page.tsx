@@ -2,12 +2,11 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
 function EyeIcon({ open }: { open: boolean }) {
-  // Simple inline SVG so you don't need any icon libs.
-  // open=false = crossed eye, open=true = eye
   return open ? (
     <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
       <path
@@ -25,12 +24,9 @@ function EyeIcon({ open }: { open: boolean }) {
   );
 }
 
-export default function AdminLoginPage({
-  searchParams,
-}: {
-  searchParams?: { error?: string };
-}) {
-  const showError = Boolean(searchParams?.error);
+export default function AdminLoginPage() {
+  const searchParams = useSearchParams();
+  const error = searchParams.get("error");
 
   const [capsOn, setCapsOn] = useState(false);
   const [showPw, setShowPw] = useState(false);
@@ -38,6 +34,24 @@ export default function AdminLoginPage({
   function handleKeyEvent(e: React.KeyboardEvent<HTMLInputElement>) {
     setCapsOn(e.getModifierState("CapsLock"));
   }
+
+  function getErrorMessage(code: string | null) {
+    if (code === "2fa") {
+      return "Authentication service unavailable. Please try again.";
+    }
+
+    if (code === "server") {
+      return "Server error. Please try again.";
+    }
+
+    if (code === "1") {
+      return "Invalid email or password.";
+    }
+
+    return null;
+  }
+
+  const errorMessage = getErrorMessage(error);
 
   return (
     <div style={{ display: "grid", gap: 16 }}>
@@ -48,7 +62,7 @@ export default function AdminLoginPage({
         </p>
       </div>
 
-      {showError && (
+      {errorMessage && (
         <div
           style={{
             padding: 12,
@@ -57,13 +71,14 @@ export default function AdminLoginPage({
             background: "rgba(255,50,50,0.12)",
           }}
         >
-          ❌ Invalid email or password.
+          ❌ {errorMessage}
         </div>
       )}
 
       <form
         action="/api/admin/login"
         method="post"
+        autoComplete="off"
         style={{ display: "grid", gap: 12, maxWidth: 520 }}
       >
         <div className="apply-field">
@@ -95,7 +110,6 @@ export default function AdminLoginPage({
             style={{ paddingRight: 46 }}
           />
 
-          {/* Eye toggle button inside field */}
           <button
             type="button"
             onClick={() => setShowPw((v) => !v)}
@@ -104,7 +118,7 @@ export default function AdminLoginPage({
             style={{
               position: "absolute",
               right: 12,
-              top: 29, // positions to the right inside input under label
+              top: 29,
               height: 36,
               width: 36,
               borderRadius: 10,

@@ -2,18 +2,32 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 export default function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const [hash, setHash] = useState("");
   const pathname = usePathname();
 
-  // Close drawer when route changes
   useEffect(() => {
     setOpen(false);
+
+    if (typeof window !== "undefined") {
+      setHash(window.location.hash);
+    }
   }, [pathname]);
 
-  // Lock body scroll while drawer open
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const syncHash = () => setHash(window.location.hash);
+
+    syncHash();
+    window.addEventListener("hashchange", syncHash);
+    return () => window.removeEventListener("hashchange", syncHash);
+  }, []);
+
   useEffect(() => {
     if (!open) return;
     const prev = document.body.style.overflow;
@@ -23,33 +37,77 @@ export default function SiteHeader() {
     };
   }, [open]);
 
+  const onCandidatesPage = pathname === "/candidates";
+  const onRegisterCvSection =
+    pathname === "/candidates" && hash === "#register";
+
   return (
     <header className="site-header">
       <div className="header-inner">
-        <a href="/" className="logo-wrap" aria-label="Illuminex Consultancy Home">
-<img
-  src="/illuminex-logo-flat-transparent-background.png"
-  alt="Illuminex Consultancy"
-  className="site-logo"
-/>
+        <a
+          href="/"
+          className="logo-wrap protect-image no-context-menu"
+          aria-label="Illuminex Consultancy Home"
+        >
+          <Image
+            src="/illuminex-logo-header-4x.png"
+            alt="Illuminex Consultancy"
+            className="site-logo"
+            width={132}
+            height={88}
+            sizes="132px"
+            priority
+            unoptimized
+            draggable={false}
+          />
         </a>
 
-        {/* Desktop nav */}
         <nav className="main-nav nav-desktop" aria-label="Primary">
-          <Link href="/">Home</Link>
-          <Link href="/about">About</Link>
-          <Link href="/clients">Clients</Link>
-          <Link href="/candidates">Candidates</Link>
-          <Link href="/live-jobs">Live Jobs</Link>
-          <Link href="/services" className="services-pill">
+          <Link href="/" aria-current={pathname === "/" ? "page" : undefined}>
+            Home
+          </Link>
+          <Link
+            href="/about"
+            aria-current={pathname === "/about" ? "page" : undefined}
+          >
+            About
+          </Link>
+          <Link
+            href="/clients"
+            aria-current={pathname === "/clients" ? "page" : undefined}
+          >
+            Clients
+          </Link>
+          <Link
+            href="/candidates"
+            aria-current={onCandidatesPage ? "page" : undefined}
+          >
+            Candidates
+          </Link>
+          <Link
+            href="/jobs"
+            aria-current={pathname === "/jobs" ? "page" : undefined}
+          >
+            Live Jobs
+          </Link>
+
+          <Link
+            href="/services"
+            className="services-pill"
+            aria-current={pathname === "/services" ? "page" : undefined}
+          >
             Services
           </Link>
-          <Link href="/contact" className="contact-pill">
+
+          <Link
+            href="/contact"
+            className="contact-pill"
+            aria-current={pathname === "/contact" ? "page" : undefined}
+          >
             Contact
           </Link>
         </nav>
 
-        {/* Mobile menu button */}
         <button
           type="button"
           className="nav-toggle"
@@ -62,15 +120,16 @@ export default function SiteHeader() {
         </button>
       </div>
 
-      {/* Overlay */}
       <div
         className={`nav-overlay ${open ? "is-open" : ""}`}
         onClick={() => setOpen(false)}
         aria-hidden={!open}
       />
 
-      {/* Side drawer */}
-      <aside className={`nav-drawer ${open ? "is-open" : ""}`} aria-label="Menu">
+      <aside
+        className={`nav-drawer ${open ? "is-open" : ""}`}
+        aria-label="Menu"
+      >
         <div className="nav-drawer-head">
           <div className="nav-drawer-brand">Illuminex</div>
 
@@ -85,18 +144,60 @@ export default function SiteHeader() {
         </div>
 
         <div className="nav-drawer-links">
-          <Link href="/">Home</Link>
-          <Link href="/about">About</Link>
-          <Link href="/clients">Clients</Link>
-          <Link href="/candidates">Candidates</Link>
-          <Link href="/live-jobs">Live Jobs</Link>
-          <Link href="/services">Services</Link>
-          <Link href="/contact">Contact</Link>
+          <Link href="/" aria-current={pathname === "/" ? "page" : undefined}>
+            Home
+          </Link>
+          <Link
+            href="/about"
+            aria-current={pathname === "/about" ? "page" : undefined}
+          >
+            About
+          </Link>
+          <Link
+            href="/clients"
+            aria-current={pathname === "/clients" ? "page" : undefined}
+          >
+            Clients
+          </Link>
+          <Link
+            href="/candidates"
+            aria-current={
+              onCandidatesPage && !onRegisterCvSection ? "page" : undefined
+            }
+          >
+            Candidates
+          </Link>
+          <Link
+            href="/candidates#register"
+            className="nav-drawer-register-cv"
+            aria-current={onRegisterCvSection ? "page" : undefined}
+          >
+            Register CV
+          </Link>
+          <Link
+            href="/jobs"
+            aria-current={pathname === "/jobs" ? "page" : undefined}
+          >
+            Live Jobs
+          </Link>
+          <Link
+            href="/services"
+            aria-current={pathname === "/services" ? "page" : undefined}
+          >
+            Services
+          </Link>
+          <Link
+            href="/contact"
+            aria-current={pathname === "/contact" ? "page" : undefined}
+          >
+            Contact
+          </Link>
         </div>
 
         <div className="nav-drawer-foot">
           <div className="nav-drawer-note">
-            Premium executive search & specialist recruitment.
+            <span className="brand-font">Illuminex</span> delivers premium
+            executive search &amp; specialist recruitment.
           </div>
         </div>
       </aside>

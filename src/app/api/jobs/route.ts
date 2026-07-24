@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getJobsList } from "@/lib/jobsSource";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 120;
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
@@ -17,19 +17,25 @@ export async function GET(req: Request) {
   let jobs = [...rawJobs];
 
   if (keyword) {
-    jobs = jobs.filter(
-      (j) =>
-        j.title.toLowerCase().includes(keyword) ||
-        j.summary.toLowerCase().includes(keyword) ||
-        j.sector.toLowerCase().includes(keyword) ||
-        j.location.toLowerCase().includes(keyword)
-    );
-  }
+  jobs = jobs.filter((j) =>
+    [j.title, j.summary, j.sector, j.location]
+      .join(" ")
+      .toLowerCase()
+      .includes(keyword)
+  );
+}
 
   if (sector) jobs = jobs.filter((j) => j.sector === sector);
-  if (location) jobs = jobs.filter((j) => j.location.toLowerCase().includes(location.toLowerCase()));
+
+  if (location)
+    jobs = jobs.filter((j) =>
+      j.location.toLowerCase().includes(location.toLowerCase())
+    );
+
   if (jobType) jobs = jobs.filter((j) => j.jobType === jobType);
-  if (experienceLevel) jobs = jobs.filter((j) => j.experienceLevel === experienceLevel);
+
+  if (experienceLevel)
+    jobs = jobs.filter((j) => j.experienceLevel === experienceLevel);
 
   const facets = {
     sectors: Array.from(new Set(rawJobs.map((j) => j.sector))).sort(),

@@ -1,58 +1,390 @@
+// src/app/layout.tsx
 import "./globals.css";
 import SiteHeader from "../components/SiteHeader";
-import { Inter, Sora } from "next/font/google";
+import TermsFeedConsent from "../components/TermsFeedConsent";
+import GoogleAnalytics from "../components/GoogleAnalytics";
+import { Inter, IBM_Plex_Sans } from "next/font/google";
+import type { Metadata } from "next";
+import Link from "next/link";
+import Image from "next/image";
+import type React from "react";
+import CookiePreferencesButton from "../components/CookiePreferencesButton";
+import MobileFooterNav from "../components/MobileFooterNav";
+import LinkedInInsight from "../components/LinkedInInsight";
+import MetaPixel from "../components/MetaPixel";
+import ContentProtection from "@/components/ContentProtection";
+import GlobalEmailLinks from "@/components/GlobalEmailLinks";
 
-export const metadata = {
-  title: "Illuminex Consultancy",
-  description: "Premium Executive Search & Specialist Recruitment",
+export const metadata: Metadata = {
+  metadataBase: new URL("https://www.illuminex.co.uk"),
+
+  applicationName: "Illuminex Consultancy",
+
+  title: {
+    default:
+      "Illuminex Consultancy | Executive Search, Specialist Recruitment and Strategic Business Consultancy",
+    template: "%s | Illuminex Consultancy",
+  },
+
+  description:
+    "Illuminex Consultancy provides executive search, specialist recruitment and strategic business consultancy, delivered with integrity and genuine sector expertise.",
+
+  authors: [
+    {
+      name: "Illuminex Consultancy",
+      url: "https://www.illuminex.co.uk",
+    },
+  ],
+
+  creator: "Illuminex Consultancy",
+  publisher: "Illuminex Consultancy",
+
+  openGraph: {
+    type: "website",
+    locale: "en_GB",
+    url: "https://www.illuminex.co.uk",
+    siteName: "Illuminex Consultancy",
+    title:
+      "Illuminex Consultancy | Executive Search, Specialist Recruitment and Strategic Business Consultancy",
+    description:
+      "An independent UK consultancy helping organisations appoint the right people, strengthen leadership and make confident business decisions through executive search, specialist recruitment and strategic consultancy.",
+    images: [
+      {
+        url: "/og-image.jpg",
+        alt: "Illuminex Consultancy",
+      },
+    ],
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title:
+      "Illuminex Consultancy | Executive Search, Specialist Recruitment and Strategic Business Consultancy",
+    description:
+      "An independent UK consultancy helping organisations appoint the right people, strengthen leadership and make confident business decisions through executive search, specialist recruitment and strategic consultancy.",
+    images: ["/og-image.jpg"],
+  },
+
+  robots: {
+  index: true,
+  follow: true,
+},
+
+  manifest: "/site.webmanifest",
+
+  icons: {
+    icon: [
+      {
+        url: "/illuminex-favicon-32x32.png",
+        sizes: "32x32",
+        type: "image/png",
+      },
+      {
+        url: "/illuminex-favicon-16x16.png",
+        sizes: "16x16",
+        type: "image/png",
+      },
+      {
+        url: "/favicon.ico",
+      },
+    ],
+    apple: [
+      {
+        url: "/illuminex-apple-touch-icon.png",
+        sizes: "180x180",
+      },
+    ],
+  },
 };
 
 const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-inter",
+  weight: ["400", "500", "600", "700", "800", "900"],
   display: "swap",
+  variable: "--font-heading",
 });
 
-const sora = Sora({
+const brandFont = IBM_Plex_Sans({
   subsets: ["latin"],
-  variable: "--font-sora",
+  weight: ["400", "500", "600", "700"],
   display: "swap",
+  variable: "--font-body",
 });
 
+const illuminexStructuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://www.illuminex.co.uk/#organization",
+      name: "Illuminex Consultancy",
+      legalName: "Illuminex Ltd",
+      url: "https://www.illuminex.co.uk",
+      sameAs: [
+        "https://www.linkedin.com/company/illuminexconsultancy",
+      ],
+      description:
+        "Illuminex Consultancy is an independent UK business built on genuine industry experience, strong relationships and a clear understanding of what helps organisations and people succeed. We provide executive search, specialist recruitment and strategic business consultancy, working closely with clients to understand their objectives, culture and the challenges behind each brief. Our approach is personal, discreet and commercially grounded, combining honest conversations with careful judgement and genuine sector knowledge. Every assignment is handled with integrity, precision and insight.",
+      areaServed: {
+        "@type": "Country",
+        name: "United Kingdom",
+      },
+      knowsAbout: [
+        "Executive Search",
+        "Specialist Recruitment",
+        "Strategic Business Consultancy",
+        "Senior Appointments",
+        "Leadership Recruitment",
+      ],
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.illuminex.co.uk/#website",
+      url: "https://www.illuminex.co.uk",
+      name: "Illuminex Consultancy",
+      publisher: {
+        "@id": "https://www.illuminex.co.uk/#organization",
+      },
+      inLanguage: "en-GB",
+    },
+  ],
+} as const;
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={`${inter.variable} ${sora.variable}`}>
+    <html lang="en" className={`${inter.variable} ${brandFont.variable}`}>
+
+      <body id="top" className="antialiased">
+        <ContentProtection />
+
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(illuminexStructuredData).replace(
+              /</g,
+              "\u003c"
+            ),
+          }}
+        />
+
+        <a href="#main-content" className="skip-link">
+          Skip to main content
+        </a>
+
+        <TermsFeedConsent />
+        <GoogleAnalytics measurementId="G-ZTZ6KJ6GMT" />
+        <LinkedInInsight
+          partnerId={process.env.NEXT_PUBLIC_LINKEDIN_PARTNER_ID}
+        />
+        <MetaPixel pixelId="" />
+
         <SiteHeader />
 
-        {/* ================= PAGE CONTENT ================= */}
-        {children}
+        <div id="main-content">{children}</div>
 
-        {/* ================= FOOTER ================= */}
         <footer className="site-footer">
           <div className="footer-inner">
-            <img
-              src="/illuminex-logo-emblem-transparent-background-high-res.png"
-              alt="Illuminex Emblem"
-              className="footer-emblem footer-emblem--left"
-            />
+            {/* LEFT EMBLEM */}
+            <div className="footer-emblem-wrap footer-emblem-wrap--left protect-image no-context-menu">
+              <img
+                className="footer-emblem"
+                src="/illuminex-emblem-footer-lossless.webp"
+                alt="Illuminex emblem"
+                draggable={false}
+              />
+            </div>
 
-            <p className="footer-text">
-              © {new Date().getFullYear()} Illuminex Consultancy. All rights
-              reserved.
-            </p>
+            <div className="footer-center">
+              {/* MOBILE-ONLY PREMIUM FOOTER CONTENT */}
+              <div className="footer-mobile-only">
+                <Link
+                    href="/#top"
+                    className="footer-main-logo-link protect-image no-context-menu"
+                    aria-label="Go to homepage"
+                  >
 
-            <img
-              src="/illuminex-logo-emblem-transparent-background-high-res.png"
-              alt="Illuminex Emblem"
-              className="footer-emblem footer-emblem--right"
-            />
+                  <Image
+                    className="footer-main-logo"
+                    src="/illuminex-logo-flat-transparent-background.png"
+                    alt="Illuminex Consultancy"
+                    width={190}
+                    height={127}
+                    sizes="190px"
+                    draggable={false}
+                  />
+                </Link>
+
+                <section className="footer-mobile-section">
+                  <h3 className="footer-mobile-title">Lets Stay Connected</h3>
+
+                  <div className="footer-mobile-textblock">
+                    <strong>Registered Office:</strong>
+                    <div>First Floor, Embsay Mill, Embsay, Skipton, BD23 6QR</div>
+                  </div>
+
+                  <div className="footer-mobile-contact-stack">
+                    <a
+                      className="footer-contact footer-email"
+                      href="mailto:hello@illuminex.co.uk"
+                    >
+                      <span className="footer-contact__icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none">
+                          <path
+                            d="M4 7a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V7Z"
+                            stroke="currentColor"
+                            strokeWidth="1.8"
+                          />
+                          <path
+                            d="m6 8 6 5 6-5"
+                            stroke="currentColor"
+                            strokeWidth="1.8"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </span>
+                      hello@illuminex.co.uk
+                    </a>
+
+                    <a
+                      className="footer-contact footer-phone"
+                      href="tel:+441234567890"
+                    >
+                      <span className="footer-contact__icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none">
+                          <path
+                            d="M6.5 3.5h3l1.2 5-2 1.2c1.2 2.4 3.1 4.3 5.5 5.5l1.2-2 5 1.2v3A2.6 2.6 0 0 1 17.9 21C10.2 20.2 3.8 13.8 3 6.1A2.6 2.6 0 0 1 6.5 3.5Z"
+                            stroke="currentColor"
+                            strokeWidth="1.8"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </span>
+                      +44 (0) Available Shortly
+                    </a>
+                  </div>
+
+                  <div className="footer-mobile-socials">
+                  <a
+                    className="footer-mobile-linkedin protect-image no-context-menu"
+                    href="https://www.linkedin.com/company/illuminexconsultancy"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Visit Illuminex Consultancy on LinkedIn"
+                  >
+                    <Image
+                      src="/linkedin-square-white-icon-transparent.png"
+                      alt="LinkedIn"
+                      className="footer-linkedin-icon"
+                      width={36}
+                      height={36}
+                      sizes="36px"
+                      draggable={false}
+                  />
+                  </a>
+                </div>
+                </section>
+
+                <MobileFooterNav />
+
+                <div className="footer-mobile-bottom">
+                  <p>
+                    © 2026 Illuminex Ltd.
+                  </p>
+                  <p>Registered in England &amp; Wales.</p>
+                  <p>Company No. 16961631.</p>
+                  <p>All Rights Reserved.</p>
+                </div>
+                </div>
+
+                  {/* DESKTOP FOOTER CONTENT */}
+                  <p className="footer-legal">
+                  © 2026 Illuminex Ltd. Registered in England &amp; Wales. Company No. 16961631. All Rights Reserved.
+                </p>
+
+              <div className="footer-contact-row" aria-label="Footer contact">
+                <a
+                  className="footer-contact footer-email"
+                  href="mailto:hello@illuminex.co.uk"
+                >
+                  <span className="footer-contact__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <path
+                        d="M4 7a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V7Z"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                      />
+                      <path
+                        d="m6 8 6 5 6-5"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </span>
+                  hello@illuminex.co.uk
+                </a>
+
+                <span className="footer-contact footer-phone">
+                  <span className="footer-contact__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <path
+                        d="M6.5 3.5h3l1.2 5-2 1.2c1.2 2.4 3.1 4.3 5.5 5.5l1.2-2 5 1.2v3A2.6 2.6 0 0 1 17.9 21C10.2 20.2 3.8 13.8 3 6.1A2.6 2.6 0 0 1 6.5 3.5Z"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </span>
+                  +44 (0) Available Shortly
+                </span>
+              </div>
+
+              <div className="footer-desktop-bottom">
+                <nav className="footer-links" aria-label="Footer links">
+                  <Link href="/privacy">Privacy</Link>
+                  <Link href="/terms">Terms</Link>
+                  <Link href="/cookies">Cookies</Link>
+                </nav>
+
+                <a
+                  href="https://www.linkedin.com/company/illuminexconsultancy"
+                  className="footer-desktop-linkedin protect-image no-context-menu"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Visit Illuminex Consultancy on LinkedIn"
+                >
+                  <Image
+                    src="/linkedin-square-white-icon-transparent.png"
+                    alt="LinkedIn"
+                    className="footer-desktop-linkedin-icon"
+                    width={46}
+                    height={46}
+                    sizes="46px"
+                    draggable={false}
+                  />
+                </a>
+              </div>
+            </div>
+
+            <CookiePreferencesButton />
+
+            {/* RIGHT EMBLEM */}
+            <div className="footer-emblem-wrap footer-emblem-wrap--right protect-image no-context-menu">
+              <img
+                className="footer-emblem footer-emblem--right"
+                src="/illuminex-emblem-footer-lossless.webp"
+                alt="Illuminex emblem"
+                draggable={false}
+              />
+            </div>
           </div>
         </footer>
+        <GlobalEmailLinks />
       </body>
     </html>
   );

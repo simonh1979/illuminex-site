@@ -1,26 +1,42 @@
-import { mockJobs } from "@/lib/mockJobs";
-import { jobAdderGetJob, jobAdderListJobs } from "@/lib/jobadderBoard";
+import { firefishGetJob, firefishListJobs } from "@/lib/firefishJobs";
 
-export type JobsSource = "jobadder" | "mock";
+export type JobsSource = "firefish" | "unavailable";
 
 export async function getJobsList() {
   try {
-    const { jobs, total } = await jobAdderListJobs();
-    return { jobs, total, source: "jobadder" as JobsSource };
+    const { jobs, total } = await firefishListJobs();
+
+    return {
+      jobs,
+      total,
+      source: "firefish" as JobsSource,
+    };
   } catch {
-    // Not connected (or API fails) → fallback
-    return { jobs: mockJobs, total: mockJobs.length, source: "mock" as JobsSource };
+    // Never expose fictional fallback vacancies if Firefish is unavailable.
+    return {
+      jobs: [],
+      total: 0,
+      source: "unavailable" as JobsSource,
+    };
   }
 }
 
 export async function getJobById(id: string) {
   try {
-    const job = await jobAdderGetJob(id);
-    if (job) return { job, source: "jobadder" as JobsSource };
+    const job = await firefishGetJob(id);
+
+    if (job) {
+      return {
+        job,
+        source: "firefish" as JobsSource,
+      };
+    }
   } catch {
-    // ignore and fall back
+    // Return no vacancy if Firefish is unavailable.
   }
 
-  const fallback = mockJobs.find((j) => j.id === id) ?? null;
-  return { job: fallback, source: "mock" as JobsSource };
+  return {
+    job: null,
+    source: "unavailable" as JobsSource,
+  };
 }

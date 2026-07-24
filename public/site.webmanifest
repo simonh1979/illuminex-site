@@ -1,0 +1,21 @@
+{
+  "name": "Illuminex Consultancy",
+  "short_name": "Illuminex",
+  "description": "Executive search and specialist recruitment across defined UK markets.",
+  "icons": [
+    {
+      "src": "/illuminex-android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/illuminex-android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#0f4c81",
+  "background_color": "#0f4c81",
+  "display": "standalone",
+  "start_url": "/"
+}

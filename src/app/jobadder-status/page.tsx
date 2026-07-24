@@ -58,7 +58,7 @@ const res = await fetch(`${baseUrl}/api/jobadder/test`, {
                   Connect JobAdder
                 </a>
 
-                <Link className="jobs-clear" href="/live-jobs">
+                <Link className="jobs-clear" href="/jobs">
                   Back to Live Jobs
                 </Link>
               </div>

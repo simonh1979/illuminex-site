@@ -4,31 +4,58 @@ import { redis } from "@/lib/redis";
 export type AdminAuditEvent = {
   ts: number;
   action: string;
-  actor?: string; // email
-  ip?: string;
-  meta?: Record<string, any>;
+
+  actorEmail?: string | null;
+  actor?: string | null;
+
+  ip?: string | null;
+  ua?: string | null;
+
+  meta?: Record<string, unknown> | null;
 };
 
 const KEY = "admin:audit:json";
-const MAX_EVENTS = 200; // keep last 200
+const MAX_EVENTS = 200;
 
+/**
+ * Read all stored audit events.
+ * If Redis is not configured, return empty safely.
+ */
 async function readAll(): Promise<AdminAuditEvent[]> {
-  const existing = await redis.get<AdminAuditEvent[]>(KEY);
-  return Array.isArray(existing) ? existing : [];
+  if (!redis) return [];
+
+  try {
+    const existing = await redis.get(KEY);
+
+    if (!existing || !Array.isArray(existing)) {
+      return [];
+    }
+
+    return existing as AdminAuditEvent[];
+  } catch (err) {
+    console.warn("[adminAudit] read failed:", err);
+    return [];
+  }
 }
 
 /**
- * Append an audit event (stored as a JSON array).
- * This avoids Redis LIST ops (lpush/lrange), which are not working in your setup.
+ * Append an audit event (JSON array storage).
+ * Never throws — auth flows must not break.
  */
-export async function logAdminEvent(evt: Omit<AdminAuditEvent, "ts">) {
+export async function logAdminEvent(
+  evt: Omit<AdminAuditEvent, "ts">
+): Promise<void> {
+  if (!redis) return;
+
   try {
     const full: AdminAuditEvent = {
       ts: Date.now(),
       action: evt.action,
-      actor: evt.actor,
-      ip: evt.ip,
-      meta: evt.meta,
+      actorEmail: evt.actorEmail ?? null,
+      actor: evt.actor ?? null,
+      ip: evt.ip ?? null,
+      ua: evt.ua ?? null,
+      meta: evt.meta ?? null,
     };
 
     const events = await readAll();
@@ -36,22 +63,54 @@ export async function logAdminEvent(evt: Omit<AdminAuditEvent, "ts">) {
     // newest first
     events.unshift(full);
 
-    // cap size
-    if (events.length > MAX_EVENTS) events.length = MAX_EVENTS;
+    if (events.length > MAX_EVENTS) {
+      events.length = MAX_EVENTS;
+    }
 
     await redis.set(KEY, events);
   } catch (err) {
-    // Audit logging must never break auth flows
     console.warn("[adminAudit] log failed:", err);
   }
 }
 
-export async function getAuditEvents(limit = 50): Promise<AdminAuditEvent[]> {
+/**
+ * Retrieve recent audit events.
+ */
+export async function getAuditEvents(
+  limit = 50
+): Promise<AdminAuditEvent[]> {
   try {
     const events = await readAll();
     return events.slice(0, Math.max(0, limit));
   } catch (err) {
-    console.warn("[adminAudit] read failed:", err);
+    console.warn("[adminAudit] get failed:", err);
     return [];
+  }
+}
+
+export async function countAuditEventsByAction(
+  action: string,
+  sinceTs?: number
+): Promise<number> {
+  try {
+    const events = await readAll();
+    return events.filter(
+      (e) => e.action === action && (sinceTs ? e.ts >= sinceTs : true)
+    ).length;
+  } catch (err) {
+    console.warn("[adminAudit] count failed:", err);
+    return 0;
+  }
+}
+
+export async function getLatestAuditEventByAction(
+  action: string
+): Promise<AdminAuditEvent | null> {
+  try {
+    const events = await readAll();
+    return events.find((e) => e.action === action) ?? null;
+  } catch (err) {
+    console.warn("[adminAudit] latest failed:", err);
+    return null;
   }
 }

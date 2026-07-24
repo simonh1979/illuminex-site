@@ -58,8 +58,7 @@ export async function GET(req: NextRequest) {
   refresh_token: tokenData.refresh_token,
   token_type: tokenData.token_type,
   expires_in: tokenData.expires_in,
-  api: tokenData.api,
-  created_at: Date.now(),
+    created_at: Date.now(),
 });
 
 console.log("JobAdder OAuth Success: tokens saved to Redis");

@@ -22,7 +22,7 @@ export async function GET() {
         ok: true,
         message: "JobAdder connected",
         tokenPreview: tokens.access_token.slice(0, 8) + "…",
-        apiBase: tokens.api,
+        apiBase: process.env.JOBADDER_API_BASE ?? null,
         expiresIn: tokens.expires_in,
         createdAt: tokens.created_at,
       },

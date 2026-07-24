@@ -2,20 +2,36 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
-export default function Admin2FAPage({
-  searchParams,
-}: {
-  searchParams?: { error?: string };
-}) {
-  const showError = Boolean(searchParams?.error);
+export default function Admin2FAPage() {
+  const searchParams = useSearchParams();
+  const error = searchParams.get("error");
   const [capsOn, setCapsOn] = useState(false);
 
   function handleKeyEvent(e: React.KeyboardEvent<HTMLInputElement>) {
     setCapsOn(e.getModifierState("CapsLock"));
   }
+
+  function getErrorMessage(code: string | null) {
+    if (code === "server") {
+      return "Authentication service unavailable. Please try again.";
+    }
+
+    if (code === "expired") {
+      return "Your login session expired. Please sign in again.";
+    }
+
+    if (code === "1") {
+      return "Incorrect verification code.";
+    }
+
+    return null;
+  }
+
+  const errorMessage = getErrorMessage(error);
 
   return (
     <div style={{ display: "grid", gap: 16 }}>
@@ -26,7 +42,7 @@ export default function Admin2FAPage({
         </p>
       </div>
 
-      {showError && (
+      {errorMessage && (
         <div
           style={{
             padding: 12,
@@ -35,13 +51,14 @@ export default function Admin2FAPage({
             background: "rgba(255,50,50,0.12)",
           }}
         >
-          ❌ Incorrect code.
+          ❌ {errorMessage}
         </div>
       )}
 
       <form
         action="/api/admin/2fa/verify"
         method="post"
+        autoComplete="off"
         style={{ display: "grid", gap: 12, maxWidth: 420 }}
       >
         <div className="apply-field">
@@ -49,8 +66,14 @@ export default function Admin2FAPage({
           <input
             id="code"
             name="code"
+            type="text"
             inputMode="numeric"
             pattern="[0-9]{6}"
+            maxLength={6}
+            autoComplete="off"
+            autoCorrect="off"
+            autoCapitalize="off"
+            spellCheck={false}
             required
             onKeyUp={handleKeyEvent}
             onKeyDown={handleKeyEvent}

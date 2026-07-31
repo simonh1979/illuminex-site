@@ -447,6 +447,15 @@ export async function POST(req: Request) {
     const { firstName, surname } =
       splitFullName(fullName);
 
+    const firefishEmailLogBcc =
+      process.env.FIREFISH_EMAIL_LOG_BCC?.trim();
+
+    if (!firefishEmailLogBcc) {
+      throw new Error(
+        "FIREFISH_EMAIL_LOG_BCC is not set on the server."
+      );
+    }
+
     const existingCandidate =
       await findCandidateByExactEmail(email);
 
@@ -581,6 +590,7 @@ Attached: ${file.name} (${file.type}, ${
     await transport.sendMail({
   from: fromAddress(),
   to: email,
+  bcc: firefishEmailLogBcc,
   replyTo: companyRecipient,
   subject:
     "We’ve received your CV — Illuminex Consultancy",
@@ -628,6 +638,7 @@ Illuminex Consultancy
         companyNotificationCc:
           companyCc || null,
         candidateConfirmationSent: true,
+        candidateConfirmationLoggedToFirefish: true,
         emailMarketing: false,
         smsMarketing: false,
       },

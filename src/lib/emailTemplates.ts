@@ -21,10 +21,6 @@ const EMAIL_BRAND = {
   companyName: "Illuminex Consultancy",
   legalCompanyName: "Illuminex Limited",
 
-  // UPDATE THE MAIN OFFICE NUMBER HERE.
-  telephoneDisplay: "01756 XXXXXX",
-  telephoneHref: "+441756XXXXXX",
-
   websiteDisplay: "www.illuminex.co.uk",
   websiteUrl: "https://www.illuminex.co.uk",
 
@@ -34,8 +30,6 @@ const EMAIL_BRAND = {
 
   logoUrl:
     "https://www.illuminex.co.uk/email-signature/logo.png",
-  phoneIconUrl:
-    "https://www.illuminex.co.uk/email-signature/phone.png",
   mobileIconUrl:
     "https://www.illuminex.co.uk/email-signature/mobile.png",
   emailIconUrl:
@@ -352,15 +346,6 @@ export function buildIlluminexEmailSignature(
                       "
                     >
                       <tbody>
-                        ${buildSignatureContactRow({
-                          iconUrl: EMAIL_BRAND.phoneIconUrl,
-                          iconAlt: "Telephone",
-                          href: `tel:${EMAIL_BRAND.telephoneHref}`,
-                          text: EMAIL_BRAND.telephoneDisplay,
-                          underline: false,
-                          bottomPadding: 8,
-                        })}
-
                         ${mobileRow}
 
                         ${buildSignatureContactRow({

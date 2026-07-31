@@ -210,6 +210,33 @@ async function addCandidateActivityNote(
   );
 }
 
+type CandidateActivityNoteResult = {
+  created: boolean;
+  error: string | null;
+};
+
+async function tryAddCandidateActivityNote(
+  candidateRef: number,
+  note: string
+): Promise<CandidateActivityNoteResult> {
+  try {
+    await addCandidateActivityNote(candidateRef, note);
+
+    return {
+      created: true,
+      error: null,
+    };
+  } catch (error: unknown) {
+    return {
+      created: false,
+      error:
+        error instanceof Error
+          ? error.message
+          : "Unknown Firefish activity-note error.",
+    };
+  }
+}
+
 export async function POST(req: Request) {
   try {
     if (!isMultipartRequest(req)) {
@@ -447,15 +474,6 @@ export async function POST(req: Request) {
     const { firstName, surname } =
       splitFullName(fullName);
 
-    const firefishEmailLogBcc =
-      process.env.FIREFISH_EMAIL_LOG_BCC?.trim();
-
-    if (!firefishEmailLogBcc) {
-      throw new Error(
-        "FIREFISH_EMAIL_LOG_BCC is not set on the server."
-      );
-    }
-
     const existingCandidate =
       await findCandidateByExactEmail(email);
 
@@ -587,17 +605,10 @@ Attached: ${file.name} (${file.type}, ${
       ],
     });
 
-    await transport.sendMail({
-  from: fromAddress(),
-  to: email,
-  bcc: firefishEmailLogBcc,
-  replyTo: companyRecipient,
-  subject:
-    "We’ve received your CV — Illuminex Consultancy",
-  html: buildCandidateConfirmationEmail({
-    firstName,
-  }),
-  text: `Hello ${firstName},
+    const candidateConfirmationSubject =
+      "We’ve received your CV — Illuminex Consultancy";
+
+    const candidateConfirmationText = `Hello ${firstName},
 
 Thank you for registering your CV with Illuminex Consultancy.
 
@@ -614,8 +625,79 @@ https://www.illuminex.co.uk/privacy
 Kind regards,
 
 Illuminex Consultancy
-`,
+`;
+
+    await transport.sendMail({
+      from: fromAddress(),
+      to: email,
+      replyTo: companyRecipient,
+      subject: candidateConfirmationSubject,
+      html: buildCandidateConfirmationEmail({
+        firstName,
+      }),
+      text: candidateConfirmationText,
     });
+
+    const candidateConfirmationAcceptedAt =
+      formatSubmissionDate();
+
+    const candidateConfirmationActivityResult =
+      await tryAddCandidateActivityNote(
+        candidateRef,
+        `CANDIDATE CONFIRMATION EMAIL ACCEPTED FOR DELIVERY
+
+Microsoft Graph accepted the Illuminex website request to send this email through Microsoft 365. This records successful submission to Microsoft 365, not guaranteed final inbox delivery.
+
+From:
+${fromAddress()}
+
+To:
+${email}
+
+Subject:
+${candidateConfirmationSubject}
+
+Accepted by Microsoft 365:
+${candidateConfirmationAcceptedAt}
+
+Plain-text email content:
+${candidateConfirmationText}`
+      );
+
+    if (!candidateConfirmationActivityResult.created) {
+      console.error(
+        "Candidate confirmation email was accepted by Microsoft 365, but the Firefish activity note could not be created.",
+        {
+          candidateRef,
+          error: candidateConfirmationActivityResult.error,
+        }
+      );
+
+      try {
+        await transport.sendMail({
+          from: fromAddress(),
+          to: companyRecipient,
+          cc: companyCc,
+          replyTo: email,
+          subject: `Action required: Firefish email audit note failed - ${fullName}`,
+          text: `The candidate confirmation email for ${fullName} (${email}) was accepted by Microsoft 365, but its Firefish activity note could not be created.
+
+Firefish candidate reference: ${candidateRef}
+
+Error: ${
+            candidateConfirmationActivityResult.error ||
+            "Unknown Firefish activity-note error."
+          }
+
+Please add a manual note to the candidate record confirming that the website acknowledgement was submitted.`,
+        });
+      } catch (alertError: unknown) {
+        console.error(
+          "The Firefish activity-note failure alert email could not be sent.",
+          alertError
+        );
+      }
+    }
 
     await logAdminEvent({
       action: "candidate.register",
@@ -638,7 +720,10 @@ Illuminex Consultancy
         companyNotificationCc:
           companyCc || null,
         candidateConfirmationSent: true,
-        candidateConfirmationLoggedToFirefish: true,
+        candidateConfirmationActivityNoteCreated:
+          candidateConfirmationActivityResult.created,
+        candidateConfirmationActivityNoteError:
+          candidateConfirmationActivityResult.error,
         emailMarketing: false,
         smsMarketing: false,
       },
@@ -651,6 +736,8 @@ Illuminex Consultancy
         mode: candidateMode,
         cvUploaded: true,
         activityNoteCreated: true,
+        candidateConfirmationActivityNoteCreated:
+          candidateConfirmationActivityResult.created,
       },
       notifications: {
         company: true,

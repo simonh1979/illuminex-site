@@ -644,9 +644,9 @@ Illuminex Consultancy
     const candidateConfirmationActivityResult =
       await tryAddCandidateActivityNote(
         candidateRef,
-        `CANDIDATE CONFIRMATION EMAIL ACCEPTED FOR DELIVERY
+        `CANDIDATE REGISTRATION ACKNOWLEDGEMENT SENT
 
-Microsoft Graph accepted the Illuminex website request to send this email through Microsoft 365. This records successful submission to Microsoft 365, not guaranteed final inbox delivery.
+The Illuminex website successfully submitted the candidate registration acknowledgement through Microsoft 365.
 
 From:
 ${fromAddress()}
@@ -657,10 +657,10 @@ ${email}
 Subject:
 ${candidateConfirmationSubject}
 
-Accepted by Microsoft 365:
+Submitted:
 ${candidateConfirmationAcceptedAt}
 
-Plain-text email content:
+Email content:
 ${candidateConfirmationText}`
       );
 

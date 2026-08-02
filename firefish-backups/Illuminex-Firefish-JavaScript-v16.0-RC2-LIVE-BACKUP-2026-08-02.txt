@@ -1,0 +1,2364 @@
+<script>
+/*
+ * ILLUMINEX FIREFISH ENHANCEMENTS v16.0 RC2
+ *
+ * Candidate journey:
+ * - Removes duplicate header Login/Register controls on job pages
+ * - Keeps the contextual application sign-in link
+ * - Adds concise candidate guidance
+ * - Redirects Candidate Privacy Notice to the verified preview page
+ * - Preserves the native Firefish agreement checkbox and validation
+ * - Keeps Firefish's native Invalid Phone Number message visible until a valid UK mobile is entered
+ * - Keeps the candidate profile icon
+ * - Repairs logout without validating unfinished forms
+ *
+ * Application journey:
+ * - Renames Cancel to Cancel Application
+ * - Redirects Cancel Application to Illuminex Live Jobs
+ * - Adds the More Opportunities link
+ * - Redirects success-page More Vacancies to Illuminex Live Jobs
+ *
+ * Social links:
+ * - Removes Facebook and X
+ * - Directs LinkedIn to Illuminex Consultancy
+ */
+
+(function () {
+    "use strict";
+
+    if (window.__illuminexEnhancementsV160RC2Installed) {
+        return;
+    }
+
+    window.__illuminexEnhancementsV160RC2Installed = true;
+
+    var LIVE_JOBS_URL =
+        "https://illuminex-site.vercel.app/live-jobs";
+
+    var PRIVACY_URL =
+        "https://illuminex-site.vercel.app/privacy";
+
+    var CANDIDATE_PRIVACY_URL =
+        "https://illuminex-site.vercel.app/candidate-privacy-notice";
+
+    var LINKEDIN_URL =
+        "https://www.linkedin.com/company/illuminexconsultancy";
+
+    var LOGOUT_SELECTOR =
+        'a[id$="_Header_lnkLogout"], ' +
+        'a[href*="Header$lnkLogout"], ' +
+        'a[href*="lnkLogout"]';
+
+    var HEADER_AUTH_SELECTOR =
+        'a[id*="_Header_"], ' +
+        'button[id*="_Header_"], ' +
+        'input[id*="_Header_"]';
+
+    var MOBILE_NUMBER_SELECTOR =
+        'input[id$="_txtMobileNumber5"], ' +
+        'input[name$="$txtMobileNumber5"], ' +
+        'input[id*="txtMobileNumber"], ' +
+        'input[name*="txtMobileNumber"]';
+
+    var NATIVE_MOBILE_ERROR_TEXT =
+        "invalid phone number";
+
+    var DEFAULT_LOGOUT_TARGET =
+        "ctl02$ctl00$ctl00$Header$lnkLogout";
+
+    var initialiseScheduled = false;
+
+
+    /* ======================================================
+       PAGE DETECTION
+       ====================================================== */
+
+    function isJobJourneyPage() {
+        return /^\/job\//i.test(
+            window.location.pathname
+        );
+    }
+
+    function isApplicationPage() {
+        return (
+            /\/apply\.aspx/i.test(
+                window.location.pathname
+            ) ||
+            Boolean(
+                document.querySelector(
+                    ".advertApplicationArea, " +
+                    ".candidateAdvertApplicationArea, " +
+                    ".registrationArea"
+                )
+            )
+        );
+    }
+
+
+    /* ======================================================
+       CV UPLOAD MODAL — VIEWPORT CENTRING AND ENTER KEY
+       ====================================================== */
+
+    function installCvUploadModalStyles() {
+        if (
+            document.getElementById(
+                "illuminex-cv-upload-modal-styles"
+            )
+        ) {
+            return;
+        }
+
+        var style =
+            document.createElement("style");
+
+        style.id =
+            "illuminex-cv-upload-modal-styles";
+
+        style.textContent =
+            "body.illuminex-cv-upload-modal-open " +
+            ":is(" +
+                ".pageWrapper," +
+                ".mainContent," +
+                ".mainContent>.container," +
+                ".advertApplicationArea," +
+                ".candidateAdvertApplicationArea," +
+                ".registrationArea," +
+                ".registrationPage" +
+            "){" +
+                "transform:none!important;" +
+                "filter:none!important;" +
+                "perspective:none!important;" +
+                "contain:none!important;" +
+                "will-change:auto!important;" +
+            "}" +
+
+            "body.illuminex-cv-upload-modal-open " +
+            ".advertApplicationArea{" +
+                "backdrop-filter:none!important;" +
+                "-webkit-backdrop-filter:none!important;" +
+            "}" +
+
+            "body.illuminex-cv-upload-modal-open " +
+            ".modalBackground{" +
+                "position:fixed!important;" +
+                "inset:0!important;" +
+                "width:100vw!important;" +
+                "height:100vh!important;" +
+                "height:100dvh!important;" +
+                "min-height:100vh!important;" +
+                "min-height:100dvh!important;" +
+                "margin:0!important;" +
+                "z-index:10000!important;" +
+            "}" +
+
+            "body.illuminex-cv-upload-modal-open " +
+            ".uplMdlPnl{" +
+                "position:fixed!important;" +
+                "top:50%!important;" +
+                "left:50%!important;" +
+                "right:auto!important;" +
+                "bottom:auto!important;" +
+                "width:min(420px,calc(100vw - 32px))!important;" +
+                "max-width:420px!important;" +
+                "max-height:calc(100vh - 32px)!important;" +
+                "max-height:calc(100dvh - 32px)!important;" +
+                "margin:0!important;" +
+                "transform:translate(-50%,-50%)!important;" +
+                "overflow:hidden!important;" +
+                "z-index:10001!important;" +
+            "}" +
+
+            "body.illuminex-cv-upload-modal-open " +
+            ".uplMdlPnl .mdl-body{" +
+                "max-height:calc(100vh - 96px)!important;" +
+                "max-height:calc(100dvh - 96px)!important;" +
+                "overflow-x:hidden!important;" +
+                "overflow-y:auto!important;" +
+                "overscroll-behavior:contain!important;" +
+                "touch-action:pan-y!important;" +
+                "-webkit-overflow-scrolling:touch!important;" +
+            "}" +
+
+            "@media(max-width:600px){" +
+                "body.illuminex-cv-upload-modal-open " +
+                ".uplMdlPnl{" +
+                    "top:50%!important;" +
+                    "left:50%!important;" +
+                    "right:auto!important;" +
+                    "bottom:auto!important;" +
+                    "width:calc(100vw - 20px)!important;" +
+                    "max-width:420px!important;" +
+                    "max-height:calc(100vh - 20px)!important;" +
+                    "max-height:calc(100dvh - 20px)!important;" +
+                    "margin:0!important;" +
+                    "transform:translate(-50%,-50%)!important;" +
+                    "border-radius:16px!important;" +
+                "}" +
+
+                "body.illuminex-cv-upload-modal-open " +
+                ".uplMdlPnl .mdl-body{" +
+                    "max-height:calc(100vh - 84px)!important;" +
+                    "max-height:calc(100dvh - 84px)!important;" +
+                "}" +
+            "}";
+
+        document.head.appendChild(style);
+    }
+
+    function isVisibleElement(element) {
+        if (!element) {
+            return false;
+        }
+
+        var styles =
+            window.getComputedStyle(element);
+
+        var rect =
+            element.getBoundingClientRect();
+
+        return (
+            styles.display !== "none" &&
+            styles.visibility !== "hidden" &&
+            Number(styles.opacity || "1") !== 0 &&
+            rect.width > 0 &&
+            rect.height > 0
+        );
+    }
+
+    function findVisibleCvUploadModal() {
+        var modals =
+            document.querySelectorAll(
+                ".uplMdlPnl"
+            );
+
+        var index;
+
+        for (
+            index = 0;
+            index < modals.length;
+            index += 1
+        ) {
+            if (
+                isVisibleElement(
+                    modals[index]
+                )
+            ) {
+                return modals[index];
+            }
+        }
+
+        return null;
+    }
+
+    function updateCvUploadModalState() {
+        if (!document.body) {
+            return;
+        }
+
+        var modal =
+            findVisibleCvUploadModal();
+
+        document.body.classList.toggle(
+            "illuminex-cv-upload-modal-open",
+            Boolean(modal)
+        );
+
+        if (modal) {
+            modal.setAttribute(
+                "role",
+                "dialog"
+            );
+
+            modal.setAttribute(
+                "aria-modal",
+                "true"
+            );
+        }
+    }
+
+    function findCvUploadAttachControl(
+        modal
+    ) {
+        if (!modal) {
+            return null;
+        }
+
+        return modal.querySelector(
+            ".UploadButtonArea " +
+            "input[type='submit'], " +
+            ".UploadButtonArea " +
+            "input[type='button'], " +
+            ".UploadButtonArea button, " +
+            ".UploadButtonArea a"
+        );
+    }
+
+    function submitCvUploadWithEnter(event) {
+        if (
+            event.key !== "Enter" ||
+            event.defaultPrevented
+        ) {
+            return;
+        }
+
+        var modal =
+            findVisibleCvUploadModal();
+
+        if (!modal) {
+            return;
+        }
+
+        var attachControl =
+            findCvUploadAttachControl(
+                modal
+            );
+
+        if (!attachControl) {
+            return;
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+
+        attachControl.click();
+    }
+
+
+    /* ======================================================
+       APPLICATION GUIDANCE STYLING
+       ====================================================== */
+
+    function installGuidanceStyles() {
+        if (
+            document.getElementById(
+                "illuminex-application-guidance-styles"
+            )
+        ) {
+            return;
+        }
+
+        var style =
+            document.createElement("style");
+
+        style.id =
+            "illuminex-application-guidance-styles";
+
+        style.textContent =
+            "#illuminex-application-guidance{" +
+                "display:block!important;" +
+                "width:100%!important;" +
+                "max-width:none!important;" +
+                "margin:0 0 24px!important;" +
+                "padding:0!important;" +
+                "font-family:'Inter',Arial,sans-serif!important;" +
+                "font-size:16px!important;" +
+                "font-weight:400!important;" +
+                "line-height:1.6!important;" +
+                "letter-spacing:0!important;" +
+                "color:#ffffff!important;" +
+            "}" +
+
+            "#illuminex-application-guidance p{" +
+                "margin:0!important;" +
+                "padding:0!important;" +
+                "font-family:'Inter',Arial,sans-serif!important;" +
+                "font-size:16px!important;" +
+                "font-weight:400!important;" +
+                "line-height:1.6!important;" +
+                "letter-spacing:0!important;" +
+                "color:#ffffff!important;" +
+            "}" +
+
+            "#illuminex-application-guidance a," +
+            "#illuminex-application-guidance a:visited{" +
+                "color:#ff9f1a!important;" +
+                "font-family:'Inter',Arial,sans-serif!important;" +
+                "font-size:inherit!important;" +
+                "font-weight:700!important;" +
+                "text-decoration:none!important;" +
+            "}" +
+
+            "#illuminex-application-guidance a:hover," +
+            "#illuminex-application-guidance a:focus{" +
+                "color:#ffb347!important;" +
+                "text-decoration:underline!important;" +
+                "text-underline-offset:3px!important;" +
+            "}" +
+
+            "@media(max-width:600px){" +
+                "#illuminex-application-guidance," +
+                "#illuminex-application-guidance p{" +
+                    "font-size:15px!important;" +
+                    "line-height:1.55!important;" +
+                "}" +
+            "}";
+
+        document.head.appendChild(style);
+    }
+
+
+    /* ======================================================
+       APPLICATION GUIDANCE
+       ====================================================== */
+
+    function updateApplicationLoginMessage() {
+        if (!isApplicationPage()) {
+            return;
+        }
+
+        var message =
+            document.querySelector(
+                ".ff-advert-login-info"
+            );
+
+        if (!message) {
+            return;
+        }
+
+        if (
+            message.querySelector(
+                "#illuminex-application-guidance"
+            )
+        ) {
+            return;
+        }
+
+        var signInLink =
+            message.querySelector("a");
+
+        if (!signInLink) {
+            return;
+        }
+
+        /*
+         * Preserve the original Firefish sign-in link and
+         * its existing login behaviour.
+         */
+        signInLink.textContent =
+            "sign in";
+
+        var guidance =
+            document.createElement("div");
+
+        guidance.id =
+            "illuminex-application-guidance";
+
+        var paragraph =
+            document.createElement("p");
+
+        paragraph.appendChild(
+            document.createTextNode(
+                "Existing candidates can "
+            )
+        );
+
+        paragraph.appendChild(
+            signInLink
+        );
+
+        paragraph.appendChild(
+            document.createTextNode(
+                " to continue and pre-fill their details. New applicants should complete the form below and choose a password to create their candidate profile. Your application, CV and personal information will be handled confidentially in line with our "
+            )
+        );
+
+        var privacyLink =
+            document.createElement("a");
+
+        privacyLink.href =
+            PRIVACY_URL;
+
+        privacyLink.textContent =
+            "Privacy Policy";
+
+        privacyLink.setAttribute(
+            "target",
+            "_blank"
+        );
+
+        privacyLink.setAttribute(
+            "rel",
+            "noopener noreferrer"
+        );
+
+        privacyLink.setAttribute(
+            "title",
+            "Read the Illuminex Consultancy Privacy Policy"
+        );
+
+        privacyLink.setAttribute(
+            "aria-label",
+            "Read the Illuminex Consultancy Privacy Policy"
+        );
+
+        paragraph.appendChild(
+            privacyLink
+        );
+
+        paragraph.appendChild(
+            document.createTextNode(".")
+        );
+
+        guidance.appendChild(
+            paragraph
+        );
+
+        while (message.firstChild) {
+            message.removeChild(
+                message.firstChild
+            );
+        }
+
+        message.appendChild(
+            guidance
+        );
+    }
+
+
+    /* ======================================================
+       APPLICATION VALIDATION ERROR WEIGHT
+       ====================================================== */
+
+    function installApplicationErrorWeightStyles() {
+        if (!isApplicationPage()) {
+            return;
+        }
+
+        if (
+            document.getElementById(
+                "illuminex-application-error-weight-styles"
+            )
+        ) {
+            return;
+        }
+
+        var style =
+            document.createElement("style");
+
+        style.id =
+            "illuminex-application-error-weight-styles";
+
+        style.textContent =
+            ".advertApplicationArea " +
+            ".registrationArea .errorText," +
+            ".advertApplicationArea " +
+            ".registrationArea .errorTextBold," +
+            ".advertApplicationArea " +
+            "[data-illuminex-login-error='true']," +
+            ".advertApplicationArea " +
+            "[data-illuminex-native-mobile-error='true']{" +
+                "font-weight:600!important;" +
+            "}";
+
+        document.head.appendChild(style);
+    }
+
+
+    /* ======================================================
+       EXISTING-CANDIDATE LOGIN ERROR STYLING
+       ====================================================== */
+
+    function styleLoginFailureMessage() {
+        if (!isApplicationPage()) {
+            return;
+        }
+
+        var loginModal =
+            document.querySelector(
+                'div[id$="_logIn1"]'
+            );
+
+        if (!loginModal) {
+            return;
+        }
+
+        loginModal.querySelectorAll(
+            ".mdl-body div"
+        ).forEach(function (message) {
+            var messageText =
+                String(
+                    message.textContent || ""
+                )
+                    .replace(/\s+/g, " " )
+                    .trim()
+                    .toLowerCase();
+
+            if (
+                messageText !==
+                    "your login was unsuccessful. please try again."
+            ) {
+                return;
+            }
+
+            if (
+                message.getAttribute(
+                    "data-illuminex-login-error"
+                ) === "true"
+            ) {
+                return;
+            }
+
+            message.setAttribute(
+                "data-illuminex-login-error",
+                "true"
+            );
+
+            message.setAttribute(
+                "role",
+                "alert"
+            );
+
+            message.setAttribute(
+                "aria-live",
+                "polite"
+            );
+
+            message.style.setProperty(
+                "color",
+                "#ff2b2b",
+                "important"
+            );
+
+            message.style.setProperty(
+                "font-weight",
+                "600",
+                "important"
+            );
+        });
+    }
+
+
+    /* ======================================================
+       NEW-APPLICANT PASSWORD GUIDANCE
+       ====================================================== */
+
+    function addNewApplicantPasswordGuidance() {
+        if (!isApplicationPage()) {
+            return;
+        }
+
+        var passwordField =
+            document.querySelector(
+                'input[id$="_txtPassword3"], ' +
+                'input[name$="$txtPassword3"]'
+            );
+
+        if (!passwordField) {
+            return;
+        }
+
+        var existingGuidance =
+            document.getElementById(
+                "illuminex-password-guidance"
+            );
+
+        if (existingGuidance) {
+            return;
+        }
+
+        var guidance =
+            document.createElement("div");
+
+        guidance.id =
+            "illuminex-password-guidance";
+
+        guidance.setAttribute(
+            "role",
+            "note"
+        );
+
+        guidance.textContent =
+            "Password requirements: use at least 8 characters and include at least 3 of the following: uppercase letters, lowercase letters, numbers and symbols. Spaces are not allowed.";
+
+        guidance.style.setProperty(
+            "display",
+            "block",
+            "important"
+        );
+
+        guidance.style.setProperty(
+            "width",
+            "100%",
+            "important"
+        );
+
+        guidance.style.setProperty(
+            "margin",
+            "8px 0 0",
+            "important"
+        );
+
+        guidance.style.setProperty(
+            "font-family",
+            "Inter, Arial, sans-serif",
+            "important"
+        );
+
+        guidance.style.setProperty(
+            "font-size",
+            "13px",
+            "important"
+        );
+
+        guidance.style.setProperty(
+            "font-weight",
+            "600",
+            "important"
+        );
+
+        guidance.style.setProperty(
+            "line-height",
+            "1.45",
+            "important"
+        );
+
+        guidance.style.setProperty(
+            "color",
+            "#ffffff",
+            "important"
+        );
+
+        var describedBy =
+            (passwordField.getAttribute(
+                "aria-describedby"
+            ) || "")
+                .split(/\s+/)
+                .filter(Boolean);
+
+        if (
+            describedBy.indexOf(
+                guidance.id
+            ) === -1
+        ) {
+            describedBy.push(
+                guidance.id
+            );
+        }
+
+        passwordField.setAttribute(
+            "aria-describedby",
+            describedBy.join(" ")
+        );
+
+        var container =
+            passwordField.parentElement;
+
+        if (container) {
+            container.appendChild(
+                guidance
+            );
+        }
+    }
+
+
+    /* ======================================================
+       UK MOBILE NUMBER VALIDATION
+       ====================================================== */
+
+    function installMobileNumberValidationStyles() {
+        if (
+            document.getElementById(
+                "illuminex-mobile-number-validation-styles"
+            )
+        ) {
+            return;
+        }
+
+        var style =
+            document.createElement("style");
+
+        style.id =
+            "illuminex-mobile-number-validation-styles";
+
+        style.textContent =
+            "[data-illuminex-native-mobile-error='true']{" +
+                "color:#ff2b2b!important;" +
+                "font-weight:600!important;" +
+            "}" +
+
+            "input[data-illuminex-mobile-number='true']" +
+            "[aria-invalid='true']{" +
+                "border-color:#ff2b2b!important;" +
+                "box-shadow:0 0 0 2px rgba(255,43,43,.18)!important;" +
+            "}";
+
+        document.head.appendChild(style);
+    }
+
+    function findVisibleMobileNumberField() {
+        var fields =
+            document.querySelectorAll(
+                MOBILE_NUMBER_SELECTOR
+            );
+
+        var index;
+        var field;
+
+        for (
+            index = 0;
+            index < fields.length;
+            index += 1
+        ) {
+            field = fields[index];
+
+            if (
+                field.type !== "hidden" &&
+                isVisibleElement(field)
+            ) {
+                return field;
+            }
+        }
+
+        return null;
+    }
+
+    function normaliseUkMobileNumber(value) {
+        return String(value || "")
+            .trim()
+            .replace(/[\s().-]/g, "");
+    }
+
+    function isValidUkMobileNumber(value) {
+        var raw =
+            String(value || "").trim();
+
+        if (
+            !raw ||
+            !/^[0-9+\s().-]+$/.test(raw)
+        ) {
+            return false;
+        }
+
+        var normalised =
+            normaliseUkMobileNumber(raw);
+
+        return (
+            /^07\d{9}$/.test(normalised) ||
+            /^\+447\d{9}$/.test(normalised) ||
+            /^00447\d{9}$/.test(normalised)
+        );
+    }
+
+    function normaliseValidationMessage(value) {
+        return String(value || "")
+            .replace(/\s+/g, " ")
+            .trim()
+            .toLowerCase();
+    }
+
+    function isNativeMobileNumberError(
+        element
+    ) {
+        if (
+            !element ||
+            element.tagName === "INPUT"
+        ) {
+            return false;
+        }
+
+        var text =
+            normaliseValidationMessage(
+                element.textContent
+            );
+
+        return (
+            text.indexOf(
+                NATIVE_MOBILE_ERROR_TEXT
+            ) !== -1 &&
+            text.length <= 80
+        );
+    }
+
+    function findNativeMobileNumberError(
+        field
+    ) {
+        if (!field) {
+            return null;
+        }
+
+        var localRoot =
+            field.closest(
+                ".form-group, " +
+                ".form-row, " +
+                ".field, " +
+                ".registrationField, " +
+                ".registrationRow, " +
+                ".inputArea, " +
+                ".control-group, " +
+                "li, td"
+            ) ||
+            field.parentElement;
+
+        var selectors =
+            "span, label, p, small, em, strong, div";
+
+        var candidates;
+        var index;
+
+        if (localRoot) {
+            candidates =
+                localRoot.querySelectorAll(
+                    selectors
+                );
+
+            for (
+                index = 0;
+                index < candidates.length;
+                index += 1
+            ) {
+                if (
+                    isNativeMobileNumberError(
+                        candidates[index]
+                    )
+                ) {
+                    return candidates[index];
+                }
+            }
+        }
+
+        candidates =
+            document.querySelectorAll(
+                selectors
+            );
+
+        for (
+            index = 0;
+            index < candidates.length;
+            index += 1
+        ) {
+            if (
+                isNativeMobileNumberError(
+                    candidates[index]
+                )
+            ) {
+                return candidates[index];
+            }
+        }
+
+        return null;
+    }
+
+    function showNativeMobileNumberError(
+        field
+    ) {
+        var error =
+            findNativeMobileNumberError(
+                field
+            );
+
+        field.setAttribute(
+            "aria-invalid",
+            "true"
+        );
+
+        if (!error) {
+            return;
+        }
+
+        error.setAttribute(
+            "data-illuminex-native-mobile-error",
+            "true"
+        );
+
+        error.setAttribute(
+            "role",
+            "alert"
+        );
+
+        error.setAttribute(
+            "aria-live",
+            "polite"
+        );
+
+        error.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+        error.hidden = false;
+
+        error.style.setProperty(
+            "display",
+            "block",
+            "important"
+        );
+
+        error.style.setProperty(
+            "visibility",
+            "visible",
+            "important"
+        );
+
+        error.style.setProperty(
+            "opacity",
+            "1",
+            "important"
+        );
+    }
+
+    function hideNativeMobileNumberError(
+        field
+    ) {
+        var error =
+            findNativeMobileNumberError(
+                field
+            );
+
+        field.removeAttribute(
+            "aria-invalid"
+        );
+
+        if (!error) {
+            return;
+        }
+
+        error.setAttribute(
+            "data-illuminex-native-mobile-error",
+            "true"
+        );
+
+        error.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+        error.hidden = true;
+
+        error.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
+    }
+
+    function validateMobileNumber(
+        showError
+    ) {
+        var field =
+            findVisibleMobileNumberField();
+
+        if (!field) {
+            return true;
+        }
+
+        if (
+            isValidUkMobileNumber(
+                field.value
+            )
+        ) {
+            hideNativeMobileNumberError(
+                field
+            );
+
+            return true;
+        }
+
+        if (showError) {
+            showNativeMobileNumberError(
+                field
+            );
+        }
+
+        return false;
+    }
+
+    function refreshMobileNumberValidation(
+        field
+    ) {
+        window.setTimeout(
+            function () {
+                if (
+                    field.dataset
+                        .illuminexMobileValidationActive ===
+                        "true"
+                ) {
+                    validateMobileNumber(
+                        true
+                    );
+                }
+            },
+            0
+        );
+    }
+
+    function focusInvalidMobileNumber() {
+        var field =
+            findVisibleMobileNumberField();
+
+        if (!field) {
+            return;
+        }
+
+        field.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        });
+
+        field.focus();
+    }
+
+    function bindMobileNumberValidation() {
+        if (!isApplicationPage()) {
+            return;
+        }
+
+        var field =
+            findVisibleMobileNumberField();
+
+        if (
+            !field ||
+            field.dataset
+                .illuminexMobileValidationBound ===
+                "true"
+        ) {
+            return;
+        }
+
+        field.dataset
+            .illuminexMobileValidationBound =
+            "true";
+
+        field.setAttribute(
+            "data-illuminex-mobile-number",
+            "true"
+        );
+
+        field.addEventListener(
+            "input",
+            function () {
+                field.dataset
+                    .illuminexMobileValidationActive =
+                    "true";
+
+                refreshMobileNumberValidation(
+                    field
+                );
+            },
+            true
+        );
+
+        field.addEventListener(
+            "change",
+            function () {
+                field.dataset
+                    .illuminexMobileValidationActive =
+                    "true";
+
+                refreshMobileNumberValidation(
+                    field
+                );
+            },
+            true
+        );
+
+        field.addEventListener(
+            "blur",
+            function () {
+                field.dataset
+                    .illuminexMobileValidationActive =
+                    "true";
+
+                refreshMobileNumberValidation(
+                    field
+                );
+            },
+            true
+        );
+    }
+
+    function isApplicationSubmitControl(
+        control
+    ) {
+        if (
+            !control ||
+            !isApplicationPage()
+        ) {
+            return false;
+        }
+
+        var identity =
+            (
+                (control.id || "") + " " +
+                (control.name || "")
+            ).toLowerCase();
+
+        var label =
+            getControlLabel(control);
+
+        return (
+            identity.indexOf(
+                "btnfinish"
+            ) !== -1 ||
+            label === "continue" ||
+            label === "finish" ||
+            label === "submit application"
+        );
+    }
+
+    function blockInvalidMobileNumber(
+        event
+    ) {
+        var field =
+            findVisibleMobileNumberField();
+
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+
+        if (field) {
+            field.dataset
+                .illuminexMobileValidationActive =
+                "true";
+        }
+
+        validateMobileNumber(
+            true
+        );
+
+        focusInvalidMobileNumber();
+    }
+
+    function interceptInvalidMobileNumberClick(
+        event
+    ) {
+        var target =
+            event.target;
+
+        if (
+            !(target instanceof Element)
+        ) {
+            return;
+        }
+
+        var control =
+            target.closest(
+                "input, button, a"
+            );
+
+        if (
+            !isApplicationSubmitControl(
+                control
+            ) ||
+            validateMobileNumber(
+                false
+            )
+        ) {
+            return;
+        }
+
+        blockInvalidMobileNumber(
+            event
+        );
+    }
+
+    function interceptInvalidMobileNumberSubmit(
+        event
+    ) {
+        var registrationArea =
+            document.querySelector(
+                ".registrationArea"
+            );
+
+        var submitSource =
+            event.submitter ||
+            document.activeElement;
+
+        if (
+            !isApplicationPage() ||
+            !registrationArea ||
+            !submitSource ||
+            !registrationArea.contains(
+                submitSource
+            ) ||
+            validateMobileNumber(
+                false
+            )
+        ) {
+            return;
+        }
+
+        blockInvalidMobileNumber(
+            event
+        );
+    }
+
+
+    /* ======================================================
+       CANDIDATE PRIVACY NOTICE LINK
+       ====================================================== */
+
+    function normaliseCandidatePrivacyText(
+        value
+    ) {
+        return String(value || "")
+            .replace(/\s+/g, " ")
+            .trim()
+            .toLowerCase();
+    }
+
+    function isCandidatePrivacyLink(
+        link
+    ) {
+        if (
+            !link ||
+            link.tagName !== "A"
+        ) {
+            return false;
+        }
+
+        var label =
+            normaliseCandidatePrivacyText(
+                link.textContent
+            );
+
+        var href =
+            normaliseCandidatePrivacyText(
+                link.getAttribute("href")
+            );
+
+        return (
+            link.getAttribute(
+                "data-illuminex-candidate-privacy-link"
+            ) === "true" ||
+            label ===
+                "candidate privacy notice" ||
+            label ===
+                "gdpr candidate agreement" ||
+            href.indexOf(
+                "candidate-privacy-notice.aspx"
+            ) !== -1 ||
+            href.indexOf(
+                "gdpr-candidate-agreement"
+            ) !== -1
+        );
+    }
+
+    function updateCandidatePrivacyHeading() {
+        if (
+            !/candidate-privacy-notice\.aspx/i.test(
+                window.location.pathname
+            )
+        ) {
+            return;
+        }
+
+        document.querySelectorAll(
+            "h1, h2, .page-title, .title"
+        ).forEach(function (heading) {
+            var headingText =
+                normaliseCandidatePrivacyText(
+                    heading.textContent
+                );
+
+            if (
+                headingText ===
+                    "gdpr candidate agreement"
+            ) {
+                heading.textContent =
+                    "Candidate Privacy Notice";
+            }
+        });
+
+        document.title =
+            document.title.replace(
+                /GDPR Candidate Agreement/gi,
+                "Candidate Privacy Notice"
+            );
+    }
+
+    function updateCandidatePrivacyLinks() {
+        document.querySelectorAll(
+            "a"
+        ).forEach(function (link) {
+            if (
+                !isCandidatePrivacyLink(link)
+            ) {
+                return;
+            }
+
+            if (
+                link.textContent.trim() !==
+                    "Candidate Privacy Notice"
+            ) {
+                link.textContent =
+                    "Candidate Privacy Notice";
+            }
+
+            if (
+                link.getAttribute("href") !==
+                    CANDIDATE_PRIVACY_URL
+            ) {
+                link.setAttribute(
+                    "href",
+                    CANDIDATE_PRIVACY_URL
+                );
+            }
+
+            if (
+                link.getAttribute("target") !==
+                    "_blank"
+            ) {
+                link.setAttribute(
+                    "target",
+                    "_blank"
+                );
+            }
+
+            if (
+                link.getAttribute("rel") !==
+                    "noopener noreferrer"
+            ) {
+                link.setAttribute(
+                    "rel",
+                    "noopener noreferrer"
+                );
+            }
+
+            link.setAttribute(
+                "data-illuminex-candidate-privacy-link",
+                "true"
+            );
+
+            link.setAttribute(
+                "title",
+                "Read the Illuminex Consultancy Candidate Privacy Notice"
+            );
+
+            link.setAttribute(
+                "aria-label",
+                "Read the Illuminex Consultancy Candidate Privacy Notice in a new tab"
+            );
+
+            if (
+                link.hasAttribute("onclick")
+            ) {
+                link.removeAttribute(
+                    "onclick"
+                );
+            }
+        });
+
+        updateCandidatePrivacyHeading();
+    }
+
+    function interceptCandidatePrivacyLink(
+        event
+    ) {
+        var target =
+            event.target;
+
+        if (
+            !(target instanceof Element)
+        ) {
+            return;
+        }
+
+        var link =
+            target.closest("a");
+
+        if (
+            !link ||
+            !isCandidatePrivacyLink(link)
+        ) {
+            return;
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+
+        var privacyWindow =
+            window.open(
+                CANDIDATE_PRIVACY_URL,
+                "_blank",
+                "noopener,noreferrer"
+            );
+
+        if (privacyWindow) {
+            privacyWindow.opener = null;
+        }
+    }
+
+
+    /* ======================================================
+       HEADER LOGIN AND REGISTER CONTROLS
+       ====================================================== */
+
+    function getControlLabel(control) {
+        var label;
+
+        if (control.tagName === "INPUT") {
+            label =
+                control.value ||
+                control.getAttribute(
+                    "aria-label"
+                ) ||
+                control.getAttribute(
+                    "title"
+                ) ||
+                "";
+        } else {
+            label =
+                control.textContent ||
+                control.getAttribute(
+                    "aria-label"
+                ) ||
+                control.getAttribute(
+                    "title"
+                ) ||
+                "";
+        }
+
+        return label
+            .replace(/\s+/g, " ")
+            .trim()
+            .toLowerCase();
+    }
+
+    function hideHeaderAuthControl(
+        control
+    ) {
+        control.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
+
+        control.style.setProperty(
+            "visibility",
+            "hidden",
+            "important"
+        );
+
+        control.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+        control.setAttribute(
+            "tabindex",
+            "-1"
+        );
+
+        var listItem =
+            control.closest("li");
+
+        if (
+            listItem &&
+            listItem.children.length === 1
+        ) {
+            listItem.style.setProperty(
+                "display",
+                "none",
+                "important"
+            );
+        }
+    }
+
+    function hideDuplicateHeaderAuthLinks() {
+        if (!isJobJourneyPage()) {
+            return;
+        }
+
+        document.querySelectorAll(
+            HEADER_AUTH_SELECTOR
+        ).forEach(function (control) {
+            var label =
+                getControlLabel(control);
+
+            if (
+                label === "login" ||
+                label === "log in" ||
+                label === "register"
+            ) {
+                hideHeaderAuthControl(
+                    control
+                );
+            }
+        });
+    }
+
+
+    /* ======================================================
+       CANCEL APPLICATION
+       ====================================================== */
+
+    function updateCancelButton() {
+        if (!isApplicationPage()) {
+            return;
+        }
+
+        document.querySelectorAll(
+            "input.btn-cancel, " +
+            "button.btn-cancel, " +
+            "a.btn-cancel"
+        ).forEach(function (button) {
+            if (button.tagName === "INPUT") {
+                if (
+                    button.value !==
+                    "Cancel Application"
+                ) {
+                    button.value =
+                        "Cancel Application";
+                }
+            } else if (
+                button.textContent.trim() !==
+                "Cancel Application"
+            ) {
+                button.textContent =
+                    "Cancel Application";
+            }
+
+            button.setAttribute(
+                "aria-label",
+                "Cancel Application"
+            );
+
+            if (
+                button.dataset
+                    .illuminexCancelBound ===
+                "true"
+            ) {
+                return;
+            }
+
+            button.dataset
+                .illuminexCancelBound =
+                "true";
+
+            button.addEventListener(
+                "click",
+                function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    event.stopImmediatePropagation();
+
+                    window.location.assign(
+                        LIVE_JOBS_URL
+                    );
+                },
+                true
+            );
+        });
+    }
+
+
+    /* ======================================================
+       MORE OPPORTUNITIES
+       ====================================================== */
+
+    function updateOpportunitiesButton() {
+        if (!isApplicationPage()) {
+            return;
+        }
+
+        if (
+            document.getElementById(
+                "illuminex-more-opportunities"
+            )
+        ) {
+            return;
+        }
+
+        var cancelButton =
+            document.querySelector(
+                "input.btn-cancel, " +
+                "button.btn-cancel, " +
+                "a.btn-cancel"
+            );
+
+        if (!cancelButton) {
+            return;
+        }
+
+        var actionArea =
+            cancelButton.closest(
+                ".registrationButtonArea, " +
+                ".advertApplicationButtonArea"
+            ) ||
+            cancelButton.parentElement;
+
+        if (!actionArea) {
+            return;
+        }
+
+        var wrapper =
+            document.createElement("div");
+
+        wrapper.className =
+            "illuminex-more-opportunities-wrap";
+
+        var link =
+            document.createElement("a");
+
+        link.id =
+            "illuminex-more-opportunities";
+
+        link.href =
+            LIVE_JOBS_URL;
+
+        link.textContent =
+            "Click Here For More Opportunities";
+
+        link.setAttribute(
+            "aria-label",
+            "View more opportunities on the Illuminex website"
+        );
+
+        wrapper.appendChild(link);
+
+        actionArea.insertAdjacentElement(
+            "afterend",
+            wrapper
+        );
+    }
+
+
+    /* ======================================================
+       APPLICATION SUCCESS — MORE VACANCIES
+       ====================================================== */
+
+    function isApplicationSuccessPage() {
+        return /\/success\.aspx\/?$/i.test(
+            window.location.pathname
+        );
+    }
+
+    function findSuccessMoreVacanciesControl() {
+        if (!isApplicationSuccessPage()) {
+            return null;
+        }
+
+        var controls =
+            document.querySelectorAll(
+                ".mainContent a, " +
+                ".mainContent button, " +
+                ".mainContent input"
+            );
+
+        var index;
+        var control;
+        var label;
+
+        for (
+            index = 0;
+            index < controls.length;
+            index += 1
+        ) {
+            control = controls[index];
+            label = getControlLabel(control);
+
+            if (
+                label === "more vacancies" ||
+                label === "view more vacancies" ||
+                label === "more jobs"
+            ) {
+                return control;
+            }
+        }
+
+        /*
+         * Fallback for Firefish templates where the visible wording
+         * changes but the native control identifier still contains
+         * "vacanc". My Account is explicitly excluded.
+         */
+        for (
+            index = 0;
+            index < controls.length;
+            index += 1
+        ) {
+            control = controls[index];
+            label = getControlLabel(control);
+
+            if (
+                label !== "my account" &&
+                /vacanc/i.test(
+                    (control.id || "") + " " +
+                    (control.name || "") + " " +
+                    (control.getAttribute("href") || "")
+                )
+            ) {
+                return control;
+            }
+        }
+
+        return null;
+    }
+
+    function redirectToIlluminexLiveJobs(event) {
+        if (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            event.stopImmediatePropagation();
+        }
+
+        window.location.assign(
+            LIVE_JOBS_URL
+        );
+    }
+
+    function updateSuccessMoreVacanciesControl() {
+        var control;
+
+        if (!isApplicationSuccessPage()) {
+            return;
+        }
+
+        control =
+            findSuccessMoreVacanciesControl();
+
+        if (!control) {
+            return;
+        }
+
+        control.id =
+            "illuminex-success-more-vacancies";
+
+        control.setAttribute(
+            "aria-label",
+            "View current opportunities on the Illuminex Live Jobs page"
+        );
+
+        control.removeAttribute(
+            "onclick"
+        );
+
+        if (control.tagName === "A") {
+            control.setAttribute(
+                "href",
+                LIVE_JOBS_URL
+            );
+        }
+
+        if (
+            control.dataset
+                .illuminexSuccessVacanciesBound ===
+            "true"
+        ) {
+            return;
+        }
+
+        control.dataset
+            .illuminexSuccessVacanciesBound =
+            "true";
+
+        control.addEventListener(
+            "click",
+            redirectToIlluminexLiveJobs,
+            true
+        );
+    }
+
+    function interceptSuccessMoreVacancies(event) {
+        var target;
+        var control;
+        var label;
+
+        if (!isApplicationSuccessPage()) {
+            return;
+        }
+
+        target = event.target;
+
+        if (!(target instanceof Element)) {
+            return;
+        }
+
+        control = target.closest(
+            "#illuminex-success-more-vacancies, " +
+            ".mainContent a, " +
+            ".mainContent button, " +
+            ".mainContent input"
+        );
+
+        if (!control) {
+            return;
+        }
+
+        label = getControlLabel(control);
+
+        if (
+            control.id ===
+                "illuminex-success-more-vacancies" ||
+            label === "more vacancies" ||
+            label === "view more vacancies" ||
+            label === "more jobs"
+        ) {
+            redirectToIlluminexLiveJobs(
+                event
+            );
+        }
+    }
+
+
+    /* ======================================================
+       SOCIAL LINKS
+       ====================================================== */
+
+    function removeUnwantedSocials() {
+        document.querySelectorAll(
+            ".a2a_button_facebook, " +
+            ".a2a_button_x"
+        ).forEach(function (element) {
+            element.remove();
+        });
+
+        document.querySelectorAll(
+            ".a2a_button_linkedin"
+        ).forEach(function (link) {
+            if (
+                link.getAttribute("href") !==
+                LINKEDIN_URL
+            ) {
+                link.setAttribute(
+                    "href",
+                    LINKEDIN_URL
+                );
+            }
+
+            link.setAttribute(
+                "target",
+                "_blank"
+            );
+
+            link.setAttribute(
+                "rel",
+                "noopener noreferrer"
+            );
+
+            link.setAttribute(
+                "title",
+                "Visit Illuminex Consultancy on LinkedIn"
+            );
+
+            link.setAttribute(
+                "aria-label",
+                "Visit Illuminex Consultancy on LinkedIn"
+            );
+
+            link.removeAttribute(
+                "onclick"
+            );
+
+            if (
+                link.dataset
+                    .illuminexLinkedinBound ===
+                "true"
+            ) {
+                return;
+            }
+
+            link.dataset
+                .illuminexLinkedinBound =
+                "true";
+
+            link.addEventListener(
+                "click",
+                function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    event.stopImmediatePropagation();
+
+                    window.open(
+                        LINKEDIN_URL,
+                        "_blank",
+                        "noopener"
+                    );
+                },
+                true
+            );
+        });
+    }
+
+
+    /* ======================================================
+       LOGOUT REPAIR
+       ====================================================== */
+
+    function extractLogoutTarget(
+        logoutLink
+    ) {
+        var href =
+            logoutLink.getAttribute(
+                "href"
+            ) || "";
+
+        var onclick =
+            logoutLink.getAttribute(
+                "onclick"
+            ) || "";
+
+        var source =
+            href + " " + onclick;
+
+        var match =
+            source.match(
+                /WebForm_PostBackOptions\(\s*['"]([^'"]+)['"]/i
+            );
+
+        if (
+            match &&
+            match[1]
+        ) {
+            return match[1];
+        }
+
+        var storedTarget =
+            logoutLink.getAttribute(
+                "data-illuminex-logout-target"
+            );
+
+        return (
+            storedTarget ||
+            DEFAULT_LOGOUT_TARGET
+        );
+    }
+
+    function createSafeLogoutHref(
+        logoutTarget
+    ) {
+        var safeTarget =
+            logoutTarget.replace(
+                /'/g,
+                "\\'"
+            );
+
+        return (
+            "javascript:" +
+            "WebForm_DoPostBackWithOptions(" +
+            "new WebForm_PostBackOptions(" +
+            "'" + safeTarget + "'," +
+            "''," +
+            "false," +
+            "''," +
+            "''," +
+            "false," +
+            "true" +
+            ")" +
+            ");"
+        );
+    }
+
+    function repairLogoutLink(
+        logoutLink
+    ) {
+        if (!logoutLink) {
+            return;
+        }
+
+        var logoutTarget =
+            extractLogoutTarget(
+                logoutLink
+            );
+
+        var safeHref =
+            createSafeLogoutHref(
+                logoutTarget
+            );
+
+        logoutLink.setAttribute(
+            "data-illuminex-logout-target",
+            logoutTarget
+        );
+
+        logoutLink.setAttribute(
+            "data-illuminex-logout-fixed",
+            "true"
+        );
+
+        if (
+            logoutLink.getAttribute(
+                "href"
+            ) !== safeHref
+        ) {
+            logoutLink.setAttribute(
+                "href",
+                safeHref
+            );
+        }
+
+        if (
+            logoutLink.hasAttribute(
+                "onclick"
+            )
+        ) {
+            logoutLink.removeAttribute(
+                "onclick"
+            );
+        }
+    }
+
+    function repairAllLogoutLinks() {
+        document.querySelectorAll(
+            LOGOUT_SELECTOR
+        ).forEach(function (logoutLink) {
+            repairLogoutLink(
+                logoutLink
+            );
+        });
+    }
+
+    function findLogoutLink(event) {
+        var target =
+            event.target;
+
+        if (!(target instanceof Element)) {
+            return null;
+        }
+
+        return target.closest(
+            LOGOUT_SELECTOR
+        );
+    }
+
+    function prepareLogout(event) {
+        var logoutLink =
+            findLogoutLink(event);
+
+        if (!logoutLink) {
+            return;
+        }
+
+        repairLogoutLink(
+            logoutLink
+        );
+    }
+
+    function performSafeLogout(event) {
+        var logoutLink =
+            findLogoutLink(event);
+
+        if (!logoutLink) {
+            return;
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+
+        var logoutTarget =
+            extractLogoutTarget(
+                logoutLink
+            );
+
+        repairLogoutLink(
+            logoutLink
+        );
+
+        if (
+            typeof window
+                .WebForm_DoPostBackWithOptions ===
+                "function" &&
+            typeof window
+                .WebForm_PostBackOptions ===
+                "function"
+        ) {
+            window.WebForm_DoPostBackWithOptions(
+                new window.WebForm_PostBackOptions(
+                    logoutTarget,
+                    "",
+                    false,
+                    "",
+                    "",
+                    false,
+                    true
+                )
+            );
+
+            return;
+        }
+
+        if (
+            typeof window.__doPostBack ===
+            "function"
+        ) {
+            window.__doPostBack(
+                logoutTarget,
+                ""
+            );
+        }
+    }
+
+
+    /* ======================================================
+       INITIALISATION
+       ====================================================== */
+
+    function initialise() {
+        installCvUploadModalStyles();
+        updateCvUploadModalState();
+        installGuidanceStyles();
+        updateApplicationLoginMessage();
+        installApplicationErrorWeightStyles();
+        styleLoginFailureMessage();
+        addNewApplicantPasswordGuidance();
+        installMobileNumberValidationStyles();
+        bindMobileNumberValidation();
+        updateCandidatePrivacyLinks();
+        hideDuplicateHeaderAuthLinks();
+        updateCancelButton();
+        updateOpportunitiesButton();
+        updateSuccessMoreVacanciesControl();
+        removeUnwantedSocials();
+        repairAllLogoutLinks();
+    }
+
+    function scheduleInitialise() {
+        if (initialiseScheduled) {
+            return;
+        }
+
+        initialiseScheduled = true;
+
+        window.requestAnimationFrame(
+            function () {
+                initialiseScheduled =
+                    false;
+
+                initialise();
+            }
+        );
+    }
+
+    function start() {
+        initialise();
+
+        document.addEventListener(
+            "pointerdown",
+            prepareLogout,
+            true
+        );
+
+        document.addEventListener(
+            "touchstart",
+            prepareLogout,
+            true
+        );
+
+        document.addEventListener(
+            "click",
+            interceptCandidatePrivacyLink,
+            true
+        );
+
+        document.addEventListener(
+            "click",
+            interceptInvalidMobileNumberClick,
+            true
+        );
+
+        document.addEventListener(
+            "submit",
+            interceptInvalidMobileNumberSubmit,
+            true
+        );
+
+        document.addEventListener(
+            "keydown",
+            submitCvUploadWithEnter,
+            true
+        );
+
+        document.addEventListener(
+            "click",
+            performSafeLogout,
+            true
+        );
+
+        document.addEventListener(
+            "click",
+            interceptSuccessMoreVacancies,
+            true
+        );
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+                if (
+                    event.key !== "Enter" &&
+                    event.key !== " "
+                ) {
+                    return;
+                }
+
+                var logoutLink =
+                    findLogoutLink(event);
+
+                if (!logoutLink) {
+                    return;
+                }
+
+                performSafeLogout(
+                    event
+                );
+            },
+            true
+        );
+
+        var observer =
+            new MutationObserver(
+                function () {
+                    scheduleInitialise();
+                }
+            );
+
+        observer.observe(
+            document.documentElement,
+            {
+                childList: true,
+                subtree: true,
+                attributes: true,
+                attributeFilter: [
+                    "href",
+                    "onclick",
+                    "style",
+                    "class"
+                ]
+            }
+        );
+
+        window.addEventListener(
+            "load",
+            scheduleInitialise
+        );
+
+        window.addEventListener(
+            "pageshow",
+            scheduleInitialise
+        );
+
+        setTimeout(
+            scheduleInitialise,
+            250
+        );
+
+        setTimeout(
+            scheduleInitialise,
+            750
+        );
+
+        setTimeout(
+            scheduleInitialise,
+            1500
+        );
+
+        setTimeout(
+            scheduleInitialise,
+            3000
+        );
+    }
+
+    if (
+        document.readyState ===
+        "loading"
+    ) {
+        document.addEventListener(
+            "DOMContentLoaded",
+            start
+        );
+    } else {
+        start();
+    }
+})();
+</script>

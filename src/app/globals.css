@@ -2330,6 +2330,19 @@ main.page.page-services::before {
   opacity: 0.85 !important;
 }
 
+/* Consultancy */
+main.page.page-consultancy::before {
+  background-image: url("/hero-bg-consultancy-optimized.webp");
+  background-position: 50% 70% !important;
+  transform: scale(1) !important;
+  opacity: 1 !important;
+  filter: none !important;
+}
+
+main.page.page-consultancy::after {
+  background: rgba(3, 91, 163, 0.42) !important;
+}
+
 /* Contact */
 main.page.page-contact::before {
   background-image: url("/hero-bg-contact.jpg");
@@ -3667,7 +3680,7 @@ box-shadow:
    MOBILE DRAWER NAV — Pill shape + orange gradient border + darker blue fill
    (Samsung-safe)
 ======================================== */
-@media (max-width: 900px){
+@media (max-width: 1305px){
 
   .nav-drawer-links a{
     position: relative !important;
@@ -4510,5 +4523,23 @@ main.page.page-jobs .page-body {
 @media (max-width: 900px) {
   main.page.page-jobs .page-hero {
     padding-bottom: 22px;
+  }
+}
+
+/* =========================================================
+   INTERMEDIATE NAVIGATION BREAKPOINT
+   Prevents desktop navigation pills wrapping between
+   tablet and full desktop widths.
+   Does not alter hero or page layouts.
+========================================================= */
+
+@media (min-width: 901px) and (max-width: 1305px) {
+  .main-nav.nav-desktop {
+    display: none;
+  }
+
+  .nav-toggle {
+    display: inline-flex;
+    align-items: center;
   }
 }

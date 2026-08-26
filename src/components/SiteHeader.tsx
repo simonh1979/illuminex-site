@@ -66,29 +66,40 @@ export default function SiteHeader() {
           <Link href="/" aria-current={pathname === "/" ? "page" : undefined}>
             Home
           </Link>
+
           <Link
             href="/about"
             aria-current={pathname === "/about" ? "page" : undefined}
           >
             About
           </Link>
+
           <Link
             href="/clients"
             aria-current={pathname === "/clients" ? "page" : undefined}
           >
             Clients
           </Link>
+
           <Link
             href="/candidates"
             aria-current={onCandidatesPage ? "page" : undefined}
           >
             Candidates
           </Link>
+
           <Link
             href="/jobs"
             aria-current={pathname === "/jobs" ? "page" : undefined}
           >
             Live Jobs
+          </Link>
+
+          <Link
+            href="/consultancy"
+            aria-current={pathname === "/consultancy" ? "page" : undefined}
+          >
+            Consultancy
           </Link>
 
           <Link
@@ -147,18 +158,21 @@ export default function SiteHeader() {
           <Link href="/" aria-current={pathname === "/" ? "page" : undefined}>
             Home
           </Link>
+
           <Link
             href="/about"
             aria-current={pathname === "/about" ? "page" : undefined}
           >
             About
           </Link>
+
           <Link
             href="/clients"
             aria-current={pathname === "/clients" ? "page" : undefined}
           >
             Clients
           </Link>
+
           <Link
             href="/candidates"
             aria-current={
@@ -167,6 +181,7 @@ export default function SiteHeader() {
           >
             Candidates
           </Link>
+
           <Link
             href="/candidates#register"
             className="nav-drawer-register-cv"
@@ -174,18 +189,28 @@ export default function SiteHeader() {
           >
             Register CV
           </Link>
+
           <Link
             href="/jobs"
             aria-current={pathname === "/jobs" ? "page" : undefined}
           >
             Live Jobs
           </Link>
+
+          <Link
+            href="/consultancy"
+            aria-current={pathname === "/consultancy" ? "page" : undefined}
+          >
+            Consultancy
+          </Link>
+
           <Link
             href="/services"
             aria-current={pathname === "/services" ? "page" : undefined}
           >
             Services
           </Link>
+
           <Link
             href="/contact"
             aria-current={pathname === "/contact" ? "page" : undefined}
@@ -194,12 +219,11 @@ export default function SiteHeader() {
           </Link>
         </div>
 
-        <div className="nav-drawer-foot">
-          <div className="nav-drawer-note">
-            <span className="brand-font">Illuminex</span> delivers premium
-            executive search &amp; specialist recruitment.
+          <div className="nav-drawer-foot">
+            <div className="nav-drawer-note">
+              Commercial strategy | Leadership | Specialist recruitment
+            </div>
           </div>
-        </div>
       </aside>
     </header>
   );

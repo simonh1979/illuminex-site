@@ -1,4 +1,5 @@
 import { XMLParser } from "fast-xml-parser";
+import { unstable_cache } from "next/cache";
 import type { Job } from "@/lib/mockJobs";
 import { getAdvertDetails } from "@/lib/firefish/advert";
 
@@ -528,7 +529,7 @@ async function enrichJobFromAdvertApi(
   }
 }
 
-export async function firefishListJobs() {
+async function fetchFirefishJobs() {
   const url =
     process.env.FIREFISH_RSS_URL ||
     DEFAULT_FIREFISH_RSS_URL;
@@ -566,23 +567,60 @@ export async function firefishListJobs() {
     .map(mapFirefishItemToJob)
     .filter((job) => job.id && job.title);
 
-  const jobs = await Promise.all(
-    rssJobs.map(enrichJobFromAdvertApi)
-  );
-
   return {
-    jobs,
-    total: jobs.length,
+    jobs: rssJobs,
+    total: rssJobs.length,
   };
 }
 
-export async function firefishGetJob(id: string) {
-  const { jobs } = await firefishListJobs();
+const getCachedFirefishJobs = unstable_cache(
+  fetchFirefishJobs,
+  ["firefish-rss-jobs"],
+  {
+    revalidate: 300,
+    tags: ["firefish-jobs"],
+  }
+);
 
-  return (
+export async function firefishListJobs() {
+  return getCachedFirefishJobs();
+}
+
+async function fetchEnrichedFirefishJob(
+  id: string
+): Promise<FirefishJob | null> {
+  const { jobs } = await getCachedFirefishJobs();
+
+  const job =
     jobs.find(
-      (job) =>
-        job.id.toUpperCase() === id.toUpperCase()
-    ) ?? null
+      (item) =>
+        item.id.toUpperCase() === id
+    ) ?? null;
+
+  if (!job) {
+    return null;
+  }
+
+  return enrichJobFromAdvertApi(job);
+}
+
+const getCachedEnrichedFirefishJob = unstable_cache(
+  fetchEnrichedFirefishJob,
+  ["firefish-enriched-job"],
+  {
+    revalidate: 300,
+    tags: ["firefish-jobs"],
+  }
+);
+
+export async function firefishGetJob(id: string) {
+  const normalisedId = id.trim().toUpperCase();
+
+  if (!normalisedId) {
+    return null;
+  }
+
+  return getCachedEnrichedFirefishJob(
+    normalisedId
   );
 }

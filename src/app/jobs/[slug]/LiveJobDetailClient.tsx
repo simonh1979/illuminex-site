@@ -27,6 +27,7 @@ type Job = {
   summary: string;
   description?: string;
   packageItems?: JobPackageItem[];
+  applyUrl?: string;
 };
 
 function getJobIdFromSlug(slug: string): string | null {
@@ -159,7 +160,6 @@ export default function LiveJobDetailClient() {
   }, [slug]);
 
   const backHref = safelyDecodeFrom(searchParams.get("from"));
-  const encodedFrom = encodeURIComponent(backHref);
 
   const [job, setJob] = useState<Job | null>(null);
   const [loading, setLoading] = useState(true);
@@ -344,25 +344,29 @@ export default function LiveJobDetailClient() {
       </main>
     );
   }
+  const providerApplyUrl = (() => {
+    const value = job.applyUrl?.trim();
 
-  const firefishAdvertRef = getFirefishAdvertRef(job.id);
+    if (!value) {
+      return null;
+    }
 
-  const illuminexApplyHref =
-    `/jobs/${encodeURIComponent(slug)}/apply` +
-    `?from=${encodedFrom}` +
-    `&sector=${encodeURIComponent(job.sector || "")}` +
-    `&location=${encodeURIComponent(job.location || "")}` +
-    `&jobTitle=${encodeURIComponent(job.title || "")}` +
-    `&jobId=${encodeURIComponent(job.id || "")}` +
-    (firefishAdvertRef
-      ? `&jobAdId=${encodeURIComponent(String(firefishAdvertRef))}`
-      : "");
+    try {
+      const url = new URL(value);
 
-  const firefishDirectApplyUrl = getFirefishDirectApplyUrl(slug, job.id);
+      return url.protocol === "https:"
+        ? url.toString()
+        : null;
+    } catch {
+      return null;
+    }
+  })();
 
-  const isUsingFirefishPortal = Boolean(firefishDirectApplyUrl);
+  const firefishDirectApplyUrl =
+    getFirefishDirectApplyUrl(slug, job.id);
 
-  const applyHref = firefishDirectApplyUrl ?? illuminexApplyHref;
+  const applyHref =
+    providerApplyUrl ?? firefishDirectApplyUrl;
 
   const salaryDisplay =
     job.salary?.trim() ||
@@ -639,14 +643,35 @@ export default function LiveJobDetailClient() {
               Existing candidates can simply sign in to continue their application. New
               applicants can create an account in less than a minute.
             </p>
+            {applyHref ? (
+              <a
+                className="sector-cta"
+                href={applyHref}
+                onClick={trackApplyClick}
+              >
+                Apply Securely
+              </a>
+            ) : (
+              <div>
+                <p
+                  className="jobs-muted"
+                  style={{
+                    marginBottom: 14,
+                    lineHeight: 1.55,
+                  }}
+                >
+                  Online applications for this role are temporarily unavailable.
+                  Please contact Illuminex Consultancy and we will help you apply securely.
+                </p>
 
-            <a
-              className="sector-cta"
-              href={applyHref}
-              onClick={trackApplyClick}
-            >
-              Apply Securely
-            </a>
+                <a
+                  className="sector-cta"
+                  href="/contact"
+                >
+                  Contact Illuminex
+                </a>
+              </div>
+            )}
 
             <p
               className="jobs-muted"

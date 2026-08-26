@@ -1,3 +1,4 @@
+import { unstable_cache } from "next/cache";
 import { XMLParser } from "fast-xml-parser";
 import type { Job } from "@/lib/mockJobs";
 import { getAdvertDetails } from "@/lib/firefish/advert";
@@ -528,7 +529,47 @@ async function enrichJobFromAdvertApi(
   }
 }
 
-export async function firefishListJobs() {
+const FIREFISH_ADVERT_BATCH_SIZE = 3;
+const FIREFISH_ADVERT_BATCH_DELAY_MS = 1_000;
+
+async function enrichJobsWithRatePacing(
+  rssJobs: FirefishJob[]
+): Promise<FirefishJob[]> {
+  const jobs: FirefishJob[] = [];
+
+  for (
+    let index = 0;
+    index < rssJobs.length;
+    index += FIREFISH_ADVERT_BATCH_SIZE
+  ) {
+    const batch = rssJobs.slice(
+      index,
+      index + FIREFISH_ADVERT_BATCH_SIZE
+    );
+
+    const enrichedBatch = await Promise.all(
+      batch.map(enrichJobFromAdvertApi)
+    );
+
+    jobs.push(...enrichedBatch);
+
+    if (
+      index + FIREFISH_ADVERT_BATCH_SIZE <
+      rssJobs.length
+    ) {
+      await new Promise<void>((resolve) => {
+        setTimeout(
+          resolve,
+          FIREFISH_ADVERT_BATCH_DELAY_MS
+        );
+      });
+    }
+  }
+
+  return jobs;
+}
+
+async function fetchFirefishJobs() {
   const url =
     process.env.FIREFISH_RSS_URL ||
     DEFAULT_FIREFISH_RSS_URL;
@@ -566,14 +607,25 @@ export async function firefishListJobs() {
     .map(mapFirefishItemToJob)
     .filter((job) => job.id && job.title);
 
-  const jobs = await Promise.all(
-    rssJobs.map(enrichJobFromAdvertApi)
-  );
+  const jobs = await enrichJobsWithRatePacing(rssJobs);
 
   return {
     jobs,
     total: jobs.length,
   };
+}
+
+const getCachedFirefishJobs = unstable_cache(
+  fetchFirefishJobs,
+  ["firefish-enriched-jobs-v1"],
+  {
+    revalidate: 300,
+    tags: ["firefish-jobs"],
+  }
+);
+
+export async function firefishListJobs() {
+  return getCachedFirefishJobs();
 }
 
 export async function firefishGetJob(id: string) {

@@ -4,12 +4,39 @@ import type { ReactNode } from "react";
 import styles from "./consultancy.module.css";
 
 export const metadata: Metadata = {
-  title:
-    "Consultancy | Building Materials & Construction Products | Illuminex Consultancy",
+  title: "Consultancy | Building Materials & Construction Products",
+
   description:
     "Specialist building materials and construction products consultancy for commercial growth, sales strategy, route to market, leadership and talent decisions.",
+
   alternates: {
     canonical: "/consultancy",
+  },
+
+  openGraph: {
+    type: "website",
+    locale: "en_GB",
+    url: "/consultancy",
+    siteName: "Illuminex Consultancy",
+    title:
+      "Consultancy | Building Materials & Construction Products | Illuminex Consultancy",
+    description:
+      "Specialist building materials and construction products consultancy for commercial growth, sales strategy, route to market, leadership and talent decisions.",
+    images: [
+      {
+        url: "/og-image.jpg",
+        alt: "Illuminex Consultancy",
+      },
+    ],
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title:
+      "Consultancy | Building Materials & Construction Products | Illuminex Consultancy",
+    description:
+      "Specialist building materials and construction products consultancy for commercial growth, sales strategy, route to market, leadership and talent decisions.",
+    images: ["/og-image.jpg"],
   },
 };
 

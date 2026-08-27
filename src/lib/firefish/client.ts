@@ -2,10 +2,18 @@ import "server-only";
 
 import {
   clearFirefishAccessToken,
+  FirefishAuthenticationError,
   getFirefishAccessToken,
 } from "./auth";
+import {
+  getFirefishRateLimitRetryPlan,
+  waitForFirefishRetry,
+} from "./rateLimit";
 
 const DEFAULT_TIMEOUT_MS = 20_000;
+
+const READ_RATE_LIMIT_RETRIES = 2;
+const WRITE_RATE_LIMIT_RETRIES = 1;
 
 type FirefishRequestOptions = {
   method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
@@ -17,12 +25,19 @@ type FirefishRequestOptions = {
 export class FirefishApiError extends Error {
   status: number;
   endpoint: string;
+  retryAfterSeconds: number | null;
 
-  constructor(message: string, status: number, endpoint: string) {
+  constructor(
+    message: string,
+    status: number,
+    endpoint: string,
+    retryAfterSeconds: number | null = null
+  ) {
     super(message);
     this.name = "FirefishApiError";
     this.status = status;
     this.endpoint = endpoint;
+    this.retryAfterSeconds = retryAfterSeconds;
   }
 }
 
@@ -69,7 +84,9 @@ function prepareRequestBody(
   return JSON.stringify(body);
 }
 
-async function parseResponse<T>(response: Response): Promise<T | null> {
+async function parseResponse<T>(
+  response: Response
+): Promise<T | null> {
   if (response.status === 204) {
     return null;
   }
@@ -80,7 +97,8 @@ async function parseResponse<T>(response: Response): Promise<T | null> {
     return null;
   }
 
-  const contentType = response.headers.get("content-type") || "";
+  const contentType =
+    response.headers.get("content-type") || "";
 
   if (contentType.includes("application/json")) {
     try {
@@ -129,20 +147,52 @@ function getSafeErrorMessage(status: number): string {
   return `Firefish request failed with status ${status}.`;
 }
 
+function getRateLimitRetryLimit(
+  method: NonNullable<FirefishRequestOptions["method"]>
+): number {
+  return method === "GET"
+    ? READ_RATE_LIMIT_RETRIES
+    : WRITE_RATE_LIMIT_RETRIES;
+}
+
 async function executeRequest<T>(
   endpoint: string,
   options: FirefishRequestOptions,
-  retryAfterAuthenticationFailure: boolean
+  retryAfterAuthenticationFailure: boolean,
+  rateLimitRetryCount: number
 ): Promise<T | null> {
-  const accessToken = await getFirefishAccessToken();
+  const method = options.method ?? "GET";
+
+  let accessToken: string;
+
+  try {
+    accessToken = await getFirefishAccessToken();
+  } catch (error) {
+    if (error instanceof FirefishAuthenticationError) {
+      throw new FirefishApiError(
+        getSafeErrorMessage(error.status),
+        error.status,
+        endpoint,
+        error.retryAfterSeconds
+      );
+    }
+
+    throw error;
+  }
+
   const headers = new Headers(options.headers);
 
-  headers.set("Authorization", `Bearer ${accessToken}`);
+  headers.set(
+    "Authorization",
+    `Bearer ${accessToken}`
+  );
   headers.set("Accept", "application/json");
 
-  const requestBody = prepareRequestBody(options.body, headers);
+  const requestBody =
+    prepareRequestBody(options.body, headers);
 
   const controller = new AbortController();
+
   const timeout = setTimeout(
     () => controller.abort(),
     options.timeoutMs ?? DEFAULT_TIMEOUT_MS
@@ -152,17 +202,53 @@ async function executeRequest<T>(
 
   try {
     const response = await fetch(url, {
-      method: options.method ?? "GET",
+      method,
       headers,
       body: requestBody,
       signal: controller.signal,
       cache: "no-store",
     });
 
-    if (response.status === 401 && retryAfterAuthenticationFailure) {
+    if (
+      response.status === 401 &&
+      retryAfterAuthenticationFailure
+    ) {
       clearFirefishAccessToken();
+      return executeRequest<T>(
+        endpoint,
+        options,
+        false,
+        rateLimitRetryCount
+      );
+    }
 
-      return executeRequest<T>(endpoint, options, false);
+    if (response.status === 429) {
+      const retryPlan =
+        getFirefishRateLimitRetryPlan(
+          response,
+          rateLimitRetryCount,
+          getRateLimitRetryLimit(method)
+        );
+
+      if (retryPlan.delayMs !== null) {
+        await waitForFirefishRetry(
+          retryPlan.delayMs
+        );
+
+        return executeRequest<T>(
+          endpoint,
+          options,
+          retryAfterAuthenticationFailure,
+          rateLimitRetryCount + 1
+        );
+      }
+
+      throw new FirefishApiError(
+        getSafeErrorMessage(429),
+        429,
+        endpoint,
+        retryPlan.retryAfterSeconds
+      );
     }
 
     if (!response.ok) {
@@ -175,7 +261,10 @@ async function executeRequest<T>(
 
     return parseResponse<T>(response);
   } catch (error) {
-    if (error instanceof Error && error.name === "AbortError") {
+    if (
+      error instanceof Error &&
+      error.name === "AbortError"
+    ) {
       throw new FirefishApiError(
         "The Firefish request timed out.",
         408,
@@ -193,5 +282,10 @@ export async function firefishRequest<T>(
   endpoint: string,
   options: FirefishRequestOptions = {}
 ): Promise<T | null> {
-  return executeRequest<T>(endpoint, options, true);
+  return executeRequest<T>(
+    endpoint,
+    options,
+    true,
+    0
+  );
 }

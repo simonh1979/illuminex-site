@@ -735,9 +735,171 @@ function LiveJobsClientInner() {
   );
 }
 
+function LiveJobsLoadingFallback() {
+  return (
+    <div className="jobs-shell" aria-hidden="true">
+      <div
+        className="jobs-filters sector-card"
+        style={{ gridColumn: "span 12" }}
+      >
+        <div className="jobs-filters-head">
+          <div>
+            <h3 style={{ marginBottom: 6 }}>
+              Filter live jobs
+            </h3>
+
+            <p className="jobs-muted">
+              Use keyword + filters to refine. Links are shareable.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            className="jobs-clear"
+            disabled
+            tabIndex={-1}
+          >
+            Clear filters
+          </button>
+        </div>
+
+        <div className="jobs-grid">
+          <div className="jobs-field">
+            <label>Keyword</label>
+
+            <input
+              disabled
+              tabIndex={-1}
+              placeholder="e.g. Sales Director, Commercial, Specification…"
+            />
+          </div>
+
+          <div className="jobs-field">
+            <label>Sector</label>
+
+            <select disabled tabIndex={-1} defaultValue="">
+              <option value="">All sectors</option>
+            </select>
+          </div>
+
+          <div className="jobs-field">
+            <label>Location</label>
+
+            <input
+              disabled
+              tabIndex={-1}
+              placeholder="UK wide, region, city, remote…"
+            />
+          </div>
+
+          <div className="jobs-field">
+            <label>Job Type</label>
+
+            <select disabled tabIndex={-1} defaultValue="">
+              <option value="">Any</option>
+            </select>
+          </div>
+
+          <div className="jobs-field">
+            <label>Experience Level</label>
+
+            <select disabled tabIndex={-1} defaultValue="">
+              <option value="">Any</option>
+            </select>
+          </div>
+
+          <div className="jobs-field jobs-cta">
+            <button
+              type="button"
+              className="search-cta"
+              disabled
+              tabIndex={-1}
+            >
+              Search
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div
+        className="sector-card jobs-register-banner"
+        style={{
+          gridColumn: "span 12",
+          marginTop: 18,
+          marginBottom: 24,
+          padding: "18px 26px",
+          display: "grid",
+          gridTemplateColumns: "minmax(0, 1fr) auto",
+          alignItems: "center",
+          columnGap: 32,
+          borderRadius: 24,
+        }}
+      >
+        <div
+          style={{
+            width: "100%",
+            maxWidth: "none",
+            minWidth: 0,
+          }}
+        >
+          <h3
+            style={{
+              margin: 0,
+              marginBottom: 8,
+              fontSize: "1.55rem",
+              lineHeight: 1.25,
+            }}
+          >
+            Not Seeing The Right Role?
+          </h3>
+
+          <p
+            className="jobs-muted jobs-register-copy"
+            style={{
+              margin: 0,
+              width: "100%",
+              maxWidth: "none",
+              lineHeight: 1.5,
+              fontSize: "0.98rem",
+            }}
+          >
+            Register your CV with Illuminex and we’ll contact you when suitable
+            opportunities become available. Your details will always be handled
+            confidentially.
+          </p>
+        </div>
+
+        <span
+          className="sector-cta"
+          style={{
+            whiteSpace: "nowrap",
+            pointerEvents: "none",
+          }}
+        >
+          Register Your CV
+        </span>
+      </div>
+
+      <div className="jobs-results">
+        <div className="jobs-results-head">
+          <div className="jobs-count">
+            Loading…
+          </div>
+        </div>
+
+        <div className="jobs-skeleton">
+          <div className="sector-card jobs-skel" />
+          <div className="sector-card jobs-skel" />
+          <div className="sector-card jobs-skel" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function LiveJobsClient() {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<LiveJobsLoadingFallback />}>
       <LiveJobsClientInner />
     </Suspense>
   );

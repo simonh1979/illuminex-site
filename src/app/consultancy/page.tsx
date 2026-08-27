@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   title:
     "Consultancy | Building Materials & Construction Products | Illuminex Consultancy",
   description:
-    "Specialist commercial consultancy for building materials and construction products, combining commercial strategy, sales leadership, market intelligence and talent insight.",
+    "Specialist building materials and construction products consultancy for commercial growth, sales strategy, route to market, leadership and talent decisions.",
   alternates: {
     canonical: "/consultancy",
   },
@@ -36,21 +36,29 @@ export default function ConsultancyPage() {
             </h1>
 
             <p className={styles.heroText}>
-              Illuminex Consultancy works with senior leaders across building
-              materials and construction products when growth, route to market,
-              strategic accounts, sales structure, leadership or talent
-              decisions need experienced commercial judgement and a clear view
-              of the market.
+              Illuminex Consultancy works with Managing Directors, Chief
+              Executive Officers, Sales Directors, Commercial Directors and
+              senior leadership teams across building materials and
+              construction products when growth is not where it needs to be,
+              sales structures or routes to market need to change, key accounts
+              or channels are underperforming, or the business needs stronger
+              leadership and the right people around it.
             </p>
 
             <p className={styles.heroHook}>
-              Commercial challenges rarely sit in isolation. Neither should the
-              thinking used to solve them.
+              The starting point is simple: understand what is really getting
+              in the way, challenge what is not working and focus the business
+              on the changes that will genuinely{" "}
+              <strong className={styles.highlight}>
+                &ldquo;Move The Needle&rdquo;
+              </strong>{" "}
+              in the right direction, creating stronger, more profitable and
+              sustainable growth.
             </p>
 
             <div className={styles.heroActions}>
               <Link className="sector-cta" href="/contact">
-                Discuss Your Commercial Priorities
+                Discuss Your Commercial Challenge
               </Link>
             </div>
           </div>
@@ -65,22 +73,25 @@ export default function ConsultancyPage() {
             <SectionEyebrow>THE ILLUMINEX DIFFERENCE</SectionEyebrow>
 
             <h2 className={styles.sectionTitle}>
-              Commercial decisions are stronger when sector knowledge,
-              leadership judgement and market insight come together.
+              Commercial problems are rarely about one thing. Sales, structure,
+              leadership and people usually overlap.
             </h2>
 
             <p className={styles.sectionIntro}>
-              One connected commercial perspective, grounded in how building
-              materials and construction products actually reach the market.
+              That is why Illuminex looks at the whole commercial picture. The
+              aim is to understand where the problem really sits, what is
+              getting in the way and what needs to happen next, rather than
+              trying to force every business into the same consultancy model.
             </p>
 
             <div className={`sectors-grid ${styles.grid}`}>
               <div className={`sector-card ${styles.card}`}>
                 <h3>Senior Commercial Experience</h3>
                 <p>
-                  Practical perspective grounded in routes to market, strategic
-                  accounts, sales structure, leadership and commercial
-                  execution.
+                  Practical commercial judgement built around sales leadership,
+                  routes to market, strategic accounts, customer development
+                  and sales structure, with a clear focus on what needs to
+                  happen next.
                 </p>
                 <div className="sector-tag">Commercial judgement</div>
               </div>
@@ -88,22 +99,23 @@ export default function ConsultancyPage() {
               <div className={`sector-card ${styles.card}`}>
                 <h3>Building Materials Knowledge</h3>
                 <p>
-                  Understanding how manufacturers, merchants, distributors,
-                  buying groups, specification and direct sales connect across
-                  the sector.
+                  Knowledge of how manufacturers, merchants, distributors,
+                  buying groups, specification, direct sales and strategic
+                  customers work together across building materials and
+                  construction products.
                 </p>
                 <div className="sector-tag">Sector credibility</div>
               </div>
 
               <div className={`sector-card ${styles.card}`}>
-                <h3>Connected Intelligence</h3>
+                <h3>Commercial &amp; Talent Insight</h3>
                 <p>
-                  Bringing market movement, competitor structures, leadership
-                  capability, talent availability and remuneration into the
-                  same commercial picture.
+                  A commercial plan is only as strong as the people expected to
+                  deliver it. We look at structure, leadership, capability and
+                  recruitment alongside the sales challenge, not after it.
                 </p>
                 <div className="sector-tag">
-                  Market &bull; Commercial &bull; Talent
+                  Commercial &bull; Leadership &bull; Talent
                 </div>
               </div>
             </div>
@@ -117,65 +129,77 @@ export default function ConsultancyPage() {
             </SectionEyebrow>
 
             <h2 className={styles.sectionTitle}>
-              Turn commercial ambition into sharper choices and stronger
-              execution.
+              Find what is holding growth back, remove the bottlenecks and give
+              the business a clearer commercial direction.
             </h2>
 
             <p className={styles.sectionIntro}>
-              From route to market and strategic accounts to sales structure
-              and channel priorities, the focus stays on what can genuinely{" "}
-              <strong className={styles.highlight}>
-                &ldquo;move the needle&rdquo;
-              </strong>
-              .
+              Sometimes the issue is obvious. Often it is not. Sales can look
+              busy while profitable growth stalls because account ownership is
+              unclear, territories no longer fit, management is stretched, the
+              route to market is wrong or too many priorities are competing for
+              attention. Illuminex helps identify where the problem really sits
+              and what needs to change first.
             </p>
 
             <div className={`sectors-grid ${styles.grid}`}>
               <div className={`sector-card ${styles.card}`}>
                 <h3>Route to Market &amp; Channel Strategy</h3>
                 <p>
-                  Clarify where to play, how to reach the market and which
-                  channels deserve greater commercial focus.
+                  Are you selling through the right channels, to the right
+                  customers and in the right way? Review where the opportunity
+                  really sits and where margin, time or commercial effort may be
+                  getting lost.
                 </p>
               </div>
 
               <div className={`sector-card ${styles.card}`}>
                 <h3>Merchant, Distribution &amp; Buying Group Strategy</h3>
                 <p>
-                  Strengthen priorities, relationships and execution across
-                  merchant, distributor and buying-group networks.
+                  Strengthen how the business works with national and regional
+                  merchants, distributors, buying groups and branch networks,
+                  with clearer priorities around the customers and
+                  relationships that can deliver profitable growth.
                 </p>
               </div>
 
               <div className={`sector-card ${styles.card}`}>
                 <h3>Specification &amp; Direct Sales Strategy</h3>
                 <p>
-                  Shape the right balance between specification influence and
-                  direct commercial activity.
+                  Make sure specification activity and direct sales support the
+                  wider commercial plan, with clear target customers, ownership
+                  and follow-through from opportunity through to sale.
                 </p>
               </div>
 
               <div className={`sector-card ${styles.card}`}>
                 <h3>Strategic &amp; National Accounts</h3>
                 <p>
-                  Improve customer planning, account focus and the quality of
-                  strategic commercial relationships.
+                  Move important accounts beyond maintenance. Understand the
+                  real opportunity, strengthen relationships, improve account
+                  planning and negotiation, and make sure there is clear
+                  ownership of how each customer is going to grow.
                 </p>
               </div>
 
               <div className={`sector-card ${styles.card}`}>
                 <h3>Sales Structure, Territories &amp; Accountability</h3>
                 <p>
-                  Align coverage, ownership and accountability around genuine
-                  market and customer opportunity.
+                  Review roles, territories, reporting lines, account ownership
+                  and management responsibilities. Find the overlaps, gaps,
+                  unclear ownership and bottlenecks before they become accepted
+                  as simply how the business works.
                 </p>
               </div>
 
               <div className={`sector-card ${styles.card}`}>
-                <h3>Commercial Growth &amp; Execution</h3>
+                <h3>Commercial Growth &amp; Market Expansion</h3>
                 <p>
-                  Turn commercial priorities into clear action, stronger
-                  accountability and sustained momentum.
+                  Assess the opportunity before committing significant time and
+                  money. Whether the next move is a new sector, geography,
+                  international market or taking a new product or range to
+                  market, get clear on the customers, channels, commercial
+                  approach and people needed to make it work.
                 </p>
               </div>
             </div>
@@ -186,14 +210,17 @@ export default function ConsultancyPage() {
             <SectionEyebrow>COMMERCIAL LEADERSHIP</SectionEyebrow>
 
             <h2 className={styles.sectionTitle}>
-              Bring experienced commercial leadership into the moments that
-              matter most.
+              When leadership is stretched, responsibilities are blurred or
+              management relationships are getting in the way, commercial
+              performance suffers.
             </h2>
 
             <p className={styles.sectionIntro}>
-              Senior support for growth, change and transition, alongside
-              practical development for the leaders responsible for turning
-              strategy into performance.
+              Growth, change and commercial transition do not always wait for
+              the next permanent appointment. Sometimes a business simply needs
+              experienced sales and commercial leadership to work alongside the
+              existing team, provide additional support and help keep the right
+              commercial priorities moving forward.
             </p>
 
             <div className={`sectors-grid ${styles.grid}`}>
@@ -203,16 +230,24 @@ export default function ConsultancyPage() {
                 <h3>Fractional Sales &amp; Commercial Leadership</h3>
 
                 <p>
-                  Senior commercial support working alongside the existing
-                  leadership team when additional perspective, focus or
-                  continuity is needed.
+                  Senior commercial support when the existing team needs
+                  additional experience, challenge and capacity to deal with a
+                  defined business issue, improve performance or work through a
+                  period of change.
                 </p>
 
                 <ul>
-                  <li>Growth, change and commercial restructure</li>
-                  <li>Sales priorities, structure and accountability</li>
-                  <li>Key customers, channels and strategic accounts</li>
-                  <li>Leadership continuity and permanent-leader transition</li>
+                  <li>Reset commercial priorities and restore momentum</li>
+                  <li>Clarify roles, responsibilities and accountability</li>
+                  <li>
+                    Strengthen focus on key customers, channels and strategic
+                    accounts
+                  </li>
+                  <li>
+                    Help leadership teams work through change, restructure or
+                    succession
+                  </li>
+                  <li>Bridge to a permanent senior appointment where needed</li>
                 </ul>
 
                 <div className="sector-tag">
@@ -226,16 +261,18 @@ export default function ConsultancyPage() {
                 <h3>Sales Leadership &amp; Commercial Team Development</h3>
 
                 <p>
-                  Development centred on the real commercial challenges,
-                  customers and priorities leaders and their teams are
-                  responsible for delivering.
+                  Practical development built around the work your people are
+                  doing now. Real customers, live accounts, current targets and
+                  genuine management challenges provide the focus, rather than
+                  an off-the-shelf training course.
                 </p>
 
                 <ul>
                   <li>Sales Leadership &amp; Management Development</li>
                   <li>Strategic Account Growth &amp; Customer Planning</li>
                   <li>Commercial Negotiation &amp; Preparation</li>
-                  <li>Coaching, Accountability &amp; Emerging Leaders</li>
+                  <li>Coaching, Accountability &amp; Performance Management</li>
+                  <li>Emerging Leaders &amp; Succession Development</li>
                 </ul>
 
                 <div className="sector-tag">
@@ -252,22 +289,27 @@ export default function ConsultancyPage() {
             </SectionEyebrow>
 
             <h2 className={styles.sectionTitle}>
-              See the market, the leadership landscape and the talent picture
-              before you make the call.
+              Make important commercial and hiring decisions with a clearer
+              view of the market and the people in it.
             </h2>
 
             <p className={styles.sectionIntro}>
-              Bring market movement, competitor structures, leadership signals
-              and talent intelligence together before making an important
-              commercial or hiring decision.
+              Before changing a sales structure, entering a market, creating a
+              senior role, setting remuneration or starting a search, it pays
+              to understand what is happening outside your own business.
+              Illuminex brings together public information, market research and
+              sector knowledge to give leaders a clearer basis for the
+              decision.
             </p>
 
             <div className={`sectors-grid ${styles.grid}`}>
               <div className={`sector-card ${styles.card}`}>
                 <h3>Market &amp; Commercial Intelligence</h3>
                 <p>
-                  Market movement, growth, consolidation, investment, routes to
-                  market and changing customer or channel conditions.
+                  Market movement, growth and decline, investment,
+                  consolidation, competitor activity and changes in customers
+                  or channels that may affect the commercial decisions in front
+                  of you.
                 </p>
                 <div className="sector-tag">Market direction</div>
               </div>
@@ -275,8 +317,9 @@ export default function ConsultancyPage() {
               <div className={`sector-card ${styles.card}`}>
                 <h3>Competitor &amp; Leadership Intelligence</h3>
                 <p>
-                  Competitor structures, leadership movement, hiring activity
-                  and the commercial signals shaping the sector.
+                  Publicly available information on competitor structures,
+                  leadership movement, role patterns and hiring activity,
+                  considered in the context of the building-materials market.
                 </p>
                 <div className="sector-tag">
                   Structure &amp; leadership
@@ -286,8 +329,10 @@ export default function ConsultancyPage() {
               <div className={`sector-card ${styles.card}`}>
                 <h3>Talent &amp; Remuneration Intelligence</h3>
                 <p>
-                  Talent mapping, availability, competitor talent research,
-                  remuneration benchmarking and hiring feasibility.
+                  Talent mapping, likely source markets, candidate availability,
+                  remuneration evidence and hiring feasibility to help test
+                  whether the role, structure or salary being considered is
+                  realistic.
                 </p>
                 <div className="sector-tag">Talent landscape</div>
               </div>
@@ -295,13 +340,27 @@ export default function ConsultancyPage() {
               <div
                 className={`sector-card ${styles.card} ${styles.fullCard} ${styles.bridgeCard}`}
               >
-                <h3>When the decision becomes a leadership appointment</h3>
+                <h3>When the problem needs a person, not just a plan</h3>
 
                 <p>
-                  Where the requirement leads to a new appointment, the same
-                  commercial and talent understanding can carry directly into
-                  Illuminex Executive Search &amp; Specialist Recruitment.
+                  Sometimes the answer is a better plan, clearer accountability
+                  or stronger leadership. Sometimes the business needs a
+                  different person in a key role.
+                  <br />
+                  <br />
+                  If the answer is a senior appointment, Illuminex does not
+                  start with a generic job description. We already understand
+                  the commercial problem, the market and the outcome the
+                  business needs. That understanding can be used to shape the
+                  brief, map the right talent and run an exclusive or retained
+                  Executive Search with real commercial context from day one.
                 </p>
+
+                <div className="sector-card-actions">
+                  <Link className="sector-cta" href="/contact">
+                    Discuss a Senior Appointment
+                  </Link>
+                </div>
               </div>
             </div>
           </section>
@@ -311,31 +370,36 @@ export default function ConsultancyPage() {
             <SectionEyebrow>BUILT FOR THIS MARKET</SectionEyebrow>
 
             <h2 className={styles.sectionTitle}>
-              Commercial perspective shaped by how building materials and
-              construction products are bought, sold and specified.
+              Advice is only useful if it reflects how building materials and
+              construction products are actually bought, sold and specified.
             </h2>
 
             <p className={styles.sectionIntro}>
-              From manufacturers, merchants and distributors to buying groups,
-              specification, direct sales and strategic accounts, the advice
-              starts with the commercial realities of your market.
+              This is the market Illuminex knows. Manufacturers, merchants,
+              distributors, buying groups, specification and direct sales each
+              bring different commercial pressures. Good advice has to reflect
+              how those relationships work in practice, not how they look on a
+              slide.
             </p>
 
             <div className={`sectors-grid ${styles.grid}`}>
               <div className={`sector-card ${styles.card}`}>
                 <h3>Who We Work With</h3>
                 <p>
-                  Manufacturers, merchants, distributors, buying groups,
-                  specialist suppliers and commercial leadership teams.
+                  Building materials and construction product manufacturers,
+                  merchants, distributors, buying groups, specialist suppliers
+                  and the senior sales and commercial leaders responsible for
+                  growth.
                 </p>
               </div>
 
               <div className={`sector-card ${styles.card}`}>
                 <h3>How the Market Works</h3>
                 <p>
-                  Merchant and distribution networks, buying groups,
-                  specification, direct sales and strategic and national
-                  accounts.
+                  National and regional merchants, specialist distribution,
+                  buying groups, branch networks, specification, direct sales,
+                  strategic and national accounts, and the relationships
+                  between suppliers and customers.
                 </p>
               </div>
 
@@ -343,8 +407,9 @@ export default function ConsultancyPage() {
                 <h3>Where We Focus</h3>
                 <p>
                   Roofing, insulation, timber, heavyside materials, civils,
-                  interiors, KBB and other specialist construction-product
-                  categories.
+                  interiors, kitchens and bathrooms, and other specialist
+                  construction-product categories where route to market, sales
+                  leadership and commercial judgement matter.
                 </p>
               </div>
             </div>
@@ -360,24 +425,29 @@ export default function ConsultancyPage() {
               <div className={styles.ctaLayout}>
                 <div className={styles.ctaCopy}>
                   <h2 className={styles.ctaTitle}>
-                    Bring the right commercial perspective to the table.
+                    If something is getting in the way of commercial growth,
+                    start there.
                   </h2>
 
                   <p className={styles.ctaText}>
-                    If there is a commercial challenge, opportunity or
-                    important decision on the table, that is the right time to
-                    speak to Illuminex.
+                    It might be sales structure, leadership, strategic
+                    accounts, route to market, capability, talent, an
+                    underperforming channel, a difficult senior hire, bringing
+                    a new product to market or the next stage of expansion into
+                    a new sector, geography or international market.
                   </p>
 
                   <p className={styles.ctaHook}>
-                    The conversation starts with your business, not with a
-                    service we are trying to sell.
+                    You do not need to have all the answers before we speak.
+                    Tell us where the business is today, where you want it to
+                    get to and what is getting in the way. We will work from
+                    there.
                   </p>
                 </div>
 
                 <div className={`sector-card-actions ${styles.ctaActions}`}>
                   <Link className="sector-cta" href="/contact">
-                    Talk to Illuminex Consultancy
+                    Start a Confidential Conversation
                   </Link>
                 </div>
               </div>

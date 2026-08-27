@@ -22,12 +22,12 @@ export const metadata: Metadata = {
 
   title: {
     default:
-      "Illuminex Consultancy | Executive Search, Specialist Recruitment and Strategic Business Consultancy",
+      "Illuminex Consultancy | Commercial Strategy & Specialist Recruitment",
     template: "%s | Illuminex Consultancy",
   },
 
   description:
-    "Illuminex Consultancy provides executive search, specialist recruitment and strategic business consultancy, delivered with integrity and genuine sector expertise.",
+    "Specialist recruitment and strategic business consultancy for building materials and construction products, with integrity and genuine sector expertise.",
 
   authors: [
     {
@@ -45,9 +45,9 @@ export const metadata: Metadata = {
     url: "https://www.illuminex.co.uk",
     siteName: "Illuminex Consultancy",
     title:
-      "Illuminex Consultancy | Executive Search, Specialist Recruitment and Strategic Business Consultancy",
+      "Illuminex Consultancy | Commercial Strategy & Specialist Recruitment",
     description:
-      "An independent UK consultancy helping organisations appoint the right people, strengthen leadership and make confident business decisions through executive search, specialist recruitment and strategic consultancy.",
+      "An independent UK consultancy helping building materials and construction products businesses appoint the right people, strengthen leadership and make confident commercial decisions.",
     images: [
       {
         url: "/og-image.jpg",
@@ -59,9 +59,9 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title:
-      "Illuminex Consultancy | Executive Search, Specialist Recruitment and Strategic Business Consultancy",
+      "Illuminex Consultancy | Commercial Strategy & Specialist Recruitment",
     description:
-      "An independent UK consultancy helping organisations appoint the right people, strengthen leadership and make confident business decisions through executive search, specialist recruitment and strategic consultancy.",
+      "An independent UK consultancy helping building materials and construction products businesses appoint the right people, strengthen leadership and make confident commercial decisions.",
     images: ["/og-image.jpg"],
   },
 
@@ -124,17 +124,24 @@ const illuminexStructuredData = {
         "https://www.linkedin.com/company/illuminexconsultancy",
       ],
       description:
-        "Illuminex Consultancy is an independent UK business built on genuine industry experience, strong relationships and a clear understanding of what helps organisations and people succeed. We provide executive search, specialist recruitment and strategic business consultancy, working closely with clients to understand their objectives, culture and the challenges behind each brief. Our approach is personal, discreet and commercially grounded, combining honest conversations with careful judgement and genuine sector knowledge. Every assignment is handled with integrity, precision and insight.",
+        "Illuminex Consultancy is an independent UK business specialising in building materials and construction products. We provide specialist recruitment and strategic business consultancy, helping clients appoint the right people, strengthen sales and commercial leadership and make confident business decisions. Our approach is personal, discreet and commercially grounded, combining genuine sector expertise with integrity, precision and insight.",
       areaServed: {
         "@type": "Country",
         name: "United Kingdom",
       },
       knowsAbout: [
+        "Building Materials",
+        "Construction Products",
+        "Commercial Strategy",
+        "Sales Leadership",
+        "Route to Market Strategy",
+        "Strategic & National Accounts",
+        "Fractional Sales & Commercial Leadership",
+        "Commercial & Talent Intelligence",
+        "Strategic Business Consultancy",
         "Executive Search",
         "Specialist Recruitment",
-        "Strategic Business Consultancy",
         "Senior Appointments",
-        "Leadership Recruitment",
       ],
     },
     {

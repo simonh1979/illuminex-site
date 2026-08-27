@@ -2280,7 +2280,7 @@ main.page-home .hero::before {
   content: "";
   position: fixed;
   inset: 0;
-  background: url("/hero-bg-home.jpg") center / cover no-repeat;
+  background: url("/hero-bg-home-jobs-hq.jpg") center / cover no-repeat;
   opacity: 0.50;
   background-position: 50% 10% !important; /* move DOWN more (increase %) */
   filter: grayscale(100%) contrast(1.08) brightness(1.05);

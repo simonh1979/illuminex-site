@@ -58,6 +58,9 @@ const SENIOR_ROLE_TERMS = [
 const PACKAGE_HEADING_PATTERN =
   /^(?:package|benefits|package\s*(?:&|and)\s*benefits|salary\s*(?:&|and)\s*benefits|remuneration\s*(?:&|and)\s*benefits|benefits\s*package|rewards|what(?:'|’)?s\s+on\s+offer|what\s+we\s+offer|the\s+offer)$/i;
 
+const INLINE_REMUNERATION_HEADING_PATTERN =
+  /^(?:package|package\s*(?:&|and)\s*benefits|salary\s*(?:&|and)\s*benefits|remuneration\s*(?:&|and)\s*benefits|benefits\s*package)$/i;
+
 function asArray<T>(value: T | T[] | undefined): T[] {
   if (!value) {
     return [];
@@ -223,6 +226,47 @@ function createPackageItem(
     label: "Benefit",
     value: plainItem,
   };
+}
+
+function extractInlinePackageStatement(
+  description: string
+): string | undefined {
+  if (!description.trim()) {
+    return undefined;
+  }
+
+  const candidates = [
+    ...Array.from(
+      description.matchAll(
+        /<p[^>]*>([\s\S]*?)<\/p>/gi
+      )
+    ),
+    ...Array.from(
+      description.matchAll(
+        /<li[^>]*>([\s\S]*?)<\/li>/gi
+      )
+    ),
+  ];
+
+  for (const candidate of candidates) {
+    const item = createPackageItem(candidate[1]);
+
+    if (!item) {
+      continue;
+    }
+
+    const label = item.label
+      .replace(/:\s*$/, "")
+      .trim();
+
+    if (!INLINE_REMUNERATION_HEADING_PATTERN.test(label)) {
+      continue;
+    }
+
+    return `${label}: ${item.value}`;
+  }
+
+  return undefined;
 }
 
 function findPackageSection(description: string): string {
@@ -475,13 +519,20 @@ async function enrichJobFromAdvertApi(
         Boolean(advert.RemoteWorking)
       );
 
-    const apiSalary = formatSalaryFromValues(
-      advert.Remuneration || "",
-      Number(advert.MinimumPayment ?? 0),
-      Number(advert.MaximumPayment ?? 0),
-      advert.PaymentRate || "",
-      advert.Currency || "GBP"
-    );
+    const inlinePackageStatement =
+      extractInlinePackageStatement(
+        advertDescription
+      );
+
+    const apiSalary =
+      inlinePackageStatement ||
+      formatSalaryFromValues(
+        advert.Remuneration || "",
+        Number(advert.MinimumPayment ?? 0),
+        Number(advert.MaximumPayment ?? 0),
+        advert.PaymentRate || "",
+        advert.Currency || "GBP"
+      );
 
     const apiLocation =
       String(advert.LocationArea ?? "").trim() ||

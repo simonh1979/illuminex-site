@@ -4380,6 +4380,30 @@ body:has(.job-detail-grid) {
   border-color: #ffffff !important;
 }
 
+/* Mobile: allow long salary/package text to wrap cleanly */
+@media (max-width: 768px) {
+  .job-card .sector-tag[title="Salary"] {
+    display: flex;
+    flex: 0 0 100%;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+
+    padding: 12px 14px;
+
+    border-radius: 18px;
+
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: normal;
+
+    line-height: 1.45;
+    justify-content: flex-start;
+    text-align: left;
+  }
+}
+
 /* ----------------------------------------------------------
    Package cards on Job Detail page
 ---------------------------------------------------------- */

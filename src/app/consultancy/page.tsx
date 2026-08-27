@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import styles from "./consultancy.module.css";
 
 export const metadata: Metadata = {
+  title: "Consultancy | Commercial Strategy & Specialist Recruitment",
   alternates: {
     canonical: "/consultancy",
   },

@@ -79,7 +79,73 @@ const nextConfig: NextConfig = {
   },
 
   async headers() {
-    return [{ source: "/(.*)", headers: securityHeaders }];
+    const imagePreload = (href: string) => [
+      {
+        key: "Link",
+        value: `<${href}>; rel=preload; as=image`,
+      },
+    ];
+
+    return [
+      { source: "/(.*)", headers: securityHeaders },
+
+      {
+        source: "/",
+        headers: imagePreload("/hero-bg-home1-optimized.jpg"),
+      },
+      {
+        source: "/candidates",
+        headers: imagePreload("/hero-bg-candidates.jpg"),
+      },
+      {
+        source: "/clients",
+        headers: imagePreload("/hero-bg-clients.jpg"),
+      },
+      {
+        source: "/services",
+        headers: imagePreload("/hero-bg-services.jpg"),
+      },
+      {
+        source: "/consultancy",
+        headers: imagePreload("/hero-bg-consultancy-optimized.webp"),
+      },
+      {
+        source: "/contact",
+        headers: imagePreload("/hero-bg-contact.jpg"),
+      },
+      {
+        source: "/jobs/:path*",
+        headers: imagePreload("/hero-bg-home-jobs-hq.jpg"),
+      },
+      {
+        source: "/about",
+        headers: imagePreload("/hero-bg-sub1.jpg"),
+      },
+      {
+        source: "/apply",
+        headers: imagePreload("/hero-bg-sub1.jpg"),
+      },
+      {
+        source: "/candidate-privacy-notice",
+        headers: imagePreload("/hero-bg-sub1.jpg"),
+      },
+      {
+        source: "/privacy",
+        headers: imagePreload("/hero-bg-sub1.jpg"),
+      },
+      {
+        source: "/terms",
+        headers: imagePreload("/hero-bg-sub1.jpg"),
+      },
+      {
+        source: "/cookies",
+        headers: imagePreload("/hero-bg-sub1.jpg"),
+      },
+      {
+        source: "/sectors/:path*",
+        headers: imagePreload("/hero-bg-sub1.jpg"),
+      },
+    ];
   },
 };
 

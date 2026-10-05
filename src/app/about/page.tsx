@@ -4,14 +4,17 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "About | Executive Search & Specialist Recruitment | Illuminex Consultancy (UK)",
+  title: "About | Building Materials & Construction Products",
   description:
-    "Illuminex Consultancy provides executive search and specialist recruitment for senior commercial and leadership roles. UK-wide delivery with discretion, pace and clear process.",
-  alternates: { canonical: "/about" },
+    "Learn about Illuminex Consultancy, combining real building materials and construction products experience with commercial consultancy, executive search and specialist recruitment across the UK and USA East Coast.",
+  alternates: {
+    canonical: "/about",
+  },
   openGraph: {
-    title: "About | Executive Search & Specialist Recruitment | Illuminex Consultancy (UK)",
+    title:
+      "About | Building Materials & Construction Products | Illuminex Consultancy",
     description:
-      "Executive search and specialist recruitment for senior commercial and leadership roles. UK-wide delivery with discretion, pace and clear process.",
+      "Learn about Illuminex Consultancy, combining real building materials and construction products experience with commercial consultancy, executive search and specialist recruitment across the UK and USA East Coast.",
     url: "/about",
     type: "website",
   },
@@ -30,7 +33,7 @@ export default function AboutPage() {
               lineHeight: 1.12,
             }}
           >
-            Built for high stakes hiring where reputation matters.
+            Built on real industry experience, where commercial judgement and reputation matter.
           </h1>
 
           <p
@@ -42,8 +45,14 @@ export default function AboutPage() {
               opacity: 0.92,
             }}
           >
-            Illuminex Consultancy delivers executive search and specialist recruitment across professional and technical sectors.
-            We work with pace, discretion and integrity. We stay close to the detail, because the detail decides outcomes.
+            Illuminex was created from inside the industry, not looking in
+            from the outside. Bringing real sector experience to the decisions
+            that matter most. We understand the pressures behind growth,
+            leadership, customer strategy and senior appointments because
+            those challenges are familiar territory. Our role is to bring
+            clear judgement, commercial perspective and a practical
+            understanding of the building materials and construction products
+            market to every assignment.
           </p>
 
           <div
@@ -57,41 +66,54 @@ export default function AboutPage() {
             <div className="sector-card" style={{ gridColumn: "span 6" }}>
               <h3>Search, not CV sifting</h3>
               <p>
-                We lead with market intelligence, mapping and targeted outreach, then assess
-                capability, motivation and long-term fit before you ever meet.
+                We lead with market intelligence, mapping and targeted
+                outreach, then assess capability, motivation and long-term fit
+                before you ever meet.
               </p>
               <div className="sector-tag">Executive &amp; Specialist</div>
             </div>
 
             <div className="sector-card" style={{ gridColumn: "span 6" }}>
-              <h3>Clarity from day one</h3>
+              <h3>Commercial experience, not theory</h3>
               <p>
-                Role scope, target companies, compensation and selection process. Alignment early on maintains momentum and protects your employer brand.
+                Our perspective is shaped by more than 20 years working in
+                sales and commercial leadership across building materials and
+                construction products. That experience informs how we approach
+                strategy, leadership, talent and growth.
               </p>
-              <div className="sector-tag">Process &amp; precision</div>
+              <div className="sector-tag">Sector experience</div>
             </div>
 
             <div className="sector-card" style={{ gridColumn: "span 6" }}>
               <h3>Integrity is non-negotiable</h3>
               <p>
-                Straight advice, honest feedback and confidentiality throughout. We represent you properly and treat candidates as long-term relationships.
+                Straight advice, honest feedback and confidentiality
+                throughout. We represent you properly and treat candidates as
+                long-term relationships.
               </p>
               <div className="sector-tag">Trust &amp; discretion</div>
             </div>
 
             <div className="sector-card" style={{ gridColumn: "span 6" }}>
-              <h3>UK wide coverage</h3>
+              <h3>UK &amp; USA East Coast</h3>
               <p>
-                Supporting national, regional and remote appointments across the UK, we move
-                with urgency while ensuring quality and integrity remain the benchmark.
+                Our focus spans the UK and USA East Coast, supporting
+                businesses across building materials and construction products
+                with commercial consultancy, leadership and specialist
+                recruitment requirements.
               </p>
-              <div className="sector-tag">UK wide</div>
+              <div className="sector-tag">UK • USA East Coast</div>
             </div>
 
-            <div className="sector-card sector-card--cta" style={{ gridColumn: "span 12" }}>
+            <div
+              className="sector-card sector-card--cta"
+              style={{ gridColumn: "span 12" }}
+            >
               <h3>Discuss a current or upcoming hire</h3>
               <p>
-                Share the outline of the role and what success looks like. We will provide a clear view of the market and the most appropriate way to approach the search.
+                Share the outline of the role and what success looks like. We
+                will provide a clear view of the market and the most
+                appropriate way to approach the search.
               </p>
 
               <div className="sector-cta-row">

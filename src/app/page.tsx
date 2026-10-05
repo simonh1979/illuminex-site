@@ -19,14 +19,23 @@ export default function Home() {
         <div className="hero-inner">
           <div className="hero-left protect-content no-context-menu">
             <h1>
-              Strategic talent, delivered with clarity and precision. Partner
-              with the people shaping tomorrow.
+              Commercial strategy and specialist recruitment, shaped by real
+              industry experience.
             </h1>
 
             <p>
-              Illuminex Consultancy provides premium executive search and specialist
-              recruitment across defined professional sectors, delivering exceptional
-              mid-to-senior and executive talent with integrity and focus.
+              Illuminex Consultancy partners with businesses across the building
+              materials and construction products sector in the UK and USA East
+              Coast, bringing more than 20 years of sales and commercial
+              leadership experience to commercial challenges, leadership
+              decisions and critical appointments.
+              <br />
+              <br />
+              Our work spans consultancy and market insight, executive search
+              and specialist recruitment. We help businesses make stronger
+              commercial decisions, support leadership capability and deliver
+              exceptional mid-to-senior and executive talent with integrity,
+              precision and sector insight.
             </p>
           </div>
 
@@ -69,11 +78,13 @@ export default function Home() {
           <div className="sectors-head protect-content no-context-menu">
             <div className="kicker">OUR SECTORS</div>
 
-            <h2>Specialist markets. Senior appointments.</h2>
+            <h2>Specialist markets. Commercial expertise.</h2>
 
             <p className="sub">
-              We work in defined sectors where credibility matters. The focus is
-              simple: strong shortlists, straight advice and long-term
+              We work across the building materials and construction products
+              sector, partnering with manufacturers, merchants, distributors,
+              buying groups and specialist suppliers. Our approach combines
+              sector knowledge, commercial understanding and trusted long-term
               relationships.
             </p>
           </div>
@@ -86,13 +97,16 @@ export default function Home() {
               className="sector-card sector-card--link"
             >
               <h3>Construction &amp; Building Materials</h3>
+
               <p>
-                Leadership and commercial hiring across manufacturers,
-                distribution, merchants and the wider built environment.
+                Commercial leadership, specialist recruitment and consultancy
+                across the building materials and construction products sector.
               </p>
+
               <span className="sector-tag">
-                UK-wide • Mid to Senior • Executive
+                UK • USA East Coast • Mid to Senior • Executive
               </span>
+
               <span className="sector-cta-mini">
                 Explore Construction &amp; Building Materials
               </span>
@@ -105,11 +119,16 @@ export default function Home() {
               className="sector-card sector-card--link"
             >
               <h3>Technical &amp; Commercial Sales</h3>
+
               <p>
-                Sales Directors, Commercial Directors and senior leadership
-                aligned to complex, consultative markets.
+                Senior sales and commercial leadership across technical,
+                specification-led and consultative markets.
               </p>
-              <span className="sector-tag">High trust search</span>
+
+              <span className="sector-tag">
+                Sales • Commercial • Leadership
+              </span>
+
               <span className="sector-cta-mini">
                 Explore Technical &amp; Commercial Sales
               </span>
@@ -122,130 +141,91 @@ export default function Home() {
               className="sector-card sector-card--link"
             >
               <h3>Bathrooms &amp; Kitchens</h3>
+
               <p>
-                Specification-led, trade and retail leadership where product
-                knowledge, channel understanding and credibility matter.
+                Commercial and sales leadership across bathroom and kitchen
+                markets, spanning merchant, distribution, specification and
+                retail channels.
               </p>
-              <span className="sector-tag">KBB • Merchant • Manufacturer</span>
+
+              <span className="sector-tag">
+                KBB • Merchant • Distribution • Specification
+              </span>
+
               <span className="sector-cta-mini">
                 Explore Bathrooms &amp; Kitchens
               </span>
             </TrackedSectorLink>
 
-            {/* 4) Education */}
-            <TrackedSectorLink
-              href="/sectors/education"
-              sector="Education"
-              className="sector-card sector-card--link"
-            >
-              <h3>Education</h3>
-              <p>
-                Recruitment delivered with safeguarding at the centre and
-                standards protected throughout the process.
-              </p>
-
-              <div className="sector-card-actions">
-                <span className="sector-tag">Compliance first</span>
-                <span
-                  className="sector-cta-mini"
-                  style={{ marginLeft: "auto" }}
-                >
-                  Explore Education
-                </span>
-              </div>
-            </TrackedSectorLink>
-
-            {/* 5) Healthcare */}
-            <TrackedSectorLink
-              href="/sectors/healthcare"
-              sector="Healthcare"
-              className="sector-card sector-card--link"
-            >
-              <h3>Healthcare</h3>
-              <p>
-                Clinical and operational leadership recruitment handled with
-                care, discretion and proper process discipline.
-              </p>
-
-              <div className="sector-card-actions">
-                <span className="sector-tag">Confidential search</span>
-
-                <span
-                  className="sector-cta-mini"
-                  style={{ marginLeft: "auto" }}
-                >
-                  Explore Healthcare
-                </span>
-              </div>
-            </TrackedSectorLink>
-
-                        {/* 6) CTA */}
+            {/* 4) Client CTA */}
             <Link
               href="/contact"
               className="sector-card sector-card--cta sector-card--link"
             >
               <h3>Not sure where your role sits?</h3>
+
               <p>
                 Tell us what you are hiring for and we will advise on the most
-                sensible route to market.
+                sensible route to market. Whether the need is recruitment,
+                commercial leadership or consultancy, we can help you decide the
+                right next step.
               </p>
 
               <div className="sector-card-actions sector-card-actions--center">
                 <span className="sector-cta">Speak with Illuminex</span>
               </div>
             </Link>
+
+            {/* 5) Candidate Registration CTA */}
+            <Link
+              href="/candidates"
+              className="sector-card candidate-register-cta sector-card--link homepage-candidate-cta"
+              style={{
+                padding: "28px 24px",
+                display: "grid",
+                gap: 18,
+                justifyItems: "center",
+                textAlign: "center",
+                boxSizing: "border-box",
+              }}
+            >
+              <div className="kicker">CANDIDATE REGISTRATION</div>
+
+              <h3 style={{ margin: 0 }}>
+                Not seeing the right opportunity?
+              </h3>
+
+              <p
+                className="candidate-register-cta__text"
+                style={{
+                  margin: 0,
+                  width: "100%",
+                  lineHeight: 1.7,
+                }}
+              >
+                Many of our senior searches are confidential and may not appear
+                on the live jobs page straight away. Register your CV with
+                Illuminex and we can contact you when a relevant opportunity
+                becomes available.
+              </p>
+
+              <div
+                className="sector-card-actions sector-card-actions--center candidate-register-cta__actions"
+                style={{
+                  justifyContent: "center",
+                  width: "100%",
+                }}
+              >
+                <span className="sector-cta candidate-register-cta__button">
+                  Register Your CV
+                </span>
+              </div>
+
+              <p className="candidate-register-trust">
+                100% confidential. No CVs are shared without your permission.
+              </p>
+            </Link>
           </div>
-
-                    {/* Candidate registration CTA */}
-          <Link
-            href="/candidates"
-            className="sector-card candidate-register-cta sector-card--link"
-            style={{
-              margin: "24px auto 0",
-              maxWidth: 980,
-              padding: "28px 24px",
-              display: "grid",
-              gap: 18,
-              justifyItems: "center",
-              textAlign: "center",
-              boxSizing: "border-box",
-            }}
-          >
-            <div className="kicker">CANDIDATE REGISTRATION</div>
-
-            <h3 style={{ margin: 0 }}>Not seeing the right opportunity?</h3>
-
-            <p
-              className="candidate-register-cta__text"
-              style={{
-                margin: 0,
-                maxWidth: 880,
-                width: "100%",
-                lineHeight: 1.7,
-              }}
-            >
-              Many of our senior searches are confidential and may not appear on
-              the live jobs page straight away. Register your CV with Illuminex
-              and we can contact you when a relevant opportunity becomes
-              available.
-            </p>
-
-            <div
-              className="sector-card-actions sector-card-actions--center candidate-register-cta__actions"
-              style={{
-                justifyContent: "center",
-                width: "100%",
-              }}
-            >
-              <span className="sector-cta candidate-register-cta__button">
-                Register Your CV
-              </span>
-            </div>
-
-            <p className="candidate-register-trust">
-              100% confidential. No CVs are shared without your permission.
-            </p>
-          </Link>
         </div>
       </section>
     </main>

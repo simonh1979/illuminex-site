@@ -5,14 +5,17 @@ import Link from "next/link";
 import CandidateRegisterFormClient from "@/components/CandidateRegisterFormClient";
 
 export const metadata: Metadata = {
-  title: "Candidates | Register Your CV | Illuminex Consultancy (UK)",
+  title: "Candidates | Building Materials Recruitment",
   description:
-    "Register your CV with Illuminex Consultancy. Executive search and specialist recruitment across UK professional and technical sectors. Discreet, straight communication and roles that make sense.",
-  alternates: { canonical: "/candidates" },
+    "Register your CV and explore sales, commercial and leadership opportunities across building materials and construction products in the UK and USA East Coast, with discreet representation and straight communication.",
+  alternates: {
+    canonical: "/candidates",
+  },
   openGraph: {
-    title: "Candidates | Register Your CV | Illuminex Consultancy (UK)",
+    title:
+      "Candidates | Building Materials Recruitment | Illuminex Consultancy",
     description:
-      "Register your CV with Illuminex Consultancy. Discreet representation and roles aligned to your experience and direction.",
+      "Register your CV and explore sales, commercial and leadership opportunities across building materials and construction products in the UK and USA East Coast, with discreet representation and straight communication.",
     url: "/candidates",
     type: "website",
   },
@@ -43,8 +46,13 @@ export default function CandidatesPage() {
               opacity: 0.92,
             }}
           >
-            We work with high-calibre candidates across professional and technical sectors, from regional leadership through to executive appointments.
-            You can expect clear communication, honest feedback and opportunities that match your experience and direction.
+            We work with experienced sales, commercial and leadership
+            professionals across building materials and construction products
+            in the UK and USA East Coast, from established mid-level managers
+            through to board and executive appointments. You can expect
+            straight communication, honest feedback and a clear understanding
+            of the market, the role and whether the opportunity genuinely makes
+            sense for you.
           </p>
 
           <div
@@ -58,7 +66,9 @@ export default function CandidatesPage() {
             <div className="sector-card" style={{ gridColumn: "span 6" }}>
               <h3>What you can expect</h3>
               <p>
-                Clear role context and a process that respects your time. If it is not right, we will tell you early and explain why.
+                Clear role context, realistic expectations and a process that
+                respects your time. If the opportunity is not right, we will
+                tell you early and explain why.
               </p>
               <div className="sector-tag">Clarity</div>
             </div>
@@ -66,25 +76,36 @@ export default function CandidatesPage() {
             <div className="sector-card" style={{ gridColumn: "span 6" }}>
               <h3>Confidential representation</h3>
               <p>
-                For senior moves, discretion matters. We handle approaches carefully and never trade on names. Candidate discussions are handled with discretion and without unsolicited CV circulation.
+                For senior moves, discretion matters. We handle approaches
+                carefully, keep conversations confidential and never circulate
+                your CV without permission.
               </p>
               <div className="sector-tag">Discretion</div>
             </div>
 
             {/* Candidate registration form (speculative) */}
-            <div className="sector-card sector-card--cta" style={{ gridColumn: "span 12" }}>
+            <div
+              className="sector-card sector-card--cta"
+              style={{ gridColumn: "span 12" }}
+            >
               <h3>Register your CV</h3>
               <p style={{ marginBottom: 14 }}>
-                Not applying for a live role? Register your CV and we will respond discreetly when there is a sensible fit.
+                Not applying for a live role? Register your CV and we can
+                contact you discreetly when a relevant opportunity becomes
+                available.
               </p>
 
               <CandidateRegisterFormClient />
             </div>
 
-            <div className="sector-card sector-card--cta" style={{ gridColumn: "span 12" }}>
+            <div
+              className="sector-card sector-card--cta"
+              style={{ gridColumn: "span 12" }}
+            >
               <h3>View live opportunities</h3>
               <p>
-                Browse current roles and filter by sector, location and experience level.
+                Browse current roles across the UK and USA East Coast and refine
+                your search by sector, location, job type and experience level.
               </p>
 
               <div className="sector-cta-row">

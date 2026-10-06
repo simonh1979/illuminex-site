@@ -215,7 +215,7 @@ function resolveMarketLocation(input: {
       normalisedCountry === "united states" ||
       normalisedCountry === "united states of america"
     ) {
-      return "USA East Coast";
+      return "Eastern USA";
     }
 
     if (
@@ -240,7 +240,7 @@ function resolveMarketLocation(input: {
     .trim();
 
   if (currency === "USD") {
-    return "USA East Coast";
+    return "Eastern USA";
   }
 
   if (currency === "GBP") {

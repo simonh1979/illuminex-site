@@ -7,7 +7,7 @@ import CandidateRegisterFormClient from "@/components/CandidateRegisterFormClien
 export const metadata: Metadata = {
   title: "Candidates | Building Materials Recruitment",
   description:
-    "Register your CV and explore sales, commercial and leadership opportunities across building materials and construction products in the UK and USA East Coast, with discreet representation and straight communication.",
+    "Register your CV and explore sales, commercial and leadership opportunities across building materials and construction products in the UK and Eastern USA, with discreet representation and straight communication.",
   alternates: {
     canonical: "/candidates",
   },
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     title:
       "Candidates | Building Materials Recruitment | Illuminex Consultancy",
     description:
-      "Register your CV and explore sales, commercial and leadership opportunities across building materials and construction products in the UK and USA East Coast, with discreet representation and straight communication.",
+      "Register your CV and explore sales, commercial and leadership opportunities across building materials and construction products in the UK and Eastern USA, with discreet representation and straight communication.",
     url: "/candidates",
     type: "website",
   },
@@ -48,7 +48,7 @@ export default function CandidatesPage() {
           >
             We work with experienced sales, commercial and leadership
             professionals across building materials and construction products
-            in the UK and USA East Coast, from established mid-level managers
+            in the UK and Eastern USA, from established mid-level managers
             through to board and executive appointments. You can expect
             straight communication, honest feedback and a clear understanding
             of the market, the role and whether the opportunity genuinely makes
@@ -104,7 +104,7 @@ export default function CandidatesPage() {
             >
               <h3>View live opportunities</h3>
               <p>
-                Browse current roles across the UK and USA East Coast and refine
+                Browse current roles across the UK and Eastern USA and refine
                 your search by sector, location, job type and experience level.
               </p>
 

@@ -4,7 +4,7 @@ import LiveJobsClient from "@/components/LiveJobsClient";
 export const metadata: Metadata = {
   title: "Live Jobs | Building Materials & Construction Products",
   description:
-    "Search current building materials and construction products opportunities across the UK and USA East Coast, including sales, commercial, leadership and executive roles.",
+    "Search current building materials and construction products opportunities across the UK and Eastern USA, including sales, commercial, leadership and executive roles.",
   alternates: {
     canonical: "/jobs",
   },
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     title:
       "Live Jobs | Building Materials & Construction Products | Illuminex Consultancy",
     description:
-      "Search current building materials and construction products opportunities across the UK and USA East Coast, including sales, commercial, leadership and executive roles.",
+      "Search current building materials and construction products opportunities across the UK and Eastern USA, including sales, commercial, leadership and executive roles.",
     images: [
       {
         url: "/og-image.jpg",
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     title:
       "Live Jobs | Building Materials & Construction Products | Illuminex Consultancy",
     description:
-      "Search current building materials and construction products opportunities across the UK and USA East Coast, including sales, commercial, leadership and executive roles.",
+      "Search current building materials and construction products opportunities across the UK and Eastern USA, including sales, commercial, leadership and executive roles.",
     images: ["/og-image.jpg"],
   },
 };
@@ -61,7 +61,7 @@ export default function LiveJobsPage() {
             }}
           >
             Illuminex works on retained, confidential and specialist appointments across building materials and construction products.
-            Some opportunities may not be advertised publicly. Search current roles across the UK and USA East Coast, or refine your search by sector, location, job type and experience level.
+            Some opportunities may not be advertised publicly. Search current roles across the UK and Eastern USA, or refine your search by sector, location, job type and experience level.
           </p>
         </div>
       </section>

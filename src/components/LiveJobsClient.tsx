@@ -367,7 +367,7 @@ function LiveJobsClientInner() {
 
 const locations = data?.facets.locations ?? [
   "UK Wide",
-  "USA East Coast",
+  "Eastern USA",
   "Remote",
 ];
 
@@ -445,7 +445,7 @@ const locations = data?.facets.locations ?? [
               onChange={(event) =>
                 setLocation(event.target.value)
               }
-              placeholder="UK Wide, USA East Coast, region, city or remote…"
+              placeholder="UK Wide, Eastern USA, region, city or remote…"
             />
 
             <datalist id="locations">
@@ -789,7 +789,7 @@ function LiveJobsLoadingFallback() {
             <input
               disabled
               tabIndex={-1}
-              placeholder="UK Wide, USA East Coast, region, city or remote…"
+              placeholder="UK Wide, Eastern USA, region, city or remote…"
             />
           </div>
 

@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Technical & Commercial Sales Recruitment",
   description:
-    "Specialist recruitment for mid-to-senior sales and commercial leadership across technical, specification-led and consultative markets in the UK and USA East Coast.",
+    "Specialist recruitment for mid-to-senior sales and commercial leadership across technical, specification-led and consultative markets in the UK and Eastern USA.",
   alternates: {
     canonical: "/sectors/technical-commercial-sales",
   },
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     title:
       "Technical & Commercial Sales Recruitment | Illuminex Consultancy",
     description:
-      "Specialist recruitment for mid-to-senior sales and commercial leadership across technical, specification-led and consultative markets in the UK and USA East Coast.",
+      "Specialist recruitment for mid-to-senior sales and commercial leadership across technical, specification-led and consultative markets in the UK and Eastern USA.",
     url: "/sectors/technical-commercial-sales",
     type: "website",
   },
@@ -85,9 +85,9 @@ export default function TechnicalCommercialSalesSectorPage() {
                 National Sales Managers, Regional Sales Managers and senior
                 account leaders responsible for territory structure, team
                 performance and sustainable account growth across the UK and
-                USA East Coast.
+                Eastern USA.
               </p>
-              <div className="sector-tag">UK • USA East Coast</div>
+              <div className="sector-tag">UK • Eastern USA</div>
             </div>
 
             <div className="sector-card" style={{ gridColumn: "span 4" }}>

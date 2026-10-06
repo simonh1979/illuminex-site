@@ -25,8 +25,7 @@ export default function Home() {
 
             <p>
               Illuminex Consultancy partners with businesses across the building
-              materials and construction products sector in the UK and USA East
-              Coast, bringing more than 20 years of sales and commercial
+              materials and construction products sector in the UK and Eastern USA, bringing more than 20 years of sales and commercial
               leadership experience to commercial challenges, leadership
               decisions and critical appointments.
               <br />
@@ -104,7 +103,7 @@ export default function Home() {
               </p>
 
               <span className="sector-tag">
-                UK • USA East Coast • Mid to Senior • Executive
+                UK • Eastern USA • Mid to Senior • Executive
               </span>
 
               <span className="sector-cta-mini">

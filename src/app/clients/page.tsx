@@ -6,7 +6,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Clients | Executive Search & Specialist Recruitment",
   description:
-    "Executive search and specialist recruitment for mid-to-senior and board-level sales, commercial and leadership appointments across building materials and construction products in the UK and USA East Coast.",
+    "Executive search and specialist recruitment for mid-to-senior and board-level sales, commercial and leadership appointments across building materials and construction products in the UK and Eastern USA.",
   alternates: {
     canonical: "/clients",
   },
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     title:
       "Clients | Executive Search & Specialist Recruitment | Illuminex Consultancy",
     description:
-      "Executive search and specialist recruitment for mid-to-senior and board-level sales, commercial and leadership appointments across building materials and construction products in the UK and USA East Coast.",
+      "Executive search and specialist recruitment for mid-to-senior and board-level sales, commercial and leadership appointments across building materials and construction products in the UK and Eastern USA.",
     url: "/clients",
     type: "website",
   },
@@ -65,7 +65,7 @@ export default function ClientsPage() {
               width: "fit-content",
             }}
           >
-            UK • USA East Coast
+            UK • Eastern USA
           </div>
 
           {/* Top CTAs */}
@@ -172,7 +172,7 @@ export default function ClientsPage() {
               }}
             >
               <div className="sector-tag">Defined approach</div>
-              <div className="sector-tag">UK • USA East Coast</div>
+              <div className="sector-tag">UK • Eastern USA</div>
             </div>
             </div>
 

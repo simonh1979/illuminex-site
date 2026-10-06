@@ -6,7 +6,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "About | Building Materials & Construction Products",
   description:
-    "Learn about Illuminex Consultancy, combining real building materials and construction products experience with commercial consultancy, executive search and specialist recruitment across the UK and USA East Coast.",
+    "Learn about Illuminex Consultancy, combining real building materials and construction products experience with commercial consultancy, executive search and specialist recruitment across the UK and Eastern USA.",
   alternates: {
     canonical: "/about",
   },
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     title:
       "About | Building Materials & Construction Products | Illuminex Consultancy",
     description:
-      "Learn about Illuminex Consultancy, combining real building materials and construction products experience with commercial consultancy, executive search and specialist recruitment across the UK and USA East Coast.",
+      "Learn about Illuminex Consultancy, combining real building materials and construction products experience with commercial consultancy, executive search and specialist recruitment across the UK and Eastern USA.",
     url: "/about",
     type: "website",
   },
@@ -95,14 +95,14 @@ export default function AboutPage() {
             </div>
 
             <div className="sector-card" style={{ gridColumn: "span 6" }}>
-              <h3>UK &amp; USA East Coast</h3>
+              <h3>UK &amp; Eastern USA</h3>
               <p>
-                Our focus spans the UK and USA East Coast, supporting
+                Our focus spans the UK and Eastern USA, supporting
                 businesses across building materials and construction products
                 with commercial consultancy, leadership and specialist
                 recruitment requirements.
               </p>
-              <div className="sector-tag">UK • USA East Coast</div>
+              <div className="sector-tag">UK • Eastern USA</div>
             </div>
 
             <div

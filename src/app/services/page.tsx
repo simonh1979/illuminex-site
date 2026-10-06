@@ -71,7 +71,7 @@ export default function ServicesPage() {
               border: "1px solid rgba(255,255,255,0.16)",
             }}
           >
-            UK • USA East Coast
+            UK • Eastern USA
           </div>
 
           <div

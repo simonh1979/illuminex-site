@@ -64,7 +64,7 @@ export default function ConsultancyPage() {
             </p>
 
             <div className={styles.heroMarket}>
-              UK • USA East Coast
+              UK • Eastern USA
             </div>
 
             <div className={styles.heroActions}>

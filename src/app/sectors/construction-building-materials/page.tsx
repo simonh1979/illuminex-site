@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Building Materials & Construction Products Recruitment",
   description:
-    "Specialist recruitment across building materials and construction products, supporting mid-to-senior and board-level sales, commercial and leadership appointments in the UK and USA East Coast.",
+    "Specialist recruitment across building materials and construction products, supporting mid-to-senior and board-level sales, commercial and leadership appointments in the UK and Eastern USA.",
   alternates: {
     canonical: "/sectors/construction-building-materials",
   },
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     title:
       "Building Materials & Construction Products Recruitment | Illuminex Consultancy",
     description:
-      "Specialist recruitment across building materials and construction products, supporting mid-to-senior and board-level sales, commercial and leadership appointments in the UK and USA East Coast.",
+      "Specialist recruitment across building materials and construction products, supporting mid-to-senior and board-level sales, commercial and leadership appointments in the UK and Eastern USA.",
     url: "/sectors/construction-building-materials",
     type: "website",
   },
@@ -124,7 +124,7 @@ export default function ConstructionBuildingMaterialsPage() {
             </div>
           </div>
 
-          {/* UK and USA East Coast coverage */}
+          {/* UK and Eastern USA coverage */}
           <div
             style={{
               marginTop: 18,
@@ -134,13 +134,13 @@ export default function ConstructionBuildingMaterialsPage() {
             }}
           >
             <div className="sector-card" style={{ gridColumn: "span 12" }}>
-              <h3>UK &amp; USA East Coast</h3>
+              <h3>UK &amp; Eastern USA</h3>
               <p>
-                Our focus spans the UK and USA East Coast, supporting national,
+                Our focus spans the UK and Eastern USA, supporting national,
                 regional and field-based commercial requirements across the
                 building materials and construction products sector.
               </p>
-              <div className="sector-tag">UK • USA East Coast</div>
+              <div className="sector-tag">UK • Eastern USA</div>
             </div>
           </div>
 

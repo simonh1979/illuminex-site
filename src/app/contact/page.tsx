@@ -4,14 +4,14 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Contact Illuminex Consultancy about specialist recruitment, commercial consultancy, candidate opportunities or trusted partner support across the UK and USA East Coast.",
+    "Contact Illuminex Consultancy about specialist recruitment, commercial consultancy, candidate opportunities or trusted partner support across the UK and Eastern USA.",
   alternates: {
     canonical: "/contact",
   },
   openGraph: {
     title: "Contact | Illuminex Consultancy",
     description:
-      "Contact Illuminex Consultancy about specialist recruitment, commercial consultancy, candidate opportunities or trusted partner support across the UK and USA East Coast.",
+      "Contact Illuminex Consultancy about specialist recruitment, commercial consultancy, candidate opportunities or trusted partner support across the UK and Eastern USA.",
     url: "/contact",
     type: "website",
   },
@@ -67,7 +67,7 @@ export default function ContactPage() {
               border: "1px solid rgba(255,255,255,0.16)",
             }}
           >
-            UK • USA East Coast
+            UK • Eastern USA
           </div>
 
           <div
@@ -106,12 +106,12 @@ export default function ContactPage() {
                 Outline your sector background, current level and preferred
                 geography. We work with experienced professionals across
                 building materials and construction products in the UK and USA
-                East Coast, with confidential conversations handled discreetly
+                Eastern USA, with confidential conversations handled discreetly
                 from the outset.
               </p>
 
               <div className="sector-tag">
-                Careers • UK • USA East Coast
+                Careers • UK • Eastern USA
               </div>
             </div>
 

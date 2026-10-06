@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Bathrooms & Kitchens Recruitment",
   description:
-    "Specialist recruitment across bathroom and kitchen markets, spanning merchant, distribution, specification and retail channels across the UK and USA East Coast.",
+    "Specialist recruitment across bathroom and kitchen markets, spanning merchant, distribution, specification and retail channels across the UK and Eastern USA.",
   alternates: {
     canonical: "/sectors/bathrooms-kitchens",
   },
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     title:
       "Bathrooms & Kitchens Recruitment | Illuminex Consultancy",
     description:
-      "Specialist recruitment across bathroom and kitchen markets, spanning merchant, distribution, specification and retail channels across the UK and USA East Coast.",
+      "Specialist recruitment across bathroom and kitchen markets, spanning merchant, distribution, specification and retail channels across the UK and Eastern USA.",
     url: "/sectors/bathrooms-kitchens",
     type: "website",
   },
@@ -43,6 +43,9 @@ export default function BathroomsKitchensSectorPage() {
             specification and project channels.
           </p>
 
+          <div className="sector-tag" style={{ marginTop: 18 }}>
+            UK • Eastern USA
+          </div>
           <div
             style={{
               marginTop: 22,

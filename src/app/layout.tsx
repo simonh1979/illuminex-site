@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   },
 
   description:
-    "Specialist commercial consultancy, executive search and recruitment for building materials and construction products across the UK and USA East Coast, shaped by real industry experience.",
+    "Specialist commercial consultancy, executive search and recruitment for building materials and construction products across the UK and Eastern USA, shaped by real industry experience.",
 
   authors: [
     {
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     title:
       "Illuminex Consultancy | Commercial Strategy & Specialist Recruitment",
     description:
-      "Specialist commercial consultancy, executive search and recruitment for building materials and construction products across the UK and USA East Coast, shaped by real industry experience.",
+      "Specialist commercial consultancy, executive search and recruitment for building materials and construction products across the UK and Eastern USA, shaped by real industry experience.",
     images: [
       {
         url: "/og-image.jpg",
@@ -61,7 +61,7 @@ export const metadata: Metadata = {
     title:
       "Illuminex Consultancy | Commercial Strategy & Specialist Recruitment",
     description:
-      "Specialist commercial consultancy, executive search and recruitment for building materials and construction products across the UK and USA East Coast, shaped by real industry experience.",
+      "Specialist commercial consultancy, executive search and recruitment for building materials and construction products across the UK and Eastern USA, shaped by real industry experience.",
     images: ["/og-image.jpg"],
   },
 
@@ -124,7 +124,7 @@ const illuminexStructuredData = {
         "https://www.linkedin.com/company/illuminexconsultancy",
       ],
       description:
-        "Illuminex Consultancy is a specialist building materials and construction products business providing commercial consultancy, executive search and specialist recruitment across the UK and USA East Coast. Our work combines real sector experience with commercial strategy, sales and leadership insight, talent expertise and a practical understanding of how the market works.",
+        "Illuminex Consultancy is a specialist building materials and construction products business providing commercial consultancy, executive search and specialist recruitment across the UK and Eastern USA. Our work combines real sector experience with commercial strategy, sales and leadership insight, talent expertise and a practical understanding of how the market works.",
       areaServed: [
         {
           "@type": "Country",
@@ -132,7 +132,7 @@ const illuminexStructuredData = {
         },
         {
           "@type": "Place",
-          name: "USA East Coast",
+          name: "Eastern USA",
         },
       ],
       knowsAbout: [

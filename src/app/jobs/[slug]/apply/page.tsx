@@ -19,7 +19,7 @@ type Props = {
 export const metadata: Metadata = {
   title: "Apply for a Role",
   description:
-    "Submit your application confidentially for opportunities represented by Illuminex Consultancy across building materials and construction products in the UK and USA East Coast.",
+    "Submit your application confidentially for opportunities represented by Illuminex Consultancy across building materials and construction products in the UK and Eastern USA.",
 };
 
 function getFallbackJobIdFromSlug(slug: string) {

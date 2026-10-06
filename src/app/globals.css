@@ -4693,3 +4693,13 @@ main.page-services .sector-card p {
     max-width: 1500px !important;
   }
 }
+
+/* Legal pages: use full card width on desktop */
+@media (min-width: 993px) {
+  .page-privacy .sector-card p,
+  .page-cookies .sector-card p,
+  .page-terms .sector-card p {
+    width: 100%;
+    max-width: none !important;
+  }
+}

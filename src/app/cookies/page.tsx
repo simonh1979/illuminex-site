@@ -66,9 +66,9 @@ export default function CookiesPage() {
             </p>
             <p style={{ marginBottom: 0 }}>
               Some cookies are strictly necessary for the website to function.
-              Others, such as analytics or future advertising-related cookies,
-              will only be used where you have provided the relevant consent
-              through our cookie preferences tool.
+              Others, such as analytics or advertising-related cookies, will only
+              be used where you have provided the relevant consent through our
+              cookie preferences tool.
             </p>
           </div>
 
@@ -91,8 +91,9 @@ export default function CookiesPage() {
               </li>
               <li>
                 <strong>Advertising or marketing cookies</strong> – these may be
-                used in future in connection with platforms such as LinkedIn or
-                Meta, but only where appropriate consent has been obtained.
+                used in connection with platforms such as LinkedIn and, where
+                introduced in future, Meta, but only where appropriate consent has
+                been obtained.
               </li>
             </ul>
           </div>
@@ -141,17 +142,18 @@ export default function CookiesPage() {
           </div>
 
           <div style={{ marginTop: 18 }} className="sector-card">
-            <h3>7. Future Advertising and Tracking Technologies</h3>
+            <h3>7. Advertising and Tracking Technologies</h3>
             <p>
-              We may in future use advertising, remarketing or conversion
-              tracking technologies provided by third-party platforms such as
-              LinkedIn or Meta in support of recruitment marketing and business
-              development activity.
+              We may use advertising, remarketing or conversion tracking
+              technologies provided by third-party platforms such as LinkedIn in
+              support of recruitment marketing and business development activity.
+              Similar technologies, including Meta, may be introduced in future.
             </p>
             <p style={{ marginBottom: 0 }}>
-              If such technologies are introduced, they will be subject to an
-              appropriate consent mechanism and this Cookie Policy will be
-              updated accordingly.
+              Where these technologies are used, they are subject to an
+              appropriate consent mechanism and are not activated unless the
+              relevant consent has been provided through our cookie preferences
+              tool.
             </p>
           </div>
 

@@ -4,16 +4,17 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title:
-    "Clients | Executive Search & Specialist Recruitment | Illuminex Consultancy (UK)",
+  title: "Clients | Executive Search & Specialist Recruitment",
   description:
-    "Retained executive search and specialist recruitment for senior commercial and leadership appointments. Clear process, disciplined assessment, and decision-ready shortlists built on evidence.",
-  alternates: { canonical: "/clients" },
+    "Executive search and specialist recruitment for mid-to-senior and board-level sales, commercial and leadership appointments across building materials and construction products in the UK and Eastern USA.",
+  alternates: {
+    canonical: "/clients",
+  },
   openGraph: {
     title:
-      "Clients | Executive Search & Specialist Recruitment | Illuminex Consultancy (UK)",
+      "Clients | Executive Search & Specialist Recruitment | Illuminex Consultancy",
     description:
-      "Retained executive search and specialist recruitment for senior commercial and leadership appointments. Clear process and evidence-led shortlists.",
+      "Executive search and specialist recruitment for mid-to-senior and board-level sales, commercial and leadership appointments across building materials and construction products in the UK and Eastern USA.",
     url: "/clients",
     type: "website",
   },
@@ -34,7 +35,8 @@ export default function ClientsPage() {
               lineHeight: 1.12,
             }}
           >
-            A disciplined search process, delivered with integrity.
+            The right appointment deserves more than a recruitment process. It
+            deserves to be delivered with integrity and commercial insight.
           </h1>
 
           <p
@@ -46,10 +48,25 @@ export default function ClientsPage() {
               opacity: 0.92,
             }}
           >
-            Illuminex supports organisations making senior commercial and leadership hires where the outcome matters.
-            We run search with discipline and discretion, and we present shortlists built on evidence and judgement,
-            not volume.
+            When the person you appoint will influence customers, teams and
+            commercial performance, the search needs to go beyond the CV.
+            Illuminex brings first-hand knowledge of the building materials and
+            construction products market to every assignment, helping clients
+            assess the commercial judgement, leadership capability and sector
+            credibility behind the individual. The aim is simple: to secure
+            people who can help move the business forward and genuinely “move
+            the needle” in the right direction.
           </p>
+
+          <div
+            className="sector-tag"
+            style={{
+              marginTop: 14,
+              width: "fit-content",
+            }}
+          >
+            UK • Eastern USA
+          </div>
 
           {/* Top CTAs */}
           <div
@@ -79,87 +96,128 @@ export default function ClientsPage() {
             }}
           >
             <div className="sector-card" style={{ gridColumn: "span 4" }}>
-  <h3>Exclusive retained executive search</h3>
-  <p>
-    Used for senior, confidential and business-critical appointments where the cost of getting it wrong is high.
-    We commit exclusively to the search, map the market properly and approach selectively.
-    Assessment is structured, referencing is thorough and the shortlist is deliberate, not inflated.
-  </p>
-  <p style={{ marginTop: 10 }}>
-    You gain clarity on the talent landscape, controlled communication in the market and a process
-    that protects your reputation at every stage.
-  </p>
-  <div className="sector-tag">Board &amp; Executive</div>
-</div>
+              <h3>Exclusive retained executive search</h3>
+              <p>
+                Used for senior, confidential and business-critical
+                appointments where the cost of getting it wrong is high. We
+                commit fully to the search, map the market properly and
+                approach selectively. Assessment is structured, referencing is
+                thorough and the shortlist is deliberate, not inflated.
+              </p>
+              <p style={{ marginTop: 10 }}>
+                You gain clarity on the talent landscape, controlled
+                communication in the market and a process that protects your
+                reputation at every stage.
+              </p>
+              <div className="sector-tag">Board &amp; Executive</div>
+            </div>
 
             <div className="sector-card" style={{ gridColumn: "span 4" }}>
               <h3>Specialist strategic recruitment</h3>
               <p>
-                For mid-to-senior hires where speed and precision both matter.
-                The commercial structure is different, but the standards are not.
-                You still get a disciplined search and a shortlist you can trust.
+                For mid-to-senior sales and commercial appointments where
+                sector knowledge, pace and precision all matter. The commercial
+                model may differ from retained search, but the standard does
+                not. We define the brief properly, search the right market and
+                present candidates with the experience, judgement and
+                credibility to perform in the role.
               </p>
-              <div className="sector-tag">Mid–Senior</div>
+              <div className="sector-tag">Mid–to–Senior</div>
             </div>
 
             <div className="sector-card" style={{ gridColumn: "span 4" }}>
               <h3>Shortlists you can rely on</h3>
               <p>
-                We assess beyond CV narrative. Candidates are evaluated against commercial outcomes,
-                leadership behaviours, stakeholder impact and decision-making track record.
+                We look beyond job titles and CV history. Candidates are
+                assessed against the commercial outcomes they have delivered,
+                the decisions they have made, the relationships they have built
+                and the way they lead and influence others. The aim is a
+                shortlist with substance, not simply people who look right on
+                paper.
               </p>
               <div className="sector-tag">Evidence-led</div>
             </div>
 
-            {/* How we work (integrated, not a separate page) */}
+            {/* How we work */}
             <div className="sector-card" style={{ gridColumn: "span 12" }}>
               <h3>How we work</h3>
               <p style={{ marginBottom: 0 }}>
-                Every search starts with clarity on outcomes, stakeholders and what “good” looks like in the role.
-                From there, we map the market properly, approach discreetly and assess against evidence, not narrative.
-                The process is structured, but it is never over-engineered.
+                Every search starts with clarity on the role, the commercial
+                expectations behind it and what success will look like. From
+                there, we map the market properly, approach discreetly and
+                assess against evidence, not narrative. The process is
+                structured, focused and designed to keep the right people
+                moving through it.
               </p>
-              <div className="sector-tag" style={{ marginTop: 12 }}>Disciplined process</div>
+              <div className="sector-tag" style={{ marginTop: 12 }}>
+                Disciplined process
+              </div>
             </div>
 
             <div className="sector-card" style={{ gridColumn: "span 12" }}>
               <h3>Market mapping and targeted approach</h3>
               <p style={{ marginBottom: 0 }}>
-                We identify the relevant competitor and adjacent markets, then approach candidates selectively with the right context.
-                This protects your reputation and keeps the search focused on quality, not noise.
+                We identify the relevant competitor and adjacent markets,
+                understand where the strongest talent is likely to sit and
+                approach selectively with the right context. This gives clients
+                a clearer view of the market, protects their reputation and
+                keeps the search focused on quality rather than volume.
               </p>
-              <div className="sector-tag" style={{ marginTop: 12 }}>Defined approach</div>
+              <div
+              style={{
+                marginTop: 12,
+                display: "flex",
+                gap: 10,
+                flexWrap: "wrap",
+              }}
+            >
+              <div className="sector-tag">Defined approach</div>
+              <div className="sector-tag">UK • Eastern USA</div>
+            </div>
             </div>
 
             <div className="sector-card" style={{ gridColumn: "span 12" }}>
               <h3>Assessment, insight and interview design</h3>
               <p style={{ marginBottom: 0 }}>
-                We use structured assessment and, where appropriate, video interviews to give early insight into communication style and credibility.
-                We can include personality and behavioural tools when they add value, and we build bespoke interview questions that test what matters:
-                commercial judgement, leadership style and stakeholder impact. These are never used to overcomplicate or delay.
-                They exist to reduce risk, highlight leadership style and ensure alignment with your company's core values and ethos.
+                We use structured assessment and, where appropriate, video
+                interviews to give early insight into communication style,
+                credibility and commercial judgement. Personality and
+                behavioural tools can be included where they add value,
+                alongside bespoke interview questions designed around the
+                demands of the role. The aim is to help clients make a
+                stronger, better-informed decision with less uncertainty.
               </p>
-              <div className="sector-tag" style={{ marginTop: 12 }}>Substance and fit</div>
+              <div className="sector-tag" style={{ marginTop: 12 }}>
+                Substance and fit
+              </div>
             </div>
 
             <div className="sector-card" style={{ gridColumn: "span 12" }}>
               <h3>Candidate respect and brand protection</h3>
               <p style={{ marginBottom: 0 }}>
-                Strong candidates are rarely active applicants.
-                They respond to credibility, clarity and trust.
-                We handle approaches with care, communicate honestly and ensure feedback is respectful, measured and constructive.
-                How you treat people during hiring reflects your leadership.
+                Strong candidates are often not actively looking. They respond
+                to credibility, clarity and trust. We handle approaches
+                carefully, represent the opportunity properly and keep
+                communication honest throughout the process. That matters
+                because every candidate interaction shapes how your business is
+                seen in the market.
               </p>
-              <div className="sector-tag" style={{ marginTop: 12 }}>Integrity first</div>
+              <div className="sector-tag" style={{ marginTop: 12 }}>
+                Integrity first
+              </div>
             </div>
 
-            {/* Final CTA (remove the blue pill completely) */}
-            <div className="sector-card sector-card--cta" style={{ gridColumn: "span 12" }}>
+            {/* Final CTA */}
+            <div
+              className="sector-card sector-card--cta"
+              style={{ gridColumn: "span 12" }}
+            >
               <h3>Considering a retained or strategic hire?</h3>
               <p>
-                Share the brief and the commercial expectations attached to the role.
-                We will give you a clear, unvarnished view of the market,
-                the level of competition and the most sensible route to secure the right appointment.
+                Share the brief, the commercial expectations attached to the
+                role and what success needs to look like. We will give you a
+                clear view of the market, the likely competition for the right
+                people and the most sensible route to securing the appointment.
               </p>
 
               <div className="sector-cta-row">
@@ -172,8 +230,8 @@ export default function ClientsPage() {
             {/* Back to homepage */}
             <div style={{ marginTop: 18 }}>
               <Link className="sector-cta" href="/">
-              ← Back to Homepage
-            </Link>
+                ← Back to Homepage
+              </Link>
             </div>
           </div>
         </div>

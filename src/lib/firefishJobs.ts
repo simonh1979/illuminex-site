@@ -1,5 +1,6 @@
 import { unstable_cache } from "next/cache";
 import { XMLParser } from "fast-xml-parser";
+
 import type { Job } from "@/lib/mockJobs";
 import { getAdvertDetails } from "@/lib/firefish/advert";
 
@@ -126,7 +127,9 @@ function makeSummary(description: string): string {
   return sentences.slice(0, 3).join(" ");
 }
 
-function normaliseJobType(value: string): "Permanent" | "Contract" {
+function normaliseJobType(
+  value: string
+): "Permanent" | "Contract" {
   const normalisedValue = value.toLowerCase();
 
   if (
@@ -144,7 +147,8 @@ function inferExperienceLevel(
   title: string,
   role: string
 ): "Mid" | "Senior" | "Executive" {
-  const classificationSource = role.trim() || title.trim();
+  const classificationSource =
+    role.trim() || title.trim();
 
   const normalisedRole = classificationSource
     .toLowerCase()
@@ -169,6 +173,81 @@ function inferExperienceLevel(
   }
 
   return "Mid";
+}
+
+function resolveMarketLocation(input: {
+  locationArea?: unknown;
+  location?: unknown;
+  subLocation?: unknown;
+  country?: unknown;
+  currency?: unknown;
+  fallbackLocation?: unknown;
+}): string {
+  const locationArea = cleanText(input.locationArea);
+
+  if (locationArea) {
+    return locationArea;
+  }
+
+  const location = cleanText(input.location);
+
+  if (location) {
+    return location;
+  }
+
+  const subLocation = cleanText(input.subLocation);
+
+  if (subLocation) {
+    return subLocation;
+  }
+
+  const country = cleanText(input.country);
+
+  if (country) {
+    const normalisedCountry = country
+      .toLowerCase()
+      .replace(/\./g, "")
+      .trim();
+
+    if (
+      normalisedCountry === "usa" ||
+      normalisedCountry === "us" ||
+      normalisedCountry === "united states" ||
+      normalisedCountry === "united states of america"
+    ) {
+      return "Eastern USA";
+    }
+
+    if (
+      normalisedCountry === "uk" ||
+      normalisedCountry === "united kingdom" ||
+      normalisedCountry === "great britain"
+    ) {
+      return "UK Wide";
+    }
+
+    return country;
+  }
+
+  const fallbackLocation = cleanText(input.fallbackLocation);
+
+  if (fallbackLocation) {
+    return fallbackLocation;
+  }
+
+  const currency = cleanText(input.currency)
+    .toUpperCase()
+    .trim();
+
+  if (currency === "USD") {
+    return "Eastern USA";
+  }
+
+  if (currency === "GBP") {
+    return "UK Wide";
+  }
+
+  return "UK Wide";
 }
 
 function createPackageItem(
@@ -259,7 +338,11 @@ function extractInlinePackageStatement(
       .replace(/:\s*$/, "")
       .trim();
 
-    if (!INLINE_REMUNERATION_HEADING_PATTERN.test(label)) {
+    if (
+      !INLINE_REMUNERATION_HEADING_PATTERN.test(
+        label
+      )
+    ) {
       continue;
     }
 
@@ -269,29 +352,49 @@ function extractInlinePackageStatement(
   return undefined;
 }
 
-function findPackageSection(description: string): string {
+function findPackageSection(
+  description: string
+): string {
   const headingMatches = Array.from(
     description.matchAll(
       /<h([2-4])[^>]*>([\s\S]*?)<\/h\1>/gi
     )
   );
 
-  for (let index = 0; index < headingMatches.length; index += 1) {
+  for (
+    let index = 0;
+    index < headingMatches.length;
+    index += 1
+  ) {
     const headingMatch = headingMatches[index];
-    const headingText = stripHtml(headingMatch[2]);
 
-    if (!PACKAGE_HEADING_PATTERN.test(headingText)) {
+    const headingText = stripHtml(
+      headingMatch[2]
+    );
+
+    if (
+      !PACKAGE_HEADING_PATTERN.test(
+        headingText
+      )
+    ) {
       continue;
     }
 
     const sectionStart =
-      (headingMatch.index ?? 0) + headingMatch[0].length;
+      (headingMatch.index ?? 0) +
+      headingMatch[0].length;
 
-    const nextHeading = headingMatches[index + 1];
+    const nextHeading =
+      headingMatches[index + 1];
+
     const sectionEnd =
-      nextHeading?.index ?? description.length;
+      nextHeading?.index ??
+      description.length;
 
-    return description.slice(sectionStart, sectionEnd);
+    return description.slice(
+      sectionStart,
+      sectionEnd
+    );
   }
 
   return "";
@@ -304,7 +407,8 @@ function extractPackageItems(
     return [];
   }
 
-  const sectionHtml = findPackageSection(description);
+  const sectionHtml =
+    findPackageSection(description);
 
   if (!sectionHtml) {
     return [];
@@ -320,9 +424,14 @@ function extractPackageItems(
 
   if (listItems.length > 0) {
     items = listItems
-      .map((match) => createPackageItem(match[1]))
+      .map((match) =>
+        createPackageItem(match[1])
+      )
       .filter(
-        (item): item is JobPackageItem => Boolean(item)
+        (
+          item
+        ): item is JobPackageItem =>
+          Boolean(item)
       );
   } else {
     const paragraphItems = Array.from(
@@ -335,14 +444,20 @@ function extractPackageItems(
       .flatMap((match) =>
         match[1]
           .split(/<br\s*\/?>|\n/gi)
-          .map((line) => createPackageItem(line))
+          .map((line) =>
+            createPackageItem(line)
+          )
       )
       .filter(
-        (item): item is JobPackageItem => Boolean(item)
+        (
+          item
+        ): item is JobPackageItem =>
+          Boolean(item)
       );
   }
 
-  const uniqueItems = new Map<string, JobPackageItem>();
+  const uniqueItems =
+    new Map<string, JobPackageItem>();
 
   for (const item of items) {
     const key =
@@ -364,16 +479,21 @@ function addRemoteWorkingPackageItem(
     return packageItems;
   }
 
-  const alreadyIncluded = packageItems.some((item) => {
-    const combinedText =
-      `${item.label} ${item.value}`.toLowerCase();
+  const alreadyIncluded =
+    packageItems.some((item) => {
+      const combinedText =
+        `${item.label} ${item.value}`.toLowerCase();
 
-    return (
-      combinedText.includes("remote") ||
-      combinedText.includes("working pattern") ||
-      combinedText.includes("working arrangement")
-    );
-  });
+      return (
+        combinedText.includes("remote") ||
+        combinedText.includes(
+          "working pattern"
+        ) ||
+        combinedText.includes(
+          "working arrangement"
+        )
+      );
+    });
 
   if (alreadyIncluded) {
     return packageItems;
@@ -399,12 +519,19 @@ function formatSalaryFromValues(
     return remuneration.trim();
   }
 
-  if (!minimumPayment && !maximumPayment) {
+  if (
+    !minimumPayment &&
+    !maximumPayment
+  ) {
     return undefined;
   }
 
   const currencySymbol =
-    currency === "GBP" ? "£" : `${currency} `;
+    currency === "GBP"
+      ? "£"
+      : currency === "USD"
+        ? "$"
+        : `${currency} `;
 
   if (
     minimumPayment &&
@@ -412,77 +539,146 @@ function formatSalaryFromValues(
     minimumPayment !== maximumPayment
   ) {
     return (
-      `${currencySymbol}${minimumPayment.toLocaleString("en-GB")} – ` +
-      `${currencySymbol}${maximumPayment.toLocaleString("en-GB")}` +
-      `${paymentRate ? ` ${paymentRate}` : ""}`
+      `${currencySymbol}${minimumPayment.toLocaleString(
+        "en-GB"
+      )} – ` +
+      `${currencySymbol}${maximumPayment.toLocaleString(
+        "en-GB"
+      )}` +
+      `${
+        paymentRate
+          ? ` ${paymentRate}`
+          : ""
+      }`
     );
   }
 
-  const amount = minimumPayment || maximumPayment;
+  const amount =
+    minimumPayment || maximumPayment;
 
   return (
-    `${currencySymbol}${amount.toLocaleString("en-GB")}` +
-    `${paymentRate ? ` ${paymentRate}` : ""}`
+    `${currencySymbol}${amount.toLocaleString(
+      "en-GB"
+    )}` +
+    `${
+      paymentRate
+        ? ` ${paymentRate}`
+        : ""
+    }`
   );
 }
 
-function formatSalary(item: any): string | undefined {
+function formatSalary(
+  item: any
+): string | undefined {
   return formatSalaryFromValues(
-    cleanText(item["ffAdvert:Remuneration"]),
-    Number(item["ffAdvert:MinimumPayment"] ?? 0),
-    Number(item["ffAdvert:MaximumPayment"] ?? 0),
-    cleanText(item["ffAdvert:PaymentRate"]),
-    cleanText(item["ffAdvert:Currency"]) || "GBP"
+    cleanText(
+      item["ffAdvert:Remuneration"]
+    ),
+    Number(
+      item[
+        "ffAdvert:MinimumPayment"
+      ] ?? 0
+    ),
+    Number(
+      item[
+        "ffAdvert:MaximumPayment"
+      ] ?? 0
+    ),
+    cleanText(
+      item["ffAdvert:PaymentRate"]
+    ),
+    cleanText(
+      item["ffAdvert:Currency"]
+    ) || "GBP"
   );
 }
 
-function mapFirefishItemToJob(item: any): FirefishJob {
+function mapFirefishItemToJob(
+  item: any
+): FirefishJob {
   const reference = cleanText(
-    item["ffAdvert:ReferenceNumber"] || item.guid
+    item["ffAdvert:ReferenceNumber"] ||
+      item.guid
   );
 
   const title = cleanText(
-    item["ffAdvert:Title"] || item.title
+    item["ffAdvert:Title"] ||
+      item.title
   );
 
-  const role = cleanText(item["ffAdvert:Role"]);
-  const description = cleanText(item.description);
+  const role = cleanText(
+    item["ffAdvert:Role"]
+  );
+
+  const description = cleanText(
+    item.description
+  );
 
   const location =
-    cleanText(item["ffAdvert:LocationArea"]) ||
-    cleanText(item["ffAdvert:Location"]) ||
-    cleanText(item["ffAdvert:Country"]) ||
-    "UK Wide";
+    resolveMarketLocation({
+      locationArea:
+        item["ffAdvert:LocationArea"],
+      location:
+        item["ffAdvert:Location"],
+      country:
+        item["ffAdvert:Country"],
+      currency:
+        item["ffAdvert:Currency"],
+    });
 
   const sector =
-    cleanText(item["ffAdvert:Discipline"]) ||
-    cleanText(item["ffAdvert:Specialisation"]) ||
+    cleanText(
+      item["ffAdvert:Discipline"]
+    ) ||
+    cleanText(
+      item[
+        "ffAdvert:Specialisation"
+      ]
+    ) ||
     "General";
 
   return {
     id: `FF-${reference}`,
     title,
-    company: "Confidential Client",
+    company:
+      "Confidential Client",
     location,
     sector,
     jobType: normaliseJobType(
-      cleanText(item["ffAdvert:JobType"])
+      cleanText(
+        item["ffAdvert:JobType"]
+      )
     ),
-    experienceLevel: inferExperienceLevel(title, role),
+    experienceLevel:
+      inferExperienceLevel(
+        title,
+        role
+      ),
     salary: formatSalary(item),
     postedAt: cleanText(
-      item["ffAdvert:PostedDate"] || item.pubDate
+      item["ffAdvert:PostedDate"] ||
+        item.pubDate
     ),
-    summary: makeSummary(description),
+    summary:
+      makeSummary(description),
     description,
     applyUrl: cleanText(
-      item["ffAdvert:applyUrl"] || item.applyUrl
+      item["ffAdvert:applyUrl"] ||
+        item.applyUrl
     ),
-    advertUrl: cleanText(item.link || item.guid),
+    advertUrl: cleanText(
+      item.link || item.guid
+    ),
     closingDate: cleanText(
-      item["ffAdvert:ClosingDate"]
+      item[
+        "ffAdvert:ClosingDate"
+      ]
     ),
-    packageItems: extractPackageItems(description),
+    packageItems:
+      extractPackageItems(
+        description
+      ),
     remoteWorking: false,
   };
 }
@@ -490,20 +686,29 @@ function mapFirefishItemToJob(item: any): FirefishJob {
 async function enrichJobFromAdvertApi(
   job: FirefishJob
 ): Promise<FirefishJob> {
-  const referenceMatch = job.id.match(/^FF-(\d+)$/i);
+  const referenceMatch =
+    job.id.match(/^FF-(\d+)$/i);
 
   if (!referenceMatch) {
     return job;
   }
 
-  const advertRef = Number(referenceMatch[1]);
+  const advertRef = Number(
+    referenceMatch[1]
+  );
 
-  if (!Number.isInteger(advertRef) || advertRef <= 0) {
+  if (
+    !Number.isInteger(advertRef) ||
+    advertRef <= 0
+  ) {
     return job;
   }
 
   try {
-    const advert = await getAdvertDetails(advertRef);
+    const advert =
+      await getAdvertDetails(
+        advertRef
+      );
 
     const advertDescription =
       advert.AdvertContent?.trim() ||
@@ -511,12 +716,16 @@ async function enrichJobFromAdvertApi(
       "";
 
     const extractedPackageItems =
-      extractPackageItems(advertDescription);
+      extractPackageItems(
+        advertDescription
+      );
 
     const packageItems =
       addRemoteWorkingPackageItem(
         extractedPackageItems,
-        Boolean(advert.RemoteWorking)
+        Boolean(
+          advert.RemoteWorking
+        )
       );
 
     const inlinePackageStatement =
@@ -528,17 +737,29 @@ async function enrichJobFromAdvertApi(
       inlinePackageStatement ||
       formatSalaryFromValues(
         advert.Remuneration || "",
-        Number(advert.MinimumPayment ?? 0),
-        Number(advert.MaximumPayment ?? 0),
+        Number(
+          advert.MinimumPayment ??
+            0
+        ),
+        Number(
+          advert.MaximumPayment ??
+            0
+        ),
         advert.PaymentRate || "",
         advert.Currency || "GBP"
       );
 
     const apiLocation =
-      String(advert.LocationArea ?? "").trim() ||
-      advert.SubLocation?.trim() ||
-      job.location ||
-      "UK Wide";
+      resolveMarketLocation({
+        locationArea:
+          advert.LocationArea,
+        subLocation:
+          advert.SubLocation,
+        currency:
+          advert.Currency,
+        fallbackLocation:
+          job.location,
+      });
 
     return {
       ...job,
@@ -550,29 +771,41 @@ async function enrichJobFromAdvertApi(
       sector:
         advert.Discipline?.trim() ||
         job.sector,
-      jobType: normaliseJobType(
-        advert.Type || job.jobType
-      ),
-      experienceLevel: inferExperienceLevel(
-        advert.AdvertTitle || job.title,
-        advert.Role || ""
-      ),
-      salary: apiSalary || job.salary,
+      jobType:
+        normaliseJobType(
+          advert.Type ||
+            job.jobType
+        ),
+      experienceLevel:
+        inferExperienceLevel(
+          advert.AdvertTitle ||
+            job.title,
+          advert.Role || ""
+        ),
+      salary:
+        apiSalary || job.salary,
       postedAt:
         advert.PostedDate ||
         job.postedAt,
       closingDate:
         advert.ClosingDate ||
         job.closingDate,
-      description: advertDescription,
-      summary: makeSummary(advertDescription),
+      description:
+        advertDescription,
+      summary:
+        makeSummary(
+          advertDescription
+        ),
       applyUrl:
         advert.ApplyUrl ||
         job.applyUrl,
       advertUrl:
         advert.AdvertURL ||
         job.advertUrl,
-      remoteWorking: Boolean(advert.RemoteWorking),
+      remoteWorking:
+        Boolean(
+          advert.RemoteWorking
+        ),
       packageItems,
     };
   } catch {
@@ -580,8 +813,11 @@ async function enrichJobFromAdvertApi(
   }
 }
 
-const FIREFISH_ADVERT_BATCH_SIZE = 3;
-const FIREFISH_ADVERT_BATCH_DELAY_MS = 1_000;
+const FIREFISH_ADVERT_BATCH_SIZE =
+  3;
+
+const FIREFISH_ADVERT_BATCH_DELAY_MS =
+  1_000;
 
 async function enrichJobsWithRatePacing(
   rssJobs: FirefishJob[]
@@ -591,29 +827,38 @@ async function enrichJobsWithRatePacing(
   for (
     let index = 0;
     index < rssJobs.length;
-    index += FIREFISH_ADVERT_BATCH_SIZE
+    index +=
+      FIREFISH_ADVERT_BATCH_SIZE
   ) {
-    const batch = rssJobs.slice(
-      index,
-      index + FIREFISH_ADVERT_BATCH_SIZE
-    );
+    const batch =
+      rssJobs.slice(
+        index,
+        index +
+          FIREFISH_ADVERT_BATCH_SIZE
+      );
 
-    const enrichedBatch = await Promise.all(
-      batch.map(enrichJobFromAdvertApi)
-    );
+    const enrichedBatch =
+      await Promise.all(
+        batch.map(
+          enrichJobFromAdvertApi
+        )
+      );
 
     jobs.push(...enrichedBatch);
 
     if (
-      index + FIREFISH_ADVERT_BATCH_SIZE <
+      index +
+        FIREFISH_ADVERT_BATCH_SIZE <
       rssJobs.length
     ) {
-      await new Promise<void>((resolve) => {
-        setTimeout(
-          resolve,
-          FIREFISH_ADVERT_BATCH_DELAY_MS
-        );
-      });
+      await new Promise<void>(
+        (resolve) => {
+          setTimeout(
+            resolve,
+            FIREFISH_ADVERT_BATCH_DELAY_MS
+          );
+        }
+      );
     }
   }
 
@@ -622,19 +867,23 @@ async function enrichJobsWithRatePacing(
 
 async function fetchFirefishJobs() {
   const url =
-    process.env.FIREFISH_RSS_URL ||
+    process.env
+      .FIREFISH_RSS_URL ||
     DEFAULT_FIREFISH_RSS_URL;
 
-  const response = await fetch(url, {
-    method: "GET",
-    headers: {
-      Accept:
-        "application/rss+xml, application/xml, text/xml",
-    },
-    next: {
-      revalidate: 300,
-    },
-  });
+  const response = await fetch(
+    url,
+    {
+      method: "GET",
+      headers: {
+        Accept:
+          "application/rss+xml, application/xml, text/xml",
+      },
+      next: {
+        revalidate: 300,
+      },
+    }
+  );
 
   if (!response.ok) {
     throw new Error(
@@ -642,7 +891,8 @@ async function fetchFirefishJobs() {
     );
   }
 
-  const xml = await response.text();
+  const xml =
+    await response.text();
 
   const parser = new XMLParser({
     ignoreAttributes: false,
@@ -651,14 +901,26 @@ async function fetchFirefishJobs() {
     cdataPropName: "__cdata",
   });
 
-  const parsed = parser.parse(xml);
-  const items = asArray(parsed?.rss?.channel?.item);
+  const parsed =
+    parser.parse(xml);
+
+  const items = asArray(
+    parsed?.rss?.channel?.item
+  );
 
   const rssJobs = items
-    .map(mapFirefishItemToJob)
-    .filter((job) => job.id && job.title);
+    .map(
+      mapFirefishItemToJob
+    )
+    .filter(
+      (job) =>
+        job.id && job.title
+    );
 
-  const jobs = await enrichJobsWithRatePacing(rssJobs);
+  const jobs =
+    await enrichJobsWithRatePacing(
+      rssJobs
+    );
 
   return {
     jobs,
@@ -666,26 +928,33 @@ async function fetchFirefishJobs() {
   };
 }
 
-const getCachedFirefishJobs = unstable_cache(
-  fetchFirefishJobs,
-  ["firefish-enriched-jobs-v1"],
-  {
-    revalidate: 300,
-    tags: ["firefish-jobs"],
-  }
-);
+const getCachedFirefishJobs =
+  unstable_cache(
+    fetchFirefishJobs,
+    [
+      "firefish-enriched-jobs-v1",
+    ],
+    {
+      revalidate: 300,
+      tags: ["firefish-jobs"],
+    }
+  );
 
 export async function firefishListJobs() {
   return getCachedFirefishJobs();
 }
 
-export async function firefishGetJob(id: string) {
-  const { jobs } = await firefishListJobs();
+export async function firefishGetJob(
+  id: string
+) {
+  const { jobs } =
+    await firefishListJobs();
 
   return (
     jobs.find(
       (job) =>
-        job.id.toUpperCase() === id.toUpperCase()
+        job.id.toUpperCase() ===
+        id.toUpperCase()
     ) ?? null
   );
 }

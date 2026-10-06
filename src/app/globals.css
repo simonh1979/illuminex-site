@@ -819,7 +819,7 @@ h3 {
 /* Desktop: keep the sectors intro reading as a single thought, without forcing nowrap */
 @media (min-width: 1280px) {
   .sectors-head .sub {
-    max-width: 1280px;      /* match your global text width */
+    max-width: 1500px;      /* match your global text width */
     white-space: normal;     /* IMPORTANT: allow wrapping naturally */
     text-wrap: normal;      /* modern browsers: better line breaks */
   }
@@ -903,6 +903,56 @@ h3 {
   letter-spacing: 0.015em;
   color: rgba(255,255,255,0.92);
   max-width: 55ch;
+}
+
+/* Homepage sector grid — desktop alignment */
+@media (min-width: 1101px) {
+  /* Keep the three main sector descriptions aligned */
+  main.page-home .sectors-grid > .sector-card:nth-child(-n+3) p {
+    min-height: 5.1rem;
+  }
+
+  /* Second row: client CTA takes one third */
+  main.page-home .sectors-grid > .sector-card--cta {
+    grid-column: 1 / 5;
+  }
+
+  /* Second row: candidate CTA takes remaining two thirds */
+  main.page-home .sectors-grid > .homepage-candidate-cta {
+    grid-column: 5 / 13;
+    max-width: none;
+    width: 100%;
+    margin: 0;
+  }
+
+  /* Let both lower cards use their full available text width */
+  main.page-home .sectors-grid > .sector-card:nth-child(n+4) p {
+    max-width: none;
+    width: 100%;
+  }
+
+  main.page-home .homepage-candidate-cta .candidate-register-cta__text {
+    max-width: none !important;
+    width: 100% !important;
+  }
+
+  main.page-home .sectors-grid > .sector-card--cta .sector-card-actions {
+  margin-top: 24px;
+}
+
+main.page-home .sectors-grid > .sector-card--cta {
+  text-align: center;
+}
+
+main.page-home .sectors-grid > .sector-card--cta h3,
+main.page-home .sectors-grid > .sector-card--cta p {
+  text-align: center;
+}
+
+main.page-home .sectors-grid > .sector-card--cta .sector-card-actions {
+  justify-content: center;
+}
+
 }
 
 .sector-tag {
@@ -3876,7 +3926,7 @@ box-shadow:
 
 /* HERO heading line balancing (premium typography) */
 .hero-left h1{
-  text-wrap: balance;
+  text-wrap: wrap;
 }
 
 /* Cookie preferences cog — make subtle */
@@ -4569,5 +4619,87 @@ main.page.page-jobs .page-body {
   .nav-toggle {
     display: inline-flex;
     align-items: center;
+  }
+}
+
+/* Homepage hero — large desktop refinement */
+@media (min-width: 1500px) {
+  main.page-home .hero-left {
+    max-width: 1120px;
+  }
+
+  main.page-home .hero-left h1 {
+    font-size: 2.6rem;
+  }
+
+  main.page-home .hero-left p {
+    max-width: 1080px;
+  }
+}
+
+/* About page hero copy — wider desktop measure */
+@media (min-width: 1200px) {
+  main.page-about .page-hero .page-hero-inner > p {
+    max-width: 1500px !important;
+  }
+}
+
+/* Clients page hero — wider desktop measure */
+@media (min-width: 1200px) {
+  main.page-clients .page-hero .page-hero-inner {
+    max-width: 1840px;
+    padding-left: 36px;
+    padding-right: 36px;
+  }
+
+  main.page-clients .page-hero .page-hero-inner > p {
+    max-width: 1600px !important;
+  }
+}
+
+/* Clients page cards — use full available paragraph width */
+main.page-clients .page-hero .sector-card p {
+  max-width: none !important;
+  width: 100% !important;
+}
+
+/* Candidates page hero — wider desktop measure */
+@media (min-width: 1200px) {
+  main.page-candidates .page-hero .page-hero-inner > p {
+    max-width: 1500px !important;
+  }
+}
+
+/* Live Jobs page hero — wider desktop measure */
+@media (min-width: 1200px) {
+  main.page-jobs .page-hero .page-hero-inner > p {
+    max-width: 1500px !important;
+  }
+}
+
+@media (min-width: 1200px) {
+  main.page-services .page-hero .page-hero-inner > p {
+    max-width: 1500px !important;
+  }
+}
+
+main.page-services .sector-card p {
+  max-width: none !important;
+  width: 100% !important;
+}
+
+@media (min-width: 1200px) {
+  main.page-contact .page-hero .page-hero-inner > p {
+    max-width: 1500px !important;
+  }
+}
+
+/* Legal pages: use full card width on desktop */
+@media (min-width: 993px) {
+  .page-privacy .sector-card p,
+  .page-cookies .sector-card p,
+  .page-terms .sector-card p {
+    width: 100%;
+    max-width: none !important;
   }
 }

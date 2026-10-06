@@ -2,12 +2,19 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Education Recruitment & Leadership Search | Illuminex Consultancy (UK)",
+  title: "Education Recruitment & Leadership Search",
   description:
     "UK-wide recruitment and leadership search across education. Senior operational, commercial and leadership appointments delivered with a clear process, safeguarding awareness and discretion.",
-  alternates: { canonical: "/sectors/education" },
+  alternates: {
+    canonical: "/sectors/education",
+  },
+  robots: {
+    index: false,
+    follow: true,
+  },
   openGraph: {
-    title: "Education Recruitment & Leadership Search | Illuminex Consultancy (UK)",
+    title:
+      "Education Recruitment & Leadership Search | Illuminex Consultancy",
     description:
       "UK-wide recruitment and leadership search across education, structured, discreet and safeguarding-aware.",
     url: "/sectors/education",

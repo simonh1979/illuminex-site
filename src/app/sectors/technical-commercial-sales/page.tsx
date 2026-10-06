@@ -2,14 +2,17 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Technical & Commercial Sales Executive Search | Illuminex Consultancy (UK)",
+  title: "Technical & Commercial Sales Recruitment",
   description:
-    "UK-wide executive search and specialist recruitment for Technical & Commercial Sales. Senior commercial leadership and high-performing sales appointments delivered with discretion and rigour.",
-  alternates: { canonical: "/sectors/technical-commercial-sales" },
+    "Specialist recruitment for mid-to-senior sales and commercial leadership across technical, specification-led and consultative markets in the UK and Eastern USA.",
+  alternates: {
+    canonical: "/sectors/technical-commercial-sales",
+  },
   openGraph: {
-    title: "Technical & Commercial Sales Executive Search | Illuminex Consultancy (UK)",
+    title:
+      "Technical & Commercial Sales Recruitment | Illuminex Consultancy",
     description:
-      "UK-wide executive search and specialist recruitment for Technical & Commercial Sales.",
+      "Specialist recruitment for mid-to-senior sales and commercial leadership across technical, specification-led and consultative markets in the UK and Eastern USA.",
     url: "/sectors/technical-commercial-sales",
     type: "website",
   },
@@ -22,7 +25,7 @@ export default function TechnicalCommercialSalesSectorPage() {
         <div className="page-hero-inner">
           <div className="page-kicker">SECTOR</div>
 
-          <h1 className="page-title">Technical &amp; Commercial Sales Recruitment</h1>
+          <h1 className="page-title">Technical &amp; Commercial Sales</h1>
 
           <p style={{ marginTop: 10, opacity: 0.9 }}>
             <Link href="/" style={{ color: "inherit", textDecoration: "none" }}>
@@ -31,12 +34,22 @@ export default function TechnicalCommercialSalesSectorPage() {
           </p>
 
           <p className="page-subtitle">
-            We appoint senior commercial leaders across technically led markets where credibility is earned, not assumed.
-            These roles sit at the intersection of product, revenue and long term customer relationships. We focus on
-            commercial judgement, sector depth and leaders capable of operating confidently at board level.
+            We work with businesses across building materials and construction
+            products where technical knowledge, commercial judgement and
+            long-term customer relationships shape performance. From sales
+            strategy and leadership capability to executive search and
+            specialist recruitment, we focus on the people, channels and
+            commercial priorities that drive sustainable growth.
           </p>
 
-          <div style={{ marginTop: 22, display: "flex", gap: 12, flexWrap: "wrap" }}>
+          <div
+            style={{
+              marginTop: 22,
+              display: "flex",
+              gap: 12,
+              flexWrap: "wrap",
+            }}
+          >
             <Link className="sector-cta" href="/jobs">
               View live roles
             </Link>
@@ -57,9 +70,11 @@ export default function TechnicalCommercialSalesSectorPage() {
             <div className="sector-card" style={{ gridColumn: "span 4" }}>
               <h3>Senior commercial leadership</h3>
               <p>
-                Sales Directors, Commercial Directors and Heads of Sales accountable for revenue strategy,
-                pricing discipline and national performance. Leaders who understand margin, pipeline health and
-                how to create repeatable growth rather than short term uplift.
+                Sales Directors, Commercial Directors and Heads of Sales
+                accountable for revenue strategy, pricing discipline and
+                national performance. Leaders who understand margin, pipeline
+                health and how to create repeatable growth rather than
+                short-term uplift.
               </p>
               <div className="sector-tag">Director level</div>
             </div>
@@ -67,17 +82,20 @@ export default function TechnicalCommercialSalesSectorPage() {
             <div className="sector-card" style={{ gridColumn: "span 4" }}>
               <h3>National and regional sales management</h3>
               <p>
-                National Sales Managers, Regional Sales Managers and senior account leaders responsible for
-                territory structure, team performance and sustainable account growth across the UK.
+                National Sales Managers, Regional Sales Managers and senior
+                account leaders responsible for territory structure, team
+                performance and sustainable account growth across the UK and
+                Eastern USA.
               </p>
-              <div className="sector-tag">UK-wide</div>
+              <div className="sector-tag">UK • Eastern USA</div>
             </div>
 
             <div className="sector-card" style={{ gridColumn: "span 4" }}>
               <h3>Consultative and technical roles</h3>
               <p>
-                Sales and specification professionals operating in complex buying environments where product
-                knowledge, commercial clarity and stakeholder management are essential.
+                Sales and specification professionals operating in complex
+                buying environments where product knowledge, commercial clarity
+                and stakeholder management are essential.
               </p>
               <div className="sector-tag">Technical markets</div>
             </div>
@@ -95,8 +113,10 @@ export default function TechnicalCommercialSalesSectorPage() {
             <div className="sector-card" style={{ gridColumn: "span 12" }}>
               <h3>Typical appointments</h3>
               <p>
-                Sales Director • Commercial Director • Head of Sales • National Sales Manager • Regional Sales Manager •
-                National Account Manager • Key Account Manager • Business Development Director • Commercial Manager
+                Sales Director • Commercial Director • Head of Sales • National
+                Sales Manager • Regional Sales Manager • National Account
+                Manager • Key Account Manager • Business Development Director •
+                Commercial Manager
               </p>
               <div className="sector-tag">Mid–Senior • Executive</div>
             </div>
@@ -114,9 +134,11 @@ export default function TechnicalCommercialSalesSectorPage() {
             <div className="sector-card" style={{ gridColumn: "span 12" }}>
               <h3>How we run search</h3>
               <p>
-                We begin with clarity on outcomes, stakeholder expectations and commercial context. We map the market
-                thoroughly, approach discreetly and assess against evidence, not impression. You receive a shortlist
-                built on substance and relevance, not volume.
+                We begin with clarity on outcomes, stakeholder expectations and
+                commercial context. We map the market thoroughly, approach
+                discreetly and assess against evidence, not impression. You
+                receive a shortlist built on substance and relevance, not
+                volume.
               </p>
               <div className="sector-tag">Disciplined process</div>
             </div>
@@ -131,12 +153,16 @@ export default function TechnicalCommercialSalesSectorPage() {
               gap: 18,
             }}
           >
-            <div className="sector-card sector-card--cta" style={{ gridColumn: "span 12" }}>
+            <div
+              className="sector-card sector-card--cta"
+              style={{ gridColumn: "span 12" }}
+            >
               <h3>Hiring in Technical &amp; Commercial Sales?</h3>
               <p>
-                Share the brief, the commercial expectations and what success genuinely looks like.
-                We will give you a straight view of the market, realistic timelines and the right
-                approach for the level of hire.
+                Share the brief, the commercial expectations and what success
+                genuinely looks like. We will give you a straight view of the
+                market, realistic timelines and the right approach for the
+                level of hire.
               </p>
 
               <div className="sector-cta-row">

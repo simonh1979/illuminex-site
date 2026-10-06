@@ -2,14 +2,17 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Bathrooms & Kitchens Recruitment | Illuminex Consultancy (UK)",
+  title: "Bathrooms & Kitchens Recruitment",
   description:
-    "UK-wide executive search and specialist recruitment for Bathrooms & Kitchens. Senior commercial, specification and leadership appointments delivered with discretion and sector credibility.",
-  alternates: { canonical: "/sectors/bathrooms-kitchens" },
+    "Specialist recruitment across bathroom and kitchen markets, spanning merchant, distribution, specification and retail channels across the UK and Eastern USA.",
+  alternates: {
+    canonical: "/sectors/bathrooms-kitchens",
+  },
   openGraph: {
-    title: "Bathrooms & Kitchens Recruitment | Illuminex Consultancy (UK)",
+    title:
+      "Bathrooms & Kitchens Recruitment | Illuminex Consultancy",
     description:
-      "UK-wide executive search and specialist recruitment for Bathrooms & Kitchens.",
+      "Specialist recruitment across bathroom and kitchen markets, spanning merchant, distribution, specification and retail channels across the UK and Eastern USA.",
     url: "/sectors/bathrooms-kitchens",
     type: "website",
   },
@@ -22,7 +25,7 @@ export default function BathroomsKitchensSectorPage() {
         <div className="page-hero-inner">
           <div className="page-kicker">SECTOR</div>
 
-          <h1 className="page-title">Bathrooms &amp; Kitchens Recruitment</h1>
+          <h1 className="page-title">Bathrooms &amp; Kitchens</h1>
 
           <p style={{ marginTop: 10, opacity: 0.9 }}>
             <Link href="/" style={{ color: "inherit", textDecoration: "none" }}>
@@ -31,13 +34,18 @@ export default function BathroomsKitchensSectorPage() {
           </p>
 
           <p className="sector-hero-text">
-            We work with manufacturers, merchants and specialist retailers across
-            Bathrooms &amp; Kitchens to appoint senior commercial and leadership
-            talent. This is a reputation-led market: growth is won through
-            credibility, channel understanding, disciplined account management and
-            a clear, consistent route to specification.
+            We work with manufacturers, merchants, distributors and specialist
+            retailers across bathrooms and kitchens, bringing sector knowledge
+            and commercial understanding to sales strategy, leadership and
+            critical appointments. It is a relationship-led market where
+            performance depends on channel understanding, disciplined account
+            management and a clear route to market across merchant, retail,
+            specification and project channels.
           </p>
 
+          <div className="sector-tag" style={{ marginTop: 18 }}>
+            UK • Eastern USA
+          </div>
           <div
             style={{
               marginTop: 22,
@@ -66,11 +74,11 @@ export default function BathroomsKitchensSectorPage() {
             <div className="sector-card" style={{ gridColumn: "span 4" }}>
               <h3>Merchant &amp; trade channels</h3>
               <p>
-                Regional and national sales leadership across builders’ merchants
-                and trade supply networks, covering margin management, range
-                discipline and territory performance. Particularly relevant where
-                execution in the field needs tightening and growth must be
-                delivered profitably.
+                Regional and national sales leadership across builders’
+                merchants and trade supply networks, covering margin management,
+                range discipline and territory performance. Particularly
+                relevant where execution in the field needs tightening and
+                growth must be delivered profitably.
               </p>
               <div className="sector-tag">Merchant network</div>
             </div>
@@ -78,10 +86,11 @@ export default function BathroomsKitchensSectorPage() {
             <div className="sector-card" style={{ gridColumn: "span 4" }}>
               <h3>Retail &amp; showroom leadership</h3>
               <p>
-                Sales leadership across builders’ merchants and trade supply
-                networks, covering margin management, product mix, category
-                performance and regional execution. Ideal for businesses that need
-                stronger field effectiveness and tighter commercial control.
+                Commercial and sales leadership across retail, showroom and
+                specialist dealer networks, covering product mix, category
+                performance, customer experience and regional execution. Ideal
+                where consistent commercial performance matters across multiple
+                locations or channels.
               </p>
               <div className="sector-tag">Retail</div>
             </div>
@@ -91,9 +100,9 @@ export default function BathroomsKitchensSectorPage() {
               <p>
                 Roles operating across housebuilders, contractors and design
                 partners. Requiring confident stakeholder management, technical
-                credibility and a structured approach to opportunity. Ideal where
-                specification needs to be more repeatable and less dependent on
-                individuals.
+                credibility and a structured approach to opportunity. Ideal
+                where specification needs to be more repeatable and less
+                dependent on individuals.
               </p>
               <div className="sector-tag">Specification</div>
             </div>
@@ -105,8 +114,9 @@ export default function BathroomsKitchensSectorPage() {
               <h3>Planning a senior hire within KBB?</h3>
               <p style={{ marginBottom: 0 }}>
                 Share the commercial brief, team structure and what “good” looks
-                like. We’ll come back with a clear view of candidate availability,
-                realistic timelines and the most effective route to shortlist.
+                like. We’ll come back with a clear view of candidate
+                availability, realistic timelines and the most effective route
+                to shortlist.
               </p>
 
               <div className="sector-cta-row">

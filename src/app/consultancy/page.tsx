@@ -4,9 +4,19 @@ import type { ReactNode } from "react";
 import styles from "./consultancy.module.css";
 
 export const metadata: Metadata = {
-  title: "Consultancy | Commercial Strategy & Specialist Recruitment",
+  title: "Consultancy | Commercial Strategy & Leadership",
+  description:
+    "Commercial consultancy for building materials and construction products, covering sales strategy, routes to market, strategic accounts, commercial leadership and market and talent intelligence.",
   alternates: {
     canonical: "/consultancy",
+  },
+  openGraph: {
+    title:
+      "Consultancy | Commercial Strategy & Leadership | Illuminex Consultancy",
+    description:
+      "Commercial consultancy for building materials and construction products, covering sales strategy, routes to market, strategic accounts, commercial leadership and market and talent intelligence.",
+    url: "/consultancy",
+    type: "website",
   },
 };
 
@@ -42,7 +52,7 @@ export default function ConsultancyPage() {
               leadership and the right people around it.
             </p>
 
-            <p className={styles.heroHook}>
+                        <p className={styles.heroHook}>
               The starting point is simple: understand what is really getting
               in the way, challenge what is not working and focus the business
               on the changes that will genuinely{" "}
@@ -52,6 +62,10 @@ export default function ConsultancyPage() {
               in the right direction, creating stronger, more profitable and
               sustainable growth.
             </p>
+
+            <div className={styles.heroMarket}>
+              UK • Eastern USA
+            </div>
 
             <div className={styles.heroActions}>
               <Link className="sector-cta" href="/contact">

@@ -358,22 +358,18 @@ function LiveJobsClientInner() {
   }
 
   const sectors = data?.facets.sectors ?? [
-    "Building Materials",
-    "Construction",
-    "Technical Sales",
-    "Bathrooms",
-    "Kitchens",
-    "Education",
-    "Healthcare",
-  ];
+  "Building Materials",
+  "Construction Products",
+  "Technical Sales",
+  "Bathrooms",
+  "Kitchens",
+];
 
-  const locations = data?.facets.locations ?? [
-    "UK Wide",
-    "North West",
-    "Midlands",
-    "London & South East",
-    "Remote",
-  ];
+const locations = data?.facets.locations ?? [
+  "UK Wide",
+  "Eastern USA",
+  "Remote",
+];
 
   const currentResultsUrl = queryString
     ? `${pathname}?${queryString}`
@@ -449,7 +445,7 @@ function LiveJobsClientInner() {
               onChange={(event) =>
                 setLocation(event.target.value)
               }
-              placeholder="UK wide, region, city, remote…"
+              placeholder="UK Wide, Eastern USA, region, city or remote…"
             />
 
             <datalist id="locations">
@@ -616,14 +612,19 @@ function LiveJobsClientInner() {
                       </h3>
 
                       <div className="job-meta">
-                        <span>{job.location}</span>
-                        <span className="job-dot">•</span>
-                        <span>{job.sector}</span>
-                        <span className="job-dot">•</span>
-                        <span>{job.jobType}</span>
-                        <span className="job-dot">•</span>
-                        <span>{job.experienceLevel}</span>
-                      </div>
+                      {job.location && (
+                        <>
+                          <span>{job.location}</span>
+                          <span className="job-dot">•</span>
+                        </>
+                      )}
+
+                      <span>{job.sector}</span>
+                      <span className="job-dot">•</span>
+                      <span>{job.jobType}</span>
+                      <span className="job-dot">•</span>
+                      <span>{job.experienceLevel}</span>
+                    </div>
                     </div>
 
                     <div className="job-side">
@@ -788,7 +789,7 @@ function LiveJobsLoadingFallback() {
             <input
               disabled
               tabIndex={-1}
-              placeholder="UK wide, region, city, remote…"
+              placeholder="UK Wide, Eastern USA, region, city or remote…"
             />
           </div>
 

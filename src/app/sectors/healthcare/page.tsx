@@ -2,12 +2,19 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Healthcare Executive Search & Senior Recruitment | Illuminex Consultancy (UK)",
+  title: "Healthcare Executive Search & Senior Recruitment",
   description:
     "UK-wide executive search and senior recruitment in Healthcare. Operational leadership, clinical leadership and commercial appointments delivered with discretion and a disciplined process.",
-  alternates: { canonical: "/sectors/healthcare" },
+  alternates: {
+    canonical: "/sectors/healthcare",
+  },
+  robots: {
+    index: false,
+    follow: true,
+  },
   openGraph: {
-    title: "Healthcare Executive Search & Senior Recruitment | Illuminex Consultancy (UK)",
+    title:
+      "Healthcare Executive Search & Senior Recruitment | Illuminex Consultancy",
     description:
       "UK-wide executive search and senior recruitment in Healthcare.",
     url: "/sectors/healthcare",

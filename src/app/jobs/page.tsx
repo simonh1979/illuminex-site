@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import LiveJobsClient from "@/components/LiveJobsClient";
 
 export const metadata: Metadata = {
-  title: "Live Jobs",
+  title: "Live Jobs | Building Materials & Construction Products",
   description:
-    "Search current UK opportunities through Illuminex Consultancy across executive, specialist, professional and technical appointments.",
+    "Search current building materials and construction products opportunities across the UK and Eastern USA, including sales, commercial, leadership and executive roles.",
   alternates: {
     canonical: "/jobs",
   },
@@ -13,9 +13,10 @@ export const metadata: Metadata = {
     locale: "en_GB",
     url: "/jobs",
     siteName: "Illuminex Consultancy",
-    title: "Live Jobs | Illuminex Consultancy",
+    title:
+      "Live Jobs | Building Materials & Construction Products | Illuminex Consultancy",
     description:
-      "Search current UK opportunities through Illuminex Consultancy across executive, specialist, professional and technical appointments.",
+      "Search current building materials and construction products opportunities across the UK and Eastern USA, including sales, commercial, leadership and executive roles.",
     images: [
       {
         url: "/og-image.jpg",
@@ -25,9 +26,10 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Live Jobs | Illuminex Consultancy",
+    title:
+      "Live Jobs | Building Materials & Construction Products | Illuminex Consultancy",
     description:
-      "Search current UK opportunities through Illuminex Consultancy across executive, specialist, professional and technical appointments.",
+      "Search current building materials and construction products opportunities across the UK and Eastern USA, including sales, commercial, leadership and executive roles.",
     images: ["/og-image.jpg"],
   },
 };
@@ -58,10 +60,8 @@ export default function LiveJobsPage() {
               opacity: 0.92,
             }}
           >
-            Illuminex works on retained and confidential mandates across defined sectors.
-            Some appointments may not be advertised publicly. Search current
-            opportunities across the UK or refine your search by sector, location, job
-            type and experience level.
+            Illuminex works on retained, confidential and specialist appointments across building materials and construction products.
+            Some opportunities may not be advertised publicly. Search current roles across the UK and Eastern USA, or refine your search by sector, location, job type and experience level.
           </p>
         </div>
       </section>

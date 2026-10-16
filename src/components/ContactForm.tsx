@@ -1,6 +1,8 @@
+
 "use client";
 
 import { useRef, useState } from "react";
+import { useContactMarket } from "@/components/ContactMarket";
 import RecaptchaClient, {
   executeRecaptchaV3,
   RecaptchaDisclosure,
@@ -10,6 +12,13 @@ type Status = "idle" | "sending" | "sent" | "error";
 
 export default function ContactForm() {
   const formRef = useRef<HTMLFormElement>(null);
+
+  const { market, setMarket } = useContactMarket();
+
+  const enquiryEmail =
+    market === "usa"
+      ? "hello@illuminexconsultancy.com"
+      : "hello@illuminex.co.uk";
 
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState<string>("");
@@ -28,6 +37,7 @@ export default function ContactForm() {
       const fd = new FormData(formEl);
 
       const payload = {
+        market,
         name: String(fd.get("name") || ""),
         email: String(fd.get("email") || ""),
         company: String(fd.get("company") || ""),
@@ -87,6 +97,137 @@ export default function ContactForm() {
         style={{ position: "absolute", left: "-9999px", height: 0, width: 0 }}
         aria-hidden="true"
       />
+
+      {/* UK / Eastern USA enquiry market selection */}
+      <div
+        style={{
+          background: "#244e6e",
+          borderRadius: 8,
+          padding: 16,
+          marginBottom: 18,
+          color: "#ffffff",
+        }}
+      >
+        <fieldset
+          style={{
+            border: 0,
+            padding: 0,
+            margin: 0,
+            minWidth: 0,
+          }}
+        >
+          <legend
+            style={{
+              padding: 0,
+              marginBottom: 12,
+              fontWeight: 700,
+              color: "#ffffff",
+            }}
+          >
+            Which market is your enquiry about?
+          </legend>
+
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: 20,
+            }}
+          >
+            <label
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+                color: "#ffffff",
+                cursor: "pointer",
+                textTransform: "none",
+              }}
+            >
+              <input
+                type="radio"
+                name="market"
+                value="uk"
+                checked={market === "uk"}
+                onChange={() => setMarket("uk")}
+                style={{
+                  appearance: "auto",
+                  width: 16,
+                  height: 16,
+                  padding: 0,
+                  margin: 0,
+                  flex: "0 0 auto",
+                  accentColor: "#ff7a00",
+                  cursor: "pointer",
+                }}
+              />
+              United Kingdom
+            </label>
+
+            <label
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+                color: "#ffffff",
+                cursor: "pointer",
+                textTransform: "none",
+              }}
+            >
+              <input
+                type="radio"
+                name="market"
+                value="usa"
+                checked={market === "usa"}
+                onChange={() => setMarket("usa")}
+                style={{
+                  appearance: "auto",
+                  width: 16,
+                  height: 16,
+                  padding: 0,
+                  margin: 0,
+                  flex: "0 0 auto",
+                  accentColor: "#ff7a00",
+                  cursor: "pointer",
+                }}
+              />
+              Eastern USA
+            </label>
+          </div>
+        </fieldset>
+
+        <div
+          style={{
+            marginTop: 16,
+            paddingTop: 14,
+            borderTop: "1px solid rgba(255,255,255,0.3)",
+          }}
+        >
+          <div
+            style={{
+              color: "#ffffff",
+              fontSize: 14,
+            }}
+          >
+            Enquiries will be directed to:
+          </div>
+
+          <a
+            href={`mailto:${enquiryEmail}`}
+            style={{
+              display: "inline-block",
+              marginTop: 8,
+              color: "#ffffff",
+              textDecoration: "underline",
+              textUnderlineOffset: "3px",
+              fontWeight: 600,
+              overflowWrap: "anywhere",
+            }}
+          >
+            {enquiryEmail}
+          </a>
+        </div>
+      </div>
 
       <div className="contact-grid">
         <div className="contact-field">

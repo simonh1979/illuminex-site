@@ -1,4 +1,9 @@
+
 import ContactForm from "@/components/ContactForm";
+import {
+  ContactMarketProvider,
+  ContactMarketEmail,
+} from "@/components/ContactMarket";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -17,7 +22,14 @@ export const metadata: Metadata = {
   },
 };
 
-export default function ContactPage() {
+type ContactPageProps = {
+  searchParams: Promise<{ market?: string | string[] }>;
+};
+
+export default async function ContactPage({ searchParams }: ContactPageProps) {
+  const { market } = await searchParams;
+  const initialMarket = market === "usa" ? "usa" : "uk";
+
   return (
     <main className="page page-contact">
       <section className="page-hero">
@@ -119,161 +131,157 @@ export default function ContactPage() {
               className="sector-card sector-card--cta"
               style={{ gridColumn: "span 12" }}
             >
-              <h3>Send a message</h3>
+              <ContactMarketProvider initialMarket={initialMarket}>
+                <h3>Send a message</h3>
 
-              <ContactForm />
+                <ContactForm />
 
-              {/* Contact details panel */}
-              <div
-                className="contact-panel"
-                aria-label="Contact details"
-              >
-                <div className="contact-panel-inner">
-                  <div className="contact-panel-head">
-                    <div>
-                      <div className="contact-panel-kicker">
-                        Contact details
+                {/* Contact details panel */}
+                <div
+                  className="contact-panel"
+                  aria-label="Contact details"
+                >
+                  <div className="contact-panel-inner">
+                    <div className="contact-panel-head">
+                      <div>
+                        <div className="contact-panel-kicker">
+                          Contact details
+                        </div>
+
+                        <div className="contact-panel-title">
+                          Illuminex Ltd
+                        </div>
+
+                        <div className="contact-panel-sub">
+                          Commercial Strategy &amp; Specialist Recruitment
+                        </div>
                       </div>
 
-                      <div className="contact-panel-title">
-                        Illuminex Ltd
-                      </div>
-
-                      <div className="contact-panel-sub">
-                        Commercial Strategy &amp; Specialist Recruitment
-                      </div>
+                      <a
+                        className="contact-linkedin"
+                        href="https://www.linkedin.com/company/illuminexconsultancy"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Visit Illuminex Consultancy on LinkedIn"
+                      >
+                        <img
+                          src="/linkedin-blue-white-logo.png"
+                          alt="LinkedIn"
+                          className="contact-linkedin-icon"
+                        />
+                      </a>
                     </div>
 
-                    <a
-                      className="contact-linkedin"
-                      href="https://www.linkedin.com/company/illuminexconsultancy"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label="Visit Illuminex Consultancy on LinkedIn"
-                    >
-                      <img
-                        src="/linkedin-blue-white-logo.png"
-                        alt="LinkedIn"
-                        className="contact-linkedin-icon"
-                      />
-                    </a>
-                  </div>
-
-                  <div className="contact-panel-grid">
-                    <div className="contact-panel-item">
-                      <div className="contact-panel-label">
-                        <span
-                          className="contact-icon"
-                          aria-hidden="true"
-                        >
-                          <svg
-                            viewBox="0 0 24 24"
-                            width="20"
-                            height="20"
-                            fill="none"
+                    <div className="contact-panel-grid">
+                      <div className="contact-panel-item">
+                        <div className="contact-panel-label">
+                          <span
+                            className="contact-icon"
+                            aria-hidden="true"
                           >
-                            <path
-                              d="M4 7.5A2.5 2.5 0 0 1 6.5 5h11A2.5 2.5 0 0 1 20 7.5v9A2.5 2.5 0 0 1 17.5 19h-11A2.5 2.5 0 0 1 4 16.5v-9Z"
-                              stroke="currentColor"
-                              strokeWidth="1.6"
-                            />
-                            <path
-                              d="m6.5 7.5 5.15 4.12a1.6 1.6 0 0 0 2 0L18.5 7.5"
-                              stroke="currentColor"
-                              strokeWidth="1.6"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
-                        </span>
-                        Email
+                            <svg
+                              viewBox="0 0 24 24"
+                              width="20"
+                              height="20"
+                              fill="none"
+                            >
+                              <path
+                                d="M4 7.5A2.5 2.5 0 0 1 6.5 5h11A2.5 2.5 0 0 1 20 7.5v9A2.5 2.5 0 0 1 17.5 19h-11A2.5 2.5 0 0 1 4 16.5v-9Z"
+                                stroke="currentColor"
+                                strokeWidth="1.6"
+                              />
+                              <path
+                                d="m6.5 7.5 5.15 4.12a1.6 1.6 0 0 0 2 0L18.5 7.5"
+                                stroke="currentColor"
+                                strokeWidth="1.6"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </svg>
+                          </span>
+                          Email
+                        </div>
+
+                        <div className="contact-panel-value">
+                          <ContactMarketEmail />
+                        </div>
                       </div>
 
-                      <div className="contact-panel-value">
-                        <a
-                          className="contact-panel-link"
-                          href="mailto:hello@illuminex.co.uk"
-                        >
-                          hello@illuminex.co.uk
-                        </a>
-                      </div>
-                    </div>
-
-                    <div className="contact-panel-item">
-                      <div className="contact-panel-label">
-                        <span
-                          className="contact-icon"
-                          aria-hidden="true"
-                        >
-                          <svg
-                            viewBox="0 0 24 24"
-                            width="20"
-                            height="20"
-                            fill="none"
+                      <div className="contact-panel-item">
+                        <div className="contact-panel-label">
+                          <span
+                            className="contact-icon"
+                            aria-hidden="true"
                           >
-                            <path
-                              d="M7.5 3.5h2.2c.6 0 1.1.4 1.2 1l.6 3c.1.5-.2 1.1-.7 1.3l-1.6.7a13.2 13.2 0 0 0 5.3 5.3l.7-1.6c.2-.5.8-.8 1.3-.7l3 .6c.6.1 1 .6 1 1.2v2.2c0 .7-.5 1.3-1.2 1.4-9 .9-16.2-6.3-15.3-15.3.1-.7.7-1.2 1.4-1.2Z"
-                              stroke="currentColor"
-                              strokeWidth="1.6"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
-                        </span>
-                        Phone
+                            <svg
+                              viewBox="0 0 24 24"
+                              width="20"
+                              height="20"
+                              fill="none"
+                            >
+                              <path
+                                d="M7.5 3.5h2.2c.6 0 1.1.4 1.2 1l.6 3c.1.5-.2 1.1-.7 1.3l-1.6.7a13.2 13.2 0 0 0 5.3 5.3l.7-1.6c.2-.5.8-.8 1.3-.7l3 .6c.6.1 1 .6 1 1.2v2.2c0 .7-.5 1.3-1.2 1.4-1.2-9-16.2-6.3-15.3-15.3.1-.7.7-1.2 1.4-1.2Z"
+                                stroke="currentColor"
+                                strokeWidth="1.6"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </svg>
+                          </span>
+                          Phone
+                        </div>
+
+                        <div className="contact-panel-value">
+                          Available Shortly
+                        </div>
                       </div>
 
-                      <div className="contact-panel-value">
-                        Available Shortly
-                      </div>
-                    </div>
-
-                    <div className="contact-panel-item">
-                      <div className="contact-panel-label">
-                        <span
-                          className="contact-icon"
-                          aria-hidden="true"
-                        >
-                          <svg
-                            viewBox="0 0 24 24"
-                            width="20"
-                            height="20"
-                            fill="none"
+                      <div className="contact-panel-item">
+                        <div className="contact-panel-label">
+                          <span
+                            className="contact-icon"
+                            aria-hidden="true"
                           >
-                            <path
-                              d="M12 21s7-4.6 7-11a7 7 0 1 0-14 0c0 6.4 7 11 7 11Z"
-                              stroke="currentColor"
-                              strokeWidth="1.6"
-                              strokeLinejoin="round"
-                            />
-                            <path
-                              d="M12 10.2a2.2 2.2 0 1 0 0-4.4 2.2 2.2 0 0 0 0 4.4Z"
-                              stroke="currentColor"
-                              strokeWidth="1.6"
-                            />
-                          </svg>
-                        </span>
-                        Registered office
+                            <svg
+                              viewBox="0 0 24 24"
+                              width="20"
+                              height="20"
+                              fill="none"
+                            >
+                              <path
+                                d="M12 21s7-4.6 7-11a7 7 0 1 0-14 0c0 6.4 7 11 7 11Z"
+                                stroke="currentColor"
+                                strokeWidth="1.6"
+                              />
+                              <path
+                                d="M12 10.2a2.2 2.2 0 1 0 0-4.4 2.2 2.2 0 0 0 0 4.4Z"
+                                stroke="currentColor"
+                                strokeWidth="1.6"
+                              />
+                            </svg>
+                          </span>
+                          Registered office
+                        </div>
+
+                        <div className="contact-panel-value">
+                          First Floor, Embsay Mill, Embsay, Skipton, BD23 6QR
+                        </div>
                       </div>
 
-                      <div className="contact-panel-value">
-                        First Floor, Embsay Mill, Embsay, Skipton, BD23 6QR
-                      </div>
-                    </div>
+                      <div className="contact-panel-item">
+                        <div className="contact-panel-label">
+                          Company No.
+                        </div>
 
-                    <div className="contact-panel-item">
-                      <div className="contact-panel-label">
-                        Company No.
-                      </div>
-
-                      <div className="contact-panel-value">
-                        16961631
+                        <div className="contact-panel-value">
+                          16961631
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              {/* /Contact details panel */}
+                {/* /Contact details panel */}
+              </ContactMarketProvider>
             </div>
           </div>
         </div>

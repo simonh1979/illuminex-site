@@ -117,10 +117,10 @@ export default function ContactForm() {
           }}
         >
           <legend
+            className="contact-panel-label"
             style={{
               padding: 0,
               marginBottom: 12,
-              fontWeight: 700,
               color: "#ffffff",
             }}
           >
@@ -203,24 +203,16 @@ export default function ContactForm() {
             borderTop: "1px solid rgba(255,255,255,0.3)",
           }}
         >
-          <div
-            style={{
-              color: "#ffffff",
-              fontSize: 14,
-            }}
-          >
+          <div>
             Enquiries will be directed to:
           </div>
 
           <a
+            className="contact-panel-link"
             href={`mailto:${enquiryEmail}`}
             style={{
               display: "inline-block",
               marginTop: 8,
-              color: "#ffffff",
-              textDecoration: "underline",
-              textUnderlineOffset: "3px",
-              fontWeight: 600,
               overflowWrap: "anywhere",
             }}
           >

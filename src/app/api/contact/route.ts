@@ -1,4 +1,5 @@
-// C:\Users\simon\Documents\illuminex-site\src\app\api\contact\route.ts
+
+ // C:\Users\simon\Documents\illuminex-site\src\app\api\contact\route.ts
 
 import { NextResponse } from "next/server";
 import { getTransport, fromAddress } from "@/lib/mailer";
@@ -92,6 +93,22 @@ export async function POST(req: Request) {
       return NextResponse.json({ ok: true });
     }
 
+    // Validate the market, preserving UK routing for older submissions.
+    const requestedMarket = (body as Record<string, unknown>).market;
+
+    if (
+      requestedMarket !== undefined &&
+      requestedMarket !== "uk" &&
+      requestedMarket !== "usa"
+    ) {
+      return NextResponse.json(
+        { ok: false, error: "Invalid enquiry market." },
+        { status: 400 }
+      );
+    }
+
+    const market = requestedMarket === "usa" ? "usa" : "uk";
+
     const token = cleanText(
       (body as Record<string, unknown>).recaptchaToken,
       4000
@@ -171,12 +188,25 @@ export async function POST(req: Request) {
       });
     }
 
-    const to = process.env.CONTACT_TO?.trim();
+    // Select the appropriate shared Enquiries inbox on the server.
+    const to = (
+      market === "usa"
+        ? process.env.CONTACT_TO_USA
+        : process.env.CONTACT_TO
+    )?.trim();
+
+    // Preserve the existing CC recipients for both markets.
     const cc = process.env.CONTACT_CC?.trim() || undefined;
 
     if (!to) {
       return NextResponse.json(
-        { ok: false, error: "CONTACT_TO not set on server." },
+        {
+          ok: false,
+          error:
+            market === "usa"
+              ? "CONTACT_TO_USA not set on server."
+              : "CONTACT_TO not set on server.",
+        },
         { status: 500 }
       );
     }

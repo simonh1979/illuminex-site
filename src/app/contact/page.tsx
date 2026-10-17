@@ -220,7 +220,6 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
                               fill="none"
                             >
                               <path
-                                
                                 d="M7.5 3.5h2.2c.6 0 1.1.4 1.2 1l.6 3c.1.5-.2 1.1-.7 1.3l-1.6.7a13.2 13.2 0 0 0 5.3 5.3l.7-1.6c.2-.5.8-.8 1.3-.7l3 .6c.6.1 1 .6 1 1.2v2.2c0 .7-.5 1.3-1.2 1.4-9 .9-16.2-6.3-15.3-15.3.1-.7.7-1.2 1.4-1.2Z"
                                 stroke="currentColor"
                                 strokeWidth="1.6"

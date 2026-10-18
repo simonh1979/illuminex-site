@@ -246,7 +246,7 @@ export default function ApplyFormClient({
             <input
               id="phone"
               type="tel"
-              placeholder="+44…"
+              placeholder="Include country code (+44 or +1)"
               value={form.phone}
               onChange={(e) => setField("phone", e.target.value)}
               autoComplete="tel"

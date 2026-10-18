@@ -195,8 +195,12 @@ export async function POST(req: Request) {
         : process.env.CONTACT_TO
     )?.trim();
 
-    // Preserve the existing CC recipients for both markets.
-    const cc = process.env.CONTACT_CC?.trim() || undefined;
+    // Select the corresponding individual CC recipients for each market.
+    const cc = (
+      market === "usa"
+        ? process.env.CONTACT_CC_USA
+        : process.env.CONTACT_CC
+    )?.trim() || undefined;
 
     if (!to) {
       return NextResponse.json(

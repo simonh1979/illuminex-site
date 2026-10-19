@@ -1,6 +1,4 @@
 
- // C:\Users\simon\Documents\illuminex-site\src\app\api\contact\route.ts
-
 import { NextResponse } from "next/server";
 import { getTransport, fromAddress } from "@/lib/mailer";
 import { logAdminEvent } from "@/lib/adminAudit";
@@ -37,14 +35,18 @@ async function verifyRecaptcha(token: string, expectedAction: string) {
   if (!res.ok) {
     throw new Error(`reCAPTCHA verification request failed (${res.status}).`);
   }
+
   if (!data?.success) {
     throw new Error("reCAPTCHA verification failed.");
   }
-  if (data.action && data.action !== expectedAction) {
+
+  // Require the exact action returned by Google's verification service.
+  if (data.action !== expectedAction) {
     throw new Error("Invalid reCAPTCHA action.");
   }
 
   const score = typeof data.score === "number" ? data.score : 0;
+
   if (score < MIN_SCORE) {
     throw new Error("reCAPTCHA score too low.");
   }
@@ -66,9 +68,13 @@ export async function POST(req: Request) {
     const ip = getClientIp(req);
 
     const rate = await contactRateLimit.limit(`contact:${ip}`);
+
     if (!rate.success) {
       return NextResponse.json(
-        { ok: false, error: "Too many requests. Try again shortly." },
+        {
+          ok: false,
+          error: "Too many requests. Try again shortly.",
+        },
         {
           status: 429,
           headers: {
@@ -81,6 +87,7 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json().catch(() => null);
+
     if (!body || typeof body !== "object") {
       return NextResponse.json(
         { ok: false, error: "Invalid request." },
@@ -88,10 +95,9 @@ export async function POST(req: Request) {
       );
     }
 
-    const website = cleanText((body as Record<string, unknown>).website, 200);
-    if (website.length > 0) {
-      return NextResponse.json({ ok: true });
-    }
+    // The previous hidden website honeypot has been removed.
+    // No enquiry is silently accepted or discarded because of browser autofill.
+    // reCAPTCHA and rate limiting continue to protect this endpoint.
 
     // Validate the market, preserving UK routing for older submissions.
     const requestedMarket = (body as Record<string, unknown>).market;
@@ -113,6 +119,7 @@ export async function POST(req: Request) {
       (body as Record<string, unknown>).recaptchaToken,
       4000
     );
+
     if (!token) {
       return NextResponse.json(
         { ok: false, error: "Please complete verification." },
@@ -122,17 +129,30 @@ export async function POST(req: Request) {
 
     await verifyRecaptcha(token, RECAPTCHA_ACTION);
 
-    const cleanName = cleanText((body as Record<string, unknown>).name, 120);
-    const cleanEmail = cleanText((body as Record<string, unknown>).email, 160);
+    const cleanName = cleanText(
+      (body as Record<string, unknown>).name,
+      120
+    );
+
+    const cleanEmail = cleanText(
+      (body as Record<string, unknown>).email,
+      160
+    );
+
     const cleanMessage = cleanText(
       (body as Record<string, unknown>).message,
       3000
     );
+
     const cleanCompany = cleanText(
       (body as Record<string, unknown>).company,
       160
     );
-    const cleanPhone = cleanText((body as Record<string, unknown>).phone, 50);
+
+    const cleanPhone = cleanText(
+      (body as Record<string, unknown>).phone,
+      50
+    );
 
     if (cleanName.length < 2) {
       return NextResponse.json(
@@ -155,7 +175,10 @@ export async function POST(req: Request) {
       );
     }
 
-    if (looksLikeSuspiciousUrlSpam(cleanName) || looksLikeSuspiciousUrlSpam(cleanCompany)) {
+    if (
+      looksLikeSuspiciousUrlSpam(cleanName) ||
+      looksLikeSuspiciousUrlSpam(cleanCompany)
+    ) {
       return NextResponse.json(
         { ok: false, error: "Invalid submission." },
         { status: 400 }
@@ -196,11 +219,12 @@ export async function POST(req: Request) {
     )?.trim();
 
     // Select the corresponding individual CC recipients for each market.
-    const cc = (
-      market === "usa"
-        ? process.env.CONTACT_CC_USA
-        : process.env.CONTACT_CC
-    )?.trim() || undefined;
+    const cc =
+      (
+        market === "usa"
+          ? process.env.CONTACT_CC_USA
+          : process.env.CONTACT_CC
+      )?.trim() || undefined;
 
     if (!to) {
       return NextResponse.json(

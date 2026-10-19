@@ -43,7 +43,6 @@ export default function ContactForm() {
         company: String(fd.get("company") || ""),
         phone: String(fd.get("phone") || ""),
         message: String(fd.get("message") || ""),
-        website: String(fd.get("website") || ""), // honeypot
         recaptchaToken: token,
       };
 
@@ -85,18 +84,8 @@ export default function ContactForm() {
       className="contact-form"
       noValidate
     >
-      {/* preload v3 script */}
+      {/* Preload reCAPTCHA v3 */}
       <RecaptchaClient />
-
-      {/* honeypot */}
-      <input
-        type="text"
-        name="website"
-        tabIndex={-1}
-        autoComplete="off"
-        style={{ position: "absolute", left: "-9999px", height: 0, width: 0 }}
-        aria-hidden="true"
-      />
 
       {/* UK / Eastern USA enquiry market selection */}
       <div
@@ -224,7 +213,11 @@ export default function ContactForm() {
       <div className="contact-grid">
         <div className="contact-field">
           <label>Your name</label>
-          <input name="name" required placeholder="Full name" />
+          <input
+            name="name"
+            required
+            placeholder="Full name"
+          />
         </div>
 
         <div className="contact-field">
@@ -239,12 +232,18 @@ export default function ContactForm() {
 
         <div className="contact-field">
           <label>Company (optional)</label>
-          <input name="company" placeholder="Company name" />
+          <input
+            name="company"
+            placeholder="Company name"
+          />
         </div>
 
         <div className="contact-field">
           <label>Phone (optional)</label>
-          <input name="phone" placeholder="Phone number" />
+          <input
+            name="phone"
+            placeholder="Phone number"
+          />
         </div>
 
         <div className="contact-field contact-field--wide">
@@ -259,7 +258,9 @@ export default function ContactForm() {
 
       <RecaptchaDisclosure />
 
-      {status === "error" && <div className="apply-error">{error}</div>}
+      {status === "error" && (
+        <div className="apply-error">{error}</div>
+      )}
 
       <button
         className="apply-submit"

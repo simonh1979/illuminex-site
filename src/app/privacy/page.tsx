@@ -664,7 +664,48 @@ export default function PrivacyPage() {
           </div>
 
           <div style={{ marginTop: 18 }} className="sector-card">
-            <h3>21. Changes to This Policy</h3>
+            <h3>21. Our UK and Eastern USA Websites</h3>
+
+            <p>
+              This Privacy Policy applies to the websites operated by
+              Illuminex Ltd, including www.illuminex.co.uk and
+              www.illuminexconsultancy.com, and to enquiries and services
+              provided through those websites.
+            </p>
+
+            <p>
+              Illuminex Ltd is incorporated and based in the United Kingdom.
+              Our Eastern USA website introduces our recruitment, executive
+              search and consultancy services to the United States market.
+              Visitors may be directed to our existing UK-operated website
+              and systems to make enquiries, register as candidates or
+              apply for opportunities.
+            </p>
+
+            <p>
+              Personal information relating to United States visitors,
+              candidates and business contacts may be processed in the
+              United Kingdom and, where relevant, accessed or shared
+              internationally for the purposes explained in this policy,
+              subject to applicable legal requirements and safeguards.
+            </p>
+
+            <p>
+              Where an applicable United States state privacy law gives
+              an individual additional rights, we will consider and
+              respond to requests in accordance with that law. We do
+              not sell personal information.
+            </p>
+
+            <p style={{ marginBottom: 0 }}>
+              Privacy enquiries relating to either website may be sent
+              to hello@illuminex.co.uk or
+              hello@illuminexconsultancy.com.
+            </p>
+          </div>
+
+          <div style={{ marginTop: 18 }} className="sector-card">
+            <h3>22. Changes to This Policy</h3>
 
             <p style={{ marginBottom: 0 }}>
               We may update this policy to reflect changes in law, our services,

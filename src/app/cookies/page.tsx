@@ -189,7 +189,46 @@ export default function CookiesPage() {
           </div>
 
           <div style={{ marginTop: 18 }} className="sector-card">
-            <h3>10. Changes to This Cookie Policy</h3>
+            <h3>10. Cookies Across Our UK and USA Websites</h3>
+
+            <p>
+              This Cookie Policy covers www.illuminex.co.uk and
+              www.illuminexconsultancy.com. Both websites are
+              operated by Illuminex Ltd.
+            </p>
+
+            <p>
+              The UK website provides our main recruitment and
+              operational services. The Eastern USA website is a
+              standalone introduction to our services and may direct
+              visitors to the UK website for enquiries, candidate
+              registration and job applications.
+            </p>
+
+            <p>
+              The websites may use different cookies and related
+              technologies according to their functions. Optional
+              analytics and advertising technologies will be subject
+              to appropriate consent requirements before activation.
+            </p>
+
+            <p>
+              Cookie preferences are managed separately on each
+              website because they operate on different domains.
+              Choices made on one website do not automatically
+              apply to the other.
+            </p>
+
+            <p style={{ marginBottom: 0 }}>
+              To review or change your cookie choices, use the
+              cookie preferences control on the website you are
+              currently visiting. The Eastern USA website provides
+              its own consent and preferences controls.
+            </p>
+          </div>
+
+          <div style={{ marginTop: 18 }} className="sector-card">
+            <h3>11. Changes to This Cookie Policy</h3>
             <p style={{ marginBottom: 0 }}>
               We may update this Cookie Policy from time to time to reflect
               changes in legal requirements, website functionality or the
@@ -199,7 +238,7 @@ export default function CookiesPage() {
           </div>
 
           <div style={{ marginTop: 18 }} className="sector-card">
-            <h3>11. Contact</h3>
+            <h3>12. Contact</h3>
             <p>
               If you have any questions about our use of cookies or similar
               technologies, please contact us at hello@illuminex.co.uk.

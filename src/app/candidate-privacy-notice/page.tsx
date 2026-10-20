@@ -694,7 +694,39 @@ export default function CandidatePrivacyNoticePage() {
           </div>
 
           <div style={{ marginTop: 18 }} className="sector-card">
-            <h3>19. Changes to This Notice</h3>
+            <h3>19. Candidates in the United States</h3>
+
+            <p>
+              Illuminex Consultancy also provides recruitment and
+              executive search services involving candidates and
+              prospective candidates in the United States.
+            </p>
+
+            <p>
+              Candidates visiting www.illuminexconsultancy.com
+              may be directed to our existing UK-operated recruitment
+              website and systems to register a CV or resume,
+              enquire about opportunities or submit an application.
+            </p>
+
+            <p>
+              Candidate information may be processed in the United
+              Kingdom and, where appropriate, shared with prospective
+              employers or relevant service providers in the United
+              States or other countries, subject to applicable legal
+              requirements and our existing commitments concerning
+              confidentiality and agreed candidate introductions.
+            </p>
+
+            <p style={{ marginBottom: 0 }}>
+              Candidates may contact hello@illuminex.co.uk or
+              hello@illuminexconsultancy.com regarding their
+              personal information and applicable privacy rights.
+            </p>
+          </div>
+
+          <div style={{ marginTop: 18 }} className="sector-card">
+            <h3>20. Changes to This Notice</h3>
 
             <p style={{ marginBottom: 0 }}>
               We may update this notice to reflect changes in law, our services,

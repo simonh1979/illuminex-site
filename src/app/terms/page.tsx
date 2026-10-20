@@ -147,12 +147,44 @@ export default function TermsPage() {
               These Terms & Conditions are governed by and construed in accordance with
               the laws of England and Wales. Any disputes arising in connection
               with the website shall be subject to the exclusive jurisdiction of
-              the courts of England and Wales.
+              the courts of England and Wales, except to the extent that applicable mandatory law requires otherwise.
             </p>
           </div>
 
           <div style={{ marginTop: 18 }} className="sector-card">
-            <h3>10. Changes to These Terms</h3>
+            <h3>10. UK and Eastern USA Websites</h3>
+
+            <p>
+              These Terms &amp; Conditions apply to
+              www.illuminex.co.uk and www.illuminexconsultancy.com,
+              which are operated by Illuminex Ltd, a company
+              incorporated in England and Wales.
+            </p>
+
+            <p>
+              Our Eastern USA website provides information about
+              recruitment, executive search and commercial consultancy
+              services for the United States market. It does not
+              represent a separately incorporated United States company.
+            </p>
+
+            <p>
+              These are website-use terms only. They do not constitute
+              recruitment, executive search or consultancy terms of
+              business. Client assignments, fees and contractual
+              obligations are governed by the separate agreements
+              entered into with the relevant client.
+            </p>
+
+            <p style={{ marginBottom: 0 }}>
+              Nothing in these Terms &amp; Conditions is intended to
+              exclude or restrict mandatory statutory rights or
+              legal protections that cannot lawfully be excluded.
+            </p>
+          </div>
+
+          <div style={{ marginTop: 18 }} className="sector-card">
+            <h3>11. Changes to These Terms</h3>
             <p style={{ marginBottom: 0 }}>
               We may update these Terms & Conditions from time to time. Continued use of
               the website after changes are published constitutes acceptance of
